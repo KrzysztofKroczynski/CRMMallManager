@@ -1,0 +1,12 @@
+﻿services:
+  mallmanager.client:
+    image: mallmanager.client
+    build:
+      context: .
+      dockerfile: MallManager/MallManager.Client/Dockerfile
+
+  mallmanager:
+    image: mallmanager
+    build:
+      context: .
+      dockerfile: MallManager/MallManager/Dockerfile
