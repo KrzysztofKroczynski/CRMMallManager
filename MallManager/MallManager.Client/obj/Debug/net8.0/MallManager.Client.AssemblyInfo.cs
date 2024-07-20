@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MallManager.Client")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e93ef016a898ae76006894daad95b9d5af27f1bd")]
 [assembly: System.Reflection.AssemblyProductAttribute("MallManager.Client")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MallManager.Client")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
