@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tIMd5cGHVIxc7/0NZO8e7dYasLYF5FVC20b61WiZOz11Hi7yRvHQaQCLJyPLz710ryFrj8fvhmwBKO9ToFiaMw==",
+  "dgSpecHash": "ssWIlgkMzCrNqkivRawoICbKm6DGjHffvD8B1TcjB2xgvkOavQu0iO04JMnd30c5rEI1+ZRGd1V2XFV9QnGpyQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager.Client\\MallManager.Client.csproj",
+  "projectFilePath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager.Client\\MallManager.Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Krzysztof\\.nuget\\packages\\microsoft.aspnetcore.authorization\\8.0.6\\microsoft.aspnetcore.authorization.8.0.6.nupkg.sha512",
     "C:\\Users\\Krzysztof\\.nuget\\packages\\microsoft.aspnetcore.components\\8.0.6\\microsoft.aspnetcore.components.8.0.6.nupkg.sha512",

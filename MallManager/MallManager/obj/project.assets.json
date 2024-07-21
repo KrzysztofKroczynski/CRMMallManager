@@ -1952,13 +1952,24 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "Microsoft.AspNetCore.Components.WebAssembly": "8.0.6",
-          "Microsoft.AspNetCore.Components.WebAssembly.Authentication": "8.0.6"
+          "Microsoft.AspNetCore.Components.WebAssembly.Authentication": "8.0.6",
+          "Shared": "1.0.0"
         },
         "compile": {
           "bin/placeholder/MallManager.Client.dll": {}
         },
         "runtime": {
           "bin/placeholder/MallManager.Client.dll": {}
+        }
+      },
+      "Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Shared.dll": {}
         }
       }
     }
@@ -5099,6 +5110,11 @@
       "type": "project",
       "path": "../MallManager.Client/MallManager.Client.csproj",
       "msbuildProject": "../MallManager.Client/MallManager.Client.csproj"
+    },
+    "Shared/1.0.0": {
+      "type": "project",
+      "path": "../../Shared/Shared.csproj",
+      "msbuildProject": "../../Shared/Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -5108,7 +5124,8 @@
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 8.0.6",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.6",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.6",
-      "Microsoft.EntityFrameworkCore.Tools >= 8.0.6"
+      "Microsoft.EntityFrameworkCore.Tools >= 8.0.6",
+      "Shared >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -5117,11 +5134,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager\\MallManager.csproj",
+      "projectUniqueName": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager\\MallManager.csproj",
       "projectName": "MallManager",
-      "projectPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager\\MallManager.csproj",
+      "projectPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager\\MallManager.csproj",
       "packagesPath": "C:\\Users\\Krzysztof\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager\\obj\\",
+      "outputPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Krzysztof\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -5136,8 +5153,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager.Client\\MallManager.Client.csproj": {
-              "projectPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager.Client\\MallManager.Client.csproj"
+            "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager.Client\\MallManager.Client.csproj": {
+              "projectPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager.Client\\MallManager.Client.csproj"
+            },
+            "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\Shared\\Shared.csproj": {
+              "projectPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\Shared\\Shared.csproj"
             }
           }
         }

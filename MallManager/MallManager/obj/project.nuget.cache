@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lVlC1viy7hDOyAqV9stD0jqnk6dCPIvK6JVkWKP7yKIarDQ5l4oGz/MJZ+HD6VGe93fmIr/wG0PTKEE3cD9pMQ==",
+  "dgSpecHash": "7kcZxoR4NHjvjjsOSZOfCQuQwsxonUMV8SR7O3DdSr7kBZeEsPhKnSY0/gciYu22njWvjsVc09CSyikP5EBBOg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager\\MallManager.csproj",
+  "projectFilePath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager\\MallManager.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Krzysztof\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Krzysztof\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager.Client\\MallManager.Client.csproj": {}
+    "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager.Client\\MallManager.Client.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager.Client\\MallManager.Client.csproj": {
+    "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager.Client\\MallManager.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager.Client\\MallManager.Client.csproj",
+        "projectUniqueName": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager.Client\\MallManager.Client.csproj",
         "projectName": "MallManager.Client",
-        "projectPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager.Client\\MallManager.Client.csproj",
+        "projectPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager.Client\\MallManager.Client.csproj",
         "packagesPath": "C:\\Users\\Krzysztof\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManager\\MallManager\\MallManager.Client\\obj\\",
+        "outputPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\MallManager\\MallManager.Client\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Krzysztof\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -25,7 +25,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\Shared\\Shared.csproj": {
+                "projectPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\Shared\\Shared.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -87,6 +91,59 @@
       "runtimes": {
         "browser-wasm": {
           "#import": []
+        }
+      }
+    },
+    "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\Shared\\Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\Shared\\Shared.csproj",
+        "projectName": "Shared",
+        "projectPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\Shared\\Shared.csproj",
+        "packagesPath": "C:\\Users\\Krzysztof\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Krzysztof\\RiderProjects\\MallManagerb\\Shared\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Krzysztof\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Users\\Krzysztof\\.dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
