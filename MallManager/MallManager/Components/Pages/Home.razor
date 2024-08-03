@@ -1,7 +1,31 @@
 ﻿@page "/"
+@inherits LayoutComponentBase
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
 
-<h1>Hello, world!</h1>
+<MudLayout>
+    <MudAppBar>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+        Nasza zajebista aplikacja
+    </MudAppBar>
+    <MudDrawer @bind-Open="@_drawerOpen">
+        abc
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
 
-Welcome to your new app.
+@code{
+
+bool _drawerOpen = false;
+
+void DrawerToggle()
+{
+_drawerOpen = !_drawerOpen;
+}
+
+}

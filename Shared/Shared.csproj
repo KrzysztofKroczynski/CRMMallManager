@@ -16,4 +16,8 @@
       <Folder Include="Core\Agregates\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MudBlazor" Version="7.5.0" />
+    </ItemGroup>
+
 </Project>

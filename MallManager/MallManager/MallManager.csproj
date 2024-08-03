@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MudBlazor" Version="7.5.0" />
         <ProjectReference Include="..\..\Shared\Shared.csproj" />
         <ProjectReference Include="..\MallManager.Client\MallManager.Client.csproj"/>
         <PackageReference Include="Ardalis.Result" Version="9.1.0" />
