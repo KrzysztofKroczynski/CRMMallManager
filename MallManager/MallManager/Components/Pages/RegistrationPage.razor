@@ -1,0 +1,57 @@
+﻿@rendermode InteractiveServer
+@page "/register"
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+
+<MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">    
+    <MudStepperExtended @ref="_stepper" Class="custom-stepper" ContentStyle="min-height: 400px" Linear="true" Color="Color.Info" Variant="Variant.Filled"
+                        Animation="true" ShowPreviousButton="true" ShowNextButton="true"
+                        ShowSkipButton="false" ShowStepResultIndicator="true" HeaderBadgeView="HeaderBadgeView.All"
+                        HeaderTextView="HeaderTextView.All" PreventStepChangeAsync="new Func<StepChangeDirection, int, Task<bool>>(CheckChange)"
+                        MobileView="false" IconActionButtons="false" Loading="_loading" HeaderSize="Size.Medium"
+                        StepperActionsJustify="StepperActionsJustify.SpaceBetween">
+
+        <ChildContent>
+        <MudStepExtended Title="Cel zapisu" Icon="@Icons.Material.Filled.GpsFixed">
+            <ChildContent>
+                <MudText Typo="Typo.h4">Cel zapisu</MudText>
+                <MudStack Row="true">
+                    <MudButton OnClick="@ApartmentRentalForm">Wynajem lokalu</MudButton>
+                    <MudButton OnClick="@AdvertisingSpaceRentalForm">Wynajem reklamy</MudButton>
+                    <MudButton OnClick="@EventOrganizationForm">Organizacja imprezy</MudButton>
+                    <MudButton OnClick="@OtherForm">Inne</MudButton>
+                </MudStack>
+            </ChildContent>
+        </MudStepExtended>
+            <MudStepExtended Title="Dane celu" Icon="@Icons.Material.Filled.Description">
+                <ChildContent>
+                    <MudText Typo="Typo.h4">Filtruj wyniki</MudText>
+                    <MudForm @ref="_form">
+                        @switch (_currentFormType)
+                        {
+                            case FormType.APARTMENT_RENTAL:
+
+                                <!-- Tutaj kod formularza do wynajmu lokalu -->
+                                break;
+                            case FormType.ADVERTISING_SPACE_RENTAL:
+                                <p>Formularz do wynajmu reklamy</p>
+                                <!-- Tutaj kod formularza do wynajmu reklamy -->
+                                break;
+                            case FormType.EVENT_ORGANIZATION:
+                                <p>Formularz do organizacji imprezy</p>
+                                <!-- Tutaj kod formularza do organizacji imprezy -->
+                                break;
+                            case FormType.OTHER:
+                                <p>Inny formularz</p>
+                                <!-- Tutaj kod innego formularza -->
+                                break;
+                        }
+                    </MudForm>
+                    <MudButton OnClick="@CompleteRegistration">Zatwierdź</MudButton>
+                </ChildContent>
+            </MudStepExtended>
+        </ChildContent>
+    </MudStepperExtended>
+</MudLayout>

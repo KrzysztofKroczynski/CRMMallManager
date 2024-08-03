@@ -27,3 +27,12 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+
+.custom-stepper {
+    margin-top: 5%;
+    padding: 1%;
+    text-align: center;
+    box-shadow: 2px 2px 6px rgba(5,5,5,0.5);
+    width: 1000px;
+}
