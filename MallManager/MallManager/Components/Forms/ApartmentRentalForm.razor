@@ -1,0 +1,26 @@
+﻿<MudStack>
+    <MudStack Row="true">
+        <MudSelect T="string" @bind-Value="sizeOfLocal" Label="Metraż" Required="true">
+            <!-- TODO: Create foreach loop to dynamic generate <MudSelectItem> elements-->
+            
+            <MudSelectItem Value='"Sample 1"'/>
+            <MudSelectItem Value='"Sample 2"'/>
+        </MudSelect>
+
+        <MudSelect T="string" @bind-Value="businessType" Label="Typ działalności" Required="true">
+            <!-- TODO: Create foreach loop to dynamic generate <MudSelectItem> elements-->
+            
+            <MudSelectItem Value='"Sample 1"'/>
+            <MudSelectItem Value='"Sample 2"'/>
+        </MudSelect>
+    </MudStack>
+    
+    <MudText Typo="Typo.caption" Class="mt-20">Okres Wynajmu*</MudText>
+    
+    <MudStack Row="true">
+        @* TODO: Add date validation that startDate cannot be from the past, and cannot be later than endDate *@
+        
+        <MudDatePicker @bind-Date="startDate" Label="Od" Required="true"/>
+        <MudDatePicker @bind-Date="endDate" Label="Do" Required="true"/>
+    </MudStack>
+</MudStack>
