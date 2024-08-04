@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MallManager.Components;
 using MallManager.Components.Account;
 using MallManager.Data;
+using MallManager.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddAuthentication(options =>
     {
