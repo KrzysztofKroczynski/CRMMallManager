@@ -1,5 +1,6 @@
 ﻿@rendermode InteractiveServer
 @page "/register"
+@using MallManager.Components.Forms
 <MudThemeProvider @rendermode="InteractiveServer" />
 <MudDialogProvider @rendermode="InteractiveServer" />
 <MudSnackbarProvider @rendermode="InteractiveServer" />
@@ -14,42 +15,65 @@
                         StepperActionsJustify="StepperActionsJustify.SpaceBetween">
 
         <ChildContent>
-        <MudStepExtended Title="Cel zapisu" Icon="@Icons.Material.Filled.GpsFixed">
-            <ChildContent>
-                <MudText Typo="Typo.h4">Cel zapisu</MudText>
-                <MudStack Row="true">
-                    <MudButton OnClick="@ApartmentRentalForm">Wynajem lokalu</MudButton>
-                    <MudButton OnClick="@AdvertisingSpaceRentalForm">Wynajem reklamy</MudButton>
-                    <MudButton OnClick="@EventOrganizationForm">Organizacja imprezy</MudButton>
-                    <MudButton OnClick="@OtherForm">Inne</MudButton>
-                </MudStack>
-            </ChildContent>
-        </MudStepExtended>
+            <MudStepExtended Title="Cel zapisu" Icon="@Icons.Material.Filled.GpsFixed">
+                <ChildContent>
+                    <MudText Typo="Typo.h4" Class="d-flex justify-center">Cel zapisu</MudText>
+                    <MudStack Row="true" Class="d-flex justify-center">
+                        <MudButton OnClick="@RenderApartmentRentalForm">Wynajem lokalu</MudButton>
+                        <MudButton OnClick="@RenderAdvertisingSpaceRentalForm">Wynajem reklamy</MudButton>
+                        <MudButton OnClick="@RenderEventOrganizationForm">Organizacja imprezy</MudButton>
+                        <MudButton OnClick="@RenderOtherPurposeForm">Inne</MudButton>
+                    </MudStack>
+                </ChildContent>
+            </MudStepExtended>
             <MudStepExtended Title="Dane celu" Icon="@Icons.Material.Filled.Description">
                 <ChildContent>
-                    <MudText Typo="Typo.h4">Filtruj wyniki</MudText>
-                    <MudForm @ref="_form">
-                        @switch (_currentFormType)
-                        {
-                            case FormType.APARTMENT_RENTAL:
-
-                                <!-- Tutaj kod formularza do wynajmu lokalu -->
-                                break;
-                            case FormType.ADVERTISING_SPACE_RENTAL:
-                                <p>Formularz do wynajmu reklamy</p>
-                                <!-- Tutaj kod formularza do wynajmu reklamy -->
-                                break;
-                            case FormType.EVENT_ORGANIZATION:
-                                <p>Formularz do organizacji imprezy</p>
-                                <!-- Tutaj kod formularza do organizacji imprezy -->
-                                break;
-                            case FormType.OTHER:
-                                <p>Inny formularz</p>
-                                <!-- Tutaj kod innego formularza -->
-                                break;
-                        }
-                    </MudForm>
-                    <MudButton OnClick="@CompleteRegistration">Zatwierdź</MudButton>
+                    <MudText Typo="Typo.h4" Class="d-flex justify-center">Dane celu</MudText>
+                    
+                    @switch (_currentPurposeOfTheContractType)
+                    {
+                        case PurposeOfTheContractType.APARTMENT_RENTAL:
+                            <MudStack Row="true">
+                                <MudStack Class="purpose-form">
+                                    @* [Model classname]="[model object name]" TODO: Customize the name and put this as an attribute of the form below when you will write [Model] class *@
+                                    <MudForm @ref="_form">
+                                        <ApartmentRentalForm/>
+                                    </MudForm>
+                                </MudStack>
+                                
+                                <MudStack Class="purpose-form">
+                                    <ResultOfFilteringComponent/>
+                                </MudStack>
+                            </MudStack>
+                            
+                            break;
+                        case PurposeOfTheContractType.ADVERTISING_SPACE_RENTAL:
+                            <MudStack Row="true">
+                                <MudForm @ref="_form">
+                                    <AdvertisingSpaceRentalForm />
+                                </MudForm>
+                                
+                                <ResultOfFilteringComponent />
+                            </MudStack>
+                            
+                            break;
+                        case PurposeOfTheContractType.EVENT_ORGANIZATION:
+                            <EventOrganizationForm />
+                            break;
+                        case PurposeOfTheContractType.OTHER:
+                            <OtherForm />
+                            break;
+                    }
+                    
+                    <MudText Class="mt-20" Typo="Typo.body1">* - Pole wymagane</MudText>
+                </ChildContent>
+            </MudStepExtended>
+            <MudStepExtended Icon="@Icons.Material.Filled.Alarm" Title="End Step" IsResultStep="true">
+                <ChildContent>
+                    <div class="d-flex flex-column align-center justify-center" style="height: 200px">
+                        <MudIconButton Icon="@Icons.Material.Filled.DoneAll" Size="Size.Large" Variant="Variant.Filled" Color="Color.Success" />
+                        <MudText>Pomyślnie złożono wniosek</MudText>
+                    </div>
                 </ChildContent>
             </MudStepExtended>
         </ChildContent>

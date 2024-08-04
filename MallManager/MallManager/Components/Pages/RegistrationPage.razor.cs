@@ -4,7 +4,8 @@ using MudExtensions;
 
 namespace MallManager.Components.Pages;
 
-enum FormType
+// TODO: Perhaps move this enum to a seperate file
+enum PurposeOfTheContractType
 {
     APARTMENT_RENTAL,
     ADVERTISING_SPACE_RENTAL,
@@ -16,7 +17,8 @@ public partial class RegistrationPage : ComponentBase
 {
     MudStepperExtended _stepper = new();
     private MudForm _form = new();
-    private FormType _currentFormType = FormType.OTHER;
+    // private Model model = new Model(); TODO: Create a data model or DTO to represent data from a form so that you can manipulate it
+    private PurposeOfTheContractType _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
     private bool _loading;
     
     private async Task<bool> CheckChange(StepChangeDirection direction, int targetIndex)
@@ -32,38 +34,48 @@ public partial class RegistrationPage : ComponentBase
         {
             await _form.Validate();
             StateHasChanged();
-            return !_form.IsValid;
+            
+            if (_form.IsValid)
+            {
+                Submit();
+                return false;
+            }
+            
+            return true;
         }
         
         return false;
     } 
-    private void CompleteRegistration()
+    private async Task Submit()
     {
-        // send code
+        // TODO: Write business logic to save model or do with it whatever you want
+        Console.WriteLine("Submitting...");
+        await Task.Delay(1000);
+        Console.WriteLine("Done...");
     }
 
-    private async void ApartmentRentalForm()
+    private async void RenderApartmentRentalForm()
     {
-        _currentFormType = FormType.APARTMENT_RENTAL;
+        _currentPurposeOfTheContractType = PurposeOfTheContractType.APARTMENT_RENTAL;
         await MoveToNextStep();
     }
 
-    private async void AdvertisingSpaceRentalForm()
+    private async void RenderAdvertisingSpaceRentalForm()
     {
-        _currentFormType = FormType.ADVERTISING_SPACE_RENTAL;
+        _currentPurposeOfTheContractType = PurposeOfTheContractType.ADVERTISING_SPACE_RENTAL;
         await MoveToNextStep();
     }
     
-    private async void EventOrganizationForm()
+    private async void RenderEventOrganizationForm()
     {
-        _currentFormType = FormType.EVENT_ORGANIZATION;
+        _currentPurposeOfTheContractType = PurposeOfTheContractType.EVENT_ORGANIZATION;
         await MoveToNextStep();
 
     } 
     
-    private async void OtherForm()
+    private async void RenderOtherPurposeForm()
     {
-        _currentFormType = FormType.OTHER;
+        _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
         await MoveToNextStep();
     }
 
@@ -76,7 +88,9 @@ public partial class RegistrationPage : ComponentBase
         
         _stepper.CompleteStep(currentStepIndex);
         _stepper.SetActiveStepByIndex(currentStepIndex + 1);
+
         await Task.Delay(1000);
+            
         _loading = false;
         StateHasChanged();
     }
