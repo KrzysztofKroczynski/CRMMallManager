@@ -1,0 +1,10 @@
+﻿@page "/EmailSent"
+@rendermode InteractiveServer
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+<h3>EmailSent</h3>
+
+<MudAlert Severity="Severity.Info" Variant="Variant.Filled">Wysłano mail na podany adres. Znajdziesz w nim link do aktywacji konta</MudAlert>
+<MudButton>Wyslij wiadomosc jeszcze raz</MudButton>
