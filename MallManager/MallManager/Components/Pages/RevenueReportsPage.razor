@@ -1,0 +1,71 @@
+﻿@rendermode InteractiveServer
+@page "/revenueReports"
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+
+<MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
+    <MudStack Style="width: 80%;">
+        <MudStack Row="true" Class="d-flex justify-center" Style="background-color: #fcc99b">
+            <div id="label">Termin następnego RoP za</div>
+            <Child />
+            <div id="light-blue-label">EXAMPLE</div>
+            <Child />
+        </MudStack>
+        
+        <MudStack Class="d-flex justify-center" Style="background-color: #fcc99b">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NewRevenueReport">Utwórz nowy raport</MudButton>
+        </MudStack>
+
+        <MudStack Class="d-flex justify-center" Style="background-color: #fcc99b; padding: 2%">
+            <MudText Typo="Typo.h4" Class="d-flex justify-center">WYSZUKIWARKA</MudText>
+
+            <MudTextField @bind-Value="SearchCriteria" Variant="Variant.Filled"
+                          MaxLength="1000" Lines="7" MaxLines="7" />
+        </MudStack>
+
+        <MudStack Style="background-color: #fcc99b; padding: 2%;">
+            <MudStack Row="true" Class="d-flex justify-center">
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"/>
+                <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium"/>
+            </MudStack>
+            
+            <MudText Typo="Typo.body1">Nadchodzące raporty</MudText>
+            <MudTable Items="exampleList" RowStyleFunc="ChangeRowBackgroundColor">
+                <HeaderContent>
+                    <MudTh>Numer RoP</MudTh>
+                    <MudTh>Numer Lokalu</MudTh>
+                    <MudTh>Data początku RoP</MudTh>
+                    <MudTh>Data końca RoP</MudTh>
+                    <MudTh>Data złożenia RoP</MudTh>
+                    <MudTh>Przychody</MudTh>
+                    <MudTh>Data Następnego RoP</MudTh>
+                </HeaderContent>
+                <RowTemplate Context="item">
+                    <MudTd>@item.ReportNumber</MudTd>
+                    <MudTd>@item.ApartmentNumber</MudTd>
+                    <MudTd>@item.StartDate.ToShortDateString()</MudTd>
+                    <MudTd>@item.EndDate.ToShortDateString()</MudTd>
+                    <MudTd>
+                        @(item.DateOfSubmission != default(DateTime) ? item.DateOfSubmission.ToShortDateString() : "-.-.-")
+                    </MudTd>
+                    <MudTd>@item.Revenue.ToString("C")</MudTd>
+                    <MudTd>@item.NextRevenueSubmissionDate.ToShortDateString()</MudTd>
+                </RowTemplate>
+            </MudTable>
+            
+            <MudStack Row="true" Class="d-flex justify-center">
+                <div id="green-circle"></div>
+                <MudText Typo="Typo.body1"> - raport złożony</MudText>
+
+                <div id="red-circle"></div>
+                <MudText Typo="Typo.body1"> - raport po terminie</MudText>
+
+                <div id="light-blue-circle"></div>
+                <MudText Typo="Typo.body1"> - raport nadchodzący</MudText>
+            </MudStack>
+        </MudStack>
+    </MudStack>
+</MudLayout>
