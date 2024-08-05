@@ -1,0 +1,15 @@
+﻿using Microsoft.AspNetCore.Components;
+
+namespace MallManager.Components.Pages;
+
+public partial class Login : ComponentBase
+{
+    private LoginModel Model = new();
+    
+
+    public class LoginModel
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+}
