@@ -1,0 +1,31 @@
+﻿<MudStack>
+    <MudStack Row="true">
+        <MudTextField @bind-Value="_eventName" Label="Nazwa wydarzenia" Variant="Variant.Filled" Required="true"/>
+        <MudSelect T="string" @bind-Value="_eventType" Label="Rodzaj Wydarzenia" Variant="Variant.Filled" Required="true">
+            <!-- TODO: Create foreach loop to dynamic generate <MudSelectItem> elements-->
+
+            <MudSelectItem Value='"Sample 1"'/>
+            <MudSelectItem Value='"Sample 2"'/>
+        </MudSelect>        
+    </MudStack>
+
+    <MudText Typo="Typo.caption" Class="mt-20">Data Rozpoczęcia i Zakończenia*</MudText>
+
+    <MudStack Row="true">
+        @* TODO: Add date validation that startDate cannot be from the past, and cannot be later than endDate *@
+
+        <MudDatePicker @bind-Date="_startDate" Label="Od" Variant="Variant.Filled" Required="true"/>
+        <MudDatePicker @bind-Date="_endDate" Label="Do" Variant="Variant.Filled" Required="true"/>
+    </MudStack>
+
+    <MudTextField @bind-Value="_description" Label="Opis Wydarzenia" Variant="Variant.Filled"
+                 MaxLength="1000" Lines="7" MaxLines="7" HelperText="Max. 1000 znaków." />
+
+
+    <MudText Typo="Typo.caption" Class="mt-20">Spodziewana liczba Uczestników</MudText>
+    
+    <MudStack Row="true">
+        <MudNumericField Label="Od" @bind-Value="_minMembersCount" Variant="Variant.Filled" />
+        <MudNumericField Label="Do" @bind-Value="_maxMembersCount" Variant="Variant.Filled" />
+    </MudStack>
+</MudStack>
