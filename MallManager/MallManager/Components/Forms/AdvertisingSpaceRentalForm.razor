@@ -1,0 +1,32 @@
+﻿<MudStack>
+    <MudStack Row="true">
+        <MudCheckBox @bind-Value="_isInTheCenter" Label="W centrum***"/>
+        <MudCheckBox @bind-Value="_isAnimated" Label="Animowana"/>
+    </MudStack>
+
+    <MudSwitch Color="Color.Primary" @bind-Value="_isDuringPeakHours" Label="Wyświetlanie podczas godzin szczytu (15:00 - 18:00)"/>
+
+    <MudSelect T="string" @bind-Value="_beneficiary" Label="Beneficjent" Variant="Variant.Filled" Required="true">
+        <!-- TODO: Create foreach loop to dynamic generate <MudSelectItem> elements-->
+
+        <MudSelectItem Value='"Sample 1"'/>
+        <MudSelectItem Value='"Sample 2"'/>
+    </MudSelect>
+
+    <MudTextField @bind-Value="_description" Label="Opis" Variant="Variant.Filled"
+                  MaxLength="1000" Lines="7" MaxLines="7" HelperText="Max. 1000 znaków." Required="true"/>
+
+    <MudSelect T="string" @bind-Value="_selectedMonth" Variant="Variant.Filled" Label="Miesiąc* ***" Required="true">
+        @foreach (var month in months)
+        {
+            <MudSelectItem Value="@month">@month</MudSelectItem>
+        }
+    </MudSelect>
+
+    <MudCheckBox @bind-Value="_replayOfThePreviousCampaign" Label="Powtórka poprzedniej kampanii***"/>
+    
+    <MudStack Row="true">
+        <MudCheckBox @bind-Value="_durningWorkingDays" Label="Wyświetlanie podczas dni roboczych"/>
+        <MudCheckBox @bind-Value="_durningWeekend" Label="Wyświetlanie podczas weekendu"/>
+    </MudStack>
+</MudStack>
