@@ -41,3 +41,24 @@ h1:focus {
     padding: 1%;
     background-color: #d5dcdc;
 }
+.drawer-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    padding-top: 60px;
+    background-color: lightgrey;
+}
+.drawer-button{
+    background-color: lightgrey; 
+    color: black; 
+    width: 200px; 
+    height: 60px;
+}
+.mm-icon{
+    width: 75px;
+    height: auto;
+    padding-top: 15px;
+}
+

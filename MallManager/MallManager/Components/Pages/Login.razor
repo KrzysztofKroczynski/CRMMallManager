@@ -1,0 +1,22 @@
+﻿@rendermode InteractiveServer
+@page "/Login"
+@using MallManager.Components.Forms
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+
+
+<MudForm Style="    display: flex;flex-direction: column;justify-content: flex-start;align-items: center;height: 100%;padding-top: 60px;">
+    <MudTextField Label="Username" @bind-Value="Model.Username" />
+    <MudTextField Label="Password" Type="Password" @bind-Value="Model.Password" />
+    <MudButton Href="https://github.com/MudBlazor/MudBlazor"
+               Target="_blank"
+               Variant="Variant.Text"
+               Color="Color.Secondary"
+               Style="text-transform:none">
+        Nie pamiętasz hasła?
+    </MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" >Login</MudButton>
+
+</MudForm>
