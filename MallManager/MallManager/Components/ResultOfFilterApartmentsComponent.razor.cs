@@ -2,7 +2,7 @@
 
 namespace MallManager.Components;
 
-public partial class ResultOfFilteringComponent : ComponentBase
+public partial class ResultOfFilterApartmentsComponent : ComponentBase
 {
     // TODO: Place here business logic for loading locals
 
