@@ -46,26 +46,52 @@
                                 </MudStack>
                             </MudStack>
                             
+                            <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
+                            <MudText Typo="Typo.body1">**Podane daty rozpoczęcia i zakończenia mają charakter poglądowy i nie stanowią oferty.</MudText>
+                            <MudText Typo="Typo.body1">**W przypadku lokali niedostępnych w wybranym terminie podano najbliższy możliwy termin wynajmu</MudText>
+                            
                             break;
                         case PurposeOfTheContractType.ADVERTISING_SPACE_RENTAL:
                             <MudStack Row="true">
-                                <MudForm @ref="_form">
-                                    <AdvertisingSpaceRentalForm />
-                                </MudForm>
+                                <MudStack Class="purpose-form">
+                                    @* [Model classname]="[model object name]" TODO: Customize the name and put this as an attribute of the form below when you will write [Model] class *@
+                                    <MudForm @ref="_form">
+                                        <AdvertisingSpaceRentalForm/>
+                                    </MudForm>
+                                </MudStack>
                                 
-                                <ResultOfFilteringComponent />
+                                @* Should it be here? *@
+                                <MudStack Class="purpose-form">
+                                    <ResultOfFilteringComponent/>
+                                </MudStack>
                             </MudStack>
                             
+                            <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
+                            <MudText Typo="Typo.body1">**Podane daty rozpoczęcia i zakończenia mają charakter poglądowy i nie stanowią oferty.</MudText>
+                            <MudText Typo="Typo.body1">**W przypadku lokali niedostępnych w wybranym terminie podano najbliższy możliwy termin wynajmu</MudText>
+                            <MudText Typo="Typo.body1">***Obowiązuje rabat</MudText>
+                            <MudText Typo="Typo.body1">****Cena zależna od miesiąca</MudText>
                             break;
                         case PurposeOfTheContractType.EVENT_ORGANIZATION:
-                            <EventOrganizationForm />
+                            <MudStack Style="background-color: #d5dcdc;  padding: 1%">
+                                @* [Model classname]="[model object name]" TODO: Customize the name and put this as an attribute of the form below when you will write [Model] class *@
+                                <MudForm @ref="_form">
+                                    <EventOrganizationForm/>
+                                </MudForm>
+                            </MudStack>
+                            <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
                             break;
                         case PurposeOfTheContractType.OTHER:
-                            <OtherForm />
+                            <MudStack Style="background-color: #d5dcdc; padding: 1%">
+                                @* [Model classname]="[model object name]" TODO: Customize the name and put this as an attribute of the form below when you will write [Model] class *@
+                                <MudForm @ref="_form">
+                                    <OtherPurposeForm/>
+                                </MudForm>
+                            </MudStack>
+                            
+                            <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
                             break;
                     }
-                    
-                    <MudText Class="mt-20" Typo="Typo.body1">* - Pole wymagane</MudText>
                 </ChildContent>
             </MudStepExtended>
             <MudStepExtended Icon="@Icons.Material.Filled.Alarm" Title="End Step" IsResultStep="true">
