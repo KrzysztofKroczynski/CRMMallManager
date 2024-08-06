@@ -1,0 +1,41 @@
+﻿@rendermode InteractiveServer
+@page "/rentalsOfTenants"
+@inject NavigationManager NavigationManager
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+
+<MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
+    <LoggedManagerMenu>
+        <MudStack Style="width: 80%; margin-left: auto; margin-right: auto">
+            <MudStack Style="background-color: #fcc99b; padding: 2%;">
+                <MudText Typo="Typo.h4" Align="Align.Center">WYNAJMY</MudText>
+                <MudTable Items="exampleList">
+                    <HeaderContent>
+                        <MudTh>Numer Wynajmu</MudTh>
+                        <MudTh>Numer Lokalu</MudTh>
+                        <MudTh>Data Początku Wynajmu</MudTh>
+                        <MudTh>Data Końca Wynajmu</MudTh>
+                        <MudTh>Następny Czynsz</MudTh>
+                        <MudTh>Kwota Czynszu</MudTh>
+                        <MudTh>Kwota Ostatniego RoP</MudTh>
+                        <MudTh>Data Następnego RoP</MudTh>
+                    </HeaderContent>
+                    <RowTemplate Context="item">
+                        <MudTd>@item.RentalNumber</MudTd>
+                        <MudTd>@item.ApartmentNumber</MudTd>
+                        <MudTd>@item.StartDate.ToShortDateString()</MudTd>
+                        <MudTd>@item.EndDate.ToShortDateString()</MudTd>
+                        <MudTd>@item.DateOfNextRentPayment.ToShortDateString()</MudTd>
+                        <MudTd>@item.RentAmount.ToString("C")</MudTd>
+                        <MudTd>@item.LastRevenueAmount.ToString("C")</MudTd>
+                        <MudTd>@item.NextRevenueSubmissionDate.ToShortDateString()</MudTd>
+                    </RowTemplate>
+                </MudTable>
+
+                <MudCheckBox T="bool" @bind-Checked="ShowCompleted" Color="Color.Primary">Pokaż zakończone</MudCheckBox>
+            </MudStack>
+        </MudStack>
+    </LoggedManagerMenu>
+</MudLayout>
