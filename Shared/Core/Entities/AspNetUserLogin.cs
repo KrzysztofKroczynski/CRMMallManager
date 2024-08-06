@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MallManager.Data.Entities;
+namespace Shared.Core.Entities;
 
 public partial class AspNetUserLogin
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Shared.Core.Entities;
 
 namespace MallManager.Data.Entities;
 
