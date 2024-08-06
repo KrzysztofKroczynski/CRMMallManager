@@ -1,0 +1,36 @@
+﻿@rendermode InteractiveServer
+@page "/requests"
+@inject NavigationManager NavigationManager
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+
+<MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
+    <LoggedTenantMenu>
+        <MudStack>
+            <MudTable Items="@exampleList">
+                <HeaderContent>
+                    <MudTh>Numer zgłoszenia</MudTh>
+                    <MudTh>Status</MudTh>
+                    <MudTh>Data złożenia</MudTh>
+                    <MudTh>Data aktualizacji</MudTh>
+                    <MudTh>Akcje</MudTh>
+                </HeaderContent>
+                <RowTemplate Context="item">
+                    <MudTd>@item.RequestNumber</MudTd>
+                    <MudTd>@item.Status</MudTd>
+                    <MudTd>@item.SubmissionDate</MudTd>
+                    <MudTd>@item.StatusChangedDate</MudTd>
+                    <MudTd>
+                        <MudIconButton OnClick="@(() => EditRequest(item))" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
+                        <MudIconButton OnClick="@(() => DeleteRequest(item))" Color="Color.Error" Size="Size.Small" Icon="@Icons.Material.Filled.Delete"/>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+
+
+            <MudButton OnClick="@(() => NavigateToRequest())" Color="Color.Primary">Nowy wpis</MudButton>
+        </MudStack>
+    </LoggedTenantMenu>
+</MudLayout>
