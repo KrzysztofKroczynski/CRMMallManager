@@ -1,5 +1,6 @@
 ﻿@rendermode InteractiveServer
 @page "/revenueReports"
+@inject NavigationManager NavigationManager
 <MudThemeProvider @rendermode="InteractiveServer" />
 <MudDialogProvider @rendermode="InteractiveServer" />
 <MudSnackbarProvider @rendermode="InteractiveServer" />
@@ -16,7 +17,7 @@
             </MudStack>
 
             <MudStack Class="d-flex justify-center" Style="background-color: #fcc99b">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NewRevenueReport">Utwórz nowy raport</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToNewRevenueReport">Utwórz nowy raport</MudButton>
             </MudStack>
 
             <MudStack Class="d-flex justify-center" Style="background-color: #fcc99b; padding: 2%">

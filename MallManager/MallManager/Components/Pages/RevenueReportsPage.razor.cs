@@ -53,9 +53,9 @@ public partial class RevenueReportsPage : ComponentBase
         return item.WasSubmittedAfterEndDate ? "background-color: #f26868" : "background-color: #6ff772";;
     }
 
-    private void NewRevenueReport()
+    private void NavigateToNewRevenueReport()
     {
-        
+        NavigationManager.NavigateTo("/reportRevenue");
     }
 }
 
