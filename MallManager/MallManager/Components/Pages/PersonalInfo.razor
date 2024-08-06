@@ -1,0 +1,95 @@
+﻿@page "/PersonalInfo"
+@rendermode InteractiveServer
+@using MallManager.Components.Forms
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+@inject NavigationManager NavigationManager
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator/>
+    <MudGrid Style="padding-left: 350px">
+        <MudItem xs="12" sm="7">
+            <MudCard Style="background-color: peachpuff;margin-bottom: 10px">
+                <MudCardContent>
+                    <MudTextField Label="Imię*" Class="mt-3"
+                                  @bind-Value="model.Name" For="@(() => model.Name)"/>
+                    <MudTextField Label="Drugie Imię" Class="mt-3"
+                                  @bind-Value="model.SecondName" For="@(() => model.SecondName)" />
+                    <MudTextField Label="Nazwisko*" Class="mt-3"
+                                  @bind-Value="model.Surname" For="@(() => model.Surname)" />
+                    <MudTextField Label="Telefon*" Class="mt-3"
+                                  @bind-Value="model.PhoneNumber" For="@(() => model.PhoneNumber)" />
+                    <MudTextField Label="Email*" Class="mt-3"
+                                  @bind-Value="model.Email" For="@(() => model.Email)" />
+                </MudCardContent>
+            </MudCard>
+            <MudCard Style="background-color: peachpuff">
+                <MudCardContent>
+                    <MudSelect T="string" Label="Kraj" HelperText="Wybierz kraj" Required="true" @bind-Value="model.Country">
+                        @foreach (var country in countries)
+                        {
+                            <MudSelectItem T="string" Value="@country">@country</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudTextField Label="Miasto*" Class="mt-3"
+                                  @bind-Value="model.City" For="@(() => model.City)" />
+                    <MudTextField Label="Ulica*" Class="mt-3"
+                                  @bind-Value="model.Street" For="@(() => model.Street)" />
+                    <div style="display: flex; gap: 16px;">
+                        <MudTextField Label="Nr Budynku*" Class="mt-3"
+                                      @bind-Value="model.BuildingNumber" For="@(() => model.BuildingNumber)" />
+                        <MudTextField Label="Nr Lokalu*" Class="mt-3"
+                                      @bind-Value="model.LocalNumber" For="@(() => model.LocalNumber)" />
+                    </div>
+                    <MudTextField Label="Kod pocztowy*" Class="mt-3"
+                                  @bind-Value="model.PostalCode" For="@(() => model.PostalCode)" />
+                    <MudTextField Label="Dodatkowe informacje o adresie" Class="mt-3"
+                                  @bind-Value="model.AdditionalAddressInfo" For="@(() => model.AdditionalAddressInfo)" />
+                    <MudTextField Label="NIP*" Class="mt-3"
+                                  @bind-Value="model.NIP" For="@(() => model.NIP)" />
+                    <MudTextField Label="KRS*" Class="mt-3"
+                                  @bind-Value="model.KRS" For="@(() => model.KRS)" />
+                    <MudSelect T="string" Label="Rozmiar firmy*" HelperText="Wybierz rozmiar adekwatny do twojej firmy" Required="true" @bind-Value="model.CompanySize">
+                        @foreach (var size in sizes)
+                        {
+                        <MudSelectItem T="string" Value="@size">@size</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudTextField Label="Kapitał początkowy" Class="mt-3"
+                                  @bind-Value="model.InitialCapital" For="@(() => model.InitialCapital)" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" >Check</MudButton>
+                    @if(success)
+                    {
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" >Register</MudButton>
+                    }
+                    else
+                    {
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Disabled="true" Class="ml-auto">Register</MudButton>
+                    }
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="5">
+            <MudPaper Class="pa-4 mud-height-full">
+                <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+                @if (success)
+                {
+                <MudText Color="Color.Success">Success</MudText>
+                }
+                else
+                {
+                <MudText Color="@Color.Error">
+                    <ValidationSummary />
+                </MudText>
+                }
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+</EditForm>
