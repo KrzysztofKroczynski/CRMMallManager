@@ -4,7 +4,7 @@ namespace MallManager.Components.Pages;
 
 public partial class TechnicalFaultsPage : ComponentBase
 {
-    private List<FailureReportExample> exampleList = new List<FailureReportExample>
+    private List<FailureReportExample> exampleList = new()
     {
         new FailureReportExample { TechnicalFailNumber = "001", ApartmentNumber = "100", Applicant = "John Doe", Status = "Zakończony", DateTimeOfStatusUpdate = DateTime.Now.AddDays(-2), ResponsibleSubject = "Zarząd", Description = "Przeciek w kuchni", FailValue = 1500, Restorer = "Tom Smith", Comment = "Naprawiono" },
         new FailureReportExample { TechnicalFailNumber = "002", ApartmentNumber = "101", Applicant = "Alice Johnson", Status = "Aktywny", DateTimeOfStatusUpdate = DateTime.Now, ResponsibleSubject = "Zarząd", Description = "Uszkodzenie okna", FailValue = 500, Restorer = "Steve Brown", Comment = "W trakcie oceny" },
