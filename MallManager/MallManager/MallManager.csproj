@@ -11,8 +11,6 @@
     <ItemGroup>
         <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="8.0.0" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.3" />
-        <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="8.0.0" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.3" />
         <ProjectReference Include="..\..\Shared\Shared.csproj" />
         <ProjectReference Include="..\MallManager.Client\MallManager.Client.csproj"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.7"/>
