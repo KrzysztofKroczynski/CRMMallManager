@@ -1,0 +1,52 @@
+﻿@rendermode InteractiveServer
+@page "/Rentals"
+@using MallManager.Components.LoggedTenantMenu
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+
+<MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
+    <LoggedTenantMenu>
+        <MudStack Style="width: 80%; margin-left: auto; margin-right: auto">
+            <MudStack Class="d-flex justify-center" Style="background-color: #fcc99b; padding: 2%">
+                <MudText Typo="Typo.h4" Class="d-flex justify-center">WYSZUKIWARKA</MudText>
+
+                <MudTextField @bind-Value="SearchCriteria" Variant="Variant.Filled"
+                              MaxLength="1000" Lines="7" MaxLines="7"/>
+            </MudStack>
+            
+            <MudStack Style="background-color: #fcc99b; padding: 2%;">
+                <MudText Typo="Typo.h4" Align="Align.Center">WYNAJMY</MudText>
+                <MudTable Items="exampleList">
+                    <HeaderContent>
+                        <MudTh>Numer Wynajmu</MudTh>
+                        <MudTh>Numer Lokalu</MudTh>
+                        <MudTh>Data Początku Wynajmu</MudTh>
+                        <MudTh>Data Końca Wynajmu</MudTh>
+                        <MudTh>Następny Czynsz</MudTh>
+                        <MudTh>Kwota Czynszu</MudTh>
+                        <MudTh>Kwota Ostatniego RoP</MudTh>
+                        <MudTh>Data Następnego RoP</MudTh>
+                    </HeaderContent>
+                    <RowTemplate Context="item">
+                        <MudTd>@item.RentalNumber</MudTd>
+                        <MudTd>@item.ApartmentNumber</MudTd>
+                        <MudTd>@item.StartDate.ToShortDateString()</MudTd>
+                        <MudTd>@item.EndDate.ToShortDateString()</MudTd>
+                        <MudTd>@item.DateOfNextRentPayment.ToShortDateString()</MudTd>
+                        <MudTd>@item.RentAmount.ToString("C")</MudTd>
+                        <MudTd>@item.LastRevenueAmount.ToString("C")</MudTd>
+                        <MudTd>@item.NextRevenueSubmissionDate.ToShortDateString()</MudTd>
+                    </RowTemplate>
+                </MudTable>
+
+                <MudStack Row="true">
+                    <MudCheckBox T="bool" @bind-Checked="ShowCompleted" Color="Color.Primary">Pokaż Zakończone</MudCheckBox>
+                    <MudCheckBox T="bool" @bind-Checked="ShowPlanned" Color="Color.Primary">Pokaż Zaplanowane</MudCheckBox>
+                </MudStack>
+                >
+            </MudStack>
+        </MudStack>
+    </LoggedTenantMenu>
+</MudLayout>

@@ -1,0 +1,82 @@
+﻿@rendermode InteractiveServer
+@page "/Guests"
+@using MallManager.Components.Forms.GuestRequestProcessingForm
+@using MallManager.Components.LoggedManagerMenu
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+
+<MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
+    <LoggedManagerMenu>
+        <MudStack Style="width: 80%; margin-left: auto; margin-right: auto">
+            <MudText Typo="Typo.h4" Align="Align.Center">WNIOSKI GOŚCI</MudText>
+
+            <MudPaper Style="background-color: #fcc99b; padding: 2%;">
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudPaper Elevation="1" Class="p-2" Style="background-color: #fcc99b">
+                            <MudGrid Justify="Justify.SpaceBetween">
+                                <MudTh>Numer Zgłoszenia</MudTh>
+                                <MudTh>Numer Lokalu</MudTh>
+                                <MudTh>Dane Zgłaszającego</MudTh>
+                                <MudTh>Status</MudTh>
+                                <MudTh>Data Złożenia</MudTh>
+                                <MudTh>Data Aktualizacji</MudTh>
+                            </MudGrid>
+                        </MudPaper>
+                    </MudItem>
+
+                    @foreach (var item in exampleList)
+                    {
+                        <MudItem xs="12" @onclick="() => ToogleForm(item)">
+                            <MudPaper Elevation="0" Class="px-2 py-1 my-1" Style="background-color: #fcc99b">
+                                <MudGrid Justify="Justify.SpaceBetween">
+                                    <MudTd>@item.RequestNumber</MudTd>
+                                    <MudTd>@item.ApartmentNumber</MudTd>
+                                    <MudTd>@item.GuestData</MudTd>
+                                    <MudTd>@item.Status</MudTd>
+                                    <MudTd>@item.DateOfSubmission.ToShortDateString()</MudTd>
+                                    <MudTd>@item.DateOfUpdate.ToShortDateString()</MudTd>
+                                </MudGrid>
+                            </MudPaper>
+                        </MudItem>
+
+                        @if (_selectedItem == item)
+                        {
+                            <MudItem xs="12" Class="d-flex justify-center align-items-center">
+                                <MudPaper Elevation="0" Class="p-4 mt-2 mb-4" Style="background-color: #fcc99b">
+                                    <MudStack Row="true">
+                                        <MudStack>
+                                            <MudText Typo="Typo.h4">Szczegóły</MudText>
+                                            <MudText Typo="Typo.body1">@item.Details</MudText>
+                                        </MudStack>
+                                        
+                                        <EditForm @ref="_form" OnValidSubmit="OnValidSubmit" Model="@typeof(MessageExampleModel)">
+                                            <GuestRequestProcessingForm/>
+                                        </EditForm>
+                                    </MudStack>
+                                </MudPaper>
+                            </MudItem>
+                            <MudItem xs="12" Class="d-flex justify-center align-items-center">
+                                <MudPaper Elevation="0" Class="p-4 mt-1 mb-4" Style="background-color: #fcc99b">
+                                    @* TODO: Make it nice because now it's not*@
+                                    
+                                    <MudGrid Justify="Justify.SpaceAround">
+                                        <MudItem>
+                                            <MudButton Color="Color.Success" OnClick="@(() => AcceptRequest(item))">Zaakceptuj</MudButton>
+                                        </MudItem>
+                                        <MudItem>
+                                            <MudButton Color="Color.Error" OnClick="@(() => RejectRequest(item))">Odrzuć</MudButton>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudPaper>
+                            </MudItem>
+                        }
+                    }
+                </MudGrid>
+                <MudCheckBox T="bool" @bind-Checked="ShowCompleted" Color="Color.Primary">Pokaż Zakończone</MudCheckBox>
+            </MudPaper>
+        </MudStack>
+    </LoggedManagerMenu>
+</MudLayout>

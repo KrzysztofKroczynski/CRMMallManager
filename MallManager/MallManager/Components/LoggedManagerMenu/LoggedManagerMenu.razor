@@ -1,0 +1,44 @@
+﻿@inherits LayoutComponentBase
+
+<MudAppBar Style="background-color:#E1E2E2; color:black" >
+    <MudIconButton Icon="@Icons.Material.Filled.Menu"  Style="color:chocolate;" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+    <img src="mm-logo.png" alt="Logo" Class="mm-icon"/>
+</MudAppBar>
+<MudDrawer @bind-Open="@_drawerOpen" Class="drawer-content">
+    <MudItem xc="12">
+        <MudStack Spacing="2">
+            <MudNavLink Href="/Guests">
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Class="drawer-button">
+                    Goście
+                </MudButton>
+            </MudNavLink>
+
+            <MudNavLink Href="/TechnicalFaults">
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Class="drawer-button">
+                    Usterki
+                </MudButton>
+            </MudNavLink>
+
+            <MudNavLink Href="/SubmittedEvents">
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Class="drawer-button">
+                    Imprezy
+                </MudButton>
+            </MudNavLink>
+
+            <MudNavLink Href="/AdvertisingPlaces">
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Class="drawer-button">
+                    Reklamy
+                </MudButton>
+            </MudNavLink>
+
+            <MudNavLink Href="/RentalsOfTenants">
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Class="drawer-button">
+                    Wynajmy
+                </MudButton>
+            </MudNavLink>
+        </MudStack>
+    </MudItem>
+</MudDrawer>
+<MudMainContent>
+    @ChildContent
+</MudMainContent>

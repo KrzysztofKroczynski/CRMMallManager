@@ -1,0 +1,27 @@
+﻿#label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 40px;
+    background-color: white;
+    border: 3px black solid;
+    color: black;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    margin-right: 0;
+    margin-left: 1%;
+}
+
+#light-blue-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 40px;
+    background-color: #bbc3d4;
+    border: 3px black solid;
+    color: black;
+    border-radius: 20px;
+    margin-left: -40px;
+}

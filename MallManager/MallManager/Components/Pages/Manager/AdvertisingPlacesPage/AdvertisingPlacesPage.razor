@@ -1,0 +1,52 @@
+﻿@rendermode InteractiveServer
+@page "/AdvertisingPlaces"
+@using MallManager.Components.LoggedManagerMenu
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+
+<MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
+    <LoggedManagerMenu>
+        <MudStack Style="width: 80%; margin-left: auto; margin-right: auto">
+            <MudStack Style="background-color: #fcc99b; padding: 2%;">
+                <MudText Typo="Typo.h4" Align="Align.Center">MIEJSCA NA REKLAMĘ</MudText>
+                <MudTable Items="exampleList">
+                    <HeaderContent>
+                        <MudTh>Wynajmujący</MudTh>
+                        <MudTh>Miesiąc</MudTh>
+                        <MudTh>Czy w centrum</MudTh>
+                        <MudTh>Czy podczas godzin szczytu</MudTh>
+                        <MudTh>Beneficjent</MudTh>
+                        <MudTh>Opis</MudTh>
+                        <MudTh>Czy animowana</MudTh>
+                        <MudTh>Czy powtórka poprzedniej kampanii</MudTh>
+                        <MudTh>Czy podczas dni roboczych</MudTh>
+                        <MudTh>Czy podczas weekendu</MudTh>
+                        <MudTh>Status</MudTh>
+                        <MudTh>Zaakceptuj/Odrzuć</MudTh>
+                    </HeaderContent>
+                    <RowTemplate Context="item">
+                        <MudTd>@item.TenantNumber</MudTd>
+                        <MudTd>@item.SelectedMonth</MudTd>
+                        <MudTd>@(item.IsInTheCenter ? "TAK" : "NIE")</MudTd>
+                        <MudTd>@(item.IsDuringPeakHours ? "TAK" : "NIE")</MudTd>
+                        <MudTd>@item.Beneficiary</MudTd>
+                        <MudTd>@item.Description</MudTd>
+                        <MudTd>@(item.IsAnimated ? "TAK" : "NIE")</MudTd>
+                        <MudTd>@(item.ReplayOfThePreviousCampaign ? "TAK" : "NIE")</MudTd>
+                        <MudTd>@(item.DurningWorkingDays ? "TAK" : "NIE")</MudTd>
+                        <MudTd>@(item.DurningWeekend ? "TAK" : "NIE")</MudTd>
+                        <MudTd>@item.Status</MudTd>
+                        <MudTd>
+                            <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Filled.GppGood" OnClick="@(() => AcceptAdvertisingRequest(item))" Size="Size.Small" />
+                            <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => RejectAdvertisingRequest(item))" Size="Size.Small" />
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+
+                <MudCheckBox T="bool" @bind-Checked="ShowCompleted" Color="Color.Primary">Pokaż Zakończone</MudCheckBox>
+            </MudStack>
+        </MudStack>
+    </LoggedManagerMenu>
+</MudLayout>

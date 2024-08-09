@@ -1,0 +1,8 @@
+﻿<MudStack>
+    <MudText Typo="Typo.h4">Napisz wiadomość:</MudText>
+
+    <MudTextField @bind-Value="Message" Label="Opis" Variant="Variant.Filled"
+                  MaxLength="1000" Lines="7" MaxLines="7" HelperText="Max. 1000 znaków." Required="true"/>
+
+    <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary">Wyślij wiadomość</MudButton>
+</MudStack>

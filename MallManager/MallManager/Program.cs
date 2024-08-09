@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using MallManager.Components;
 using MallManager.Components.Account;
 using MallManager.Data;
+using MudBlazor.Services;
+using MudExtensions.Services;
 using MallManager.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddMudServices();
+builder.Services.AddMudExtensions();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();

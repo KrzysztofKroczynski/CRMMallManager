@@ -1,0 +1,50 @@
+﻿@rendermode InteractiveServer
+@page "/TechnicalFaults"
+@using MallManager.Components.LoggedManagerMenu
+<MudThemeProvider @rendermode="InteractiveServer" />
+<MudDialogProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+<MudPopoverProvider @rendermode="InteractiveServer" />
+
+<MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
+    <LoggedManagerMenu>
+        <MudStack Style="width: 80%; margin-left: auto; margin-right: auto">
+            <MudStack Style="background-color: #fcc99b; padding: 2%;">
+                <MudText Typo="Typo.h4" Align="Align.Center">USTERKI</MudText>
+                <MudTable Items="exampleList">
+                    <HeaderContent>
+                        <MudTh>Numer Usterki</MudTh>
+                        <MudTh>Numer Lokalu</MudTh>
+                        <MudTh>Zgłaszający</MudTh>
+                        <MudTh>Status</MudTh>
+                        <MudTh>Data i czas zmiany statusu</MudTh>
+                        <MudTh>Podmiot odpowiedzialny</MudTh>
+                        <MudTh>Opis</MudTh>
+                        <MudTh>Wartość</MudTh>
+                        <MudTh>Konserwator</MudTh>
+                        <MudTh>Uwagi</MudTh>
+                    </HeaderContent>
+                    <RowTemplate Context="item">
+                        <MudTd>@item.TechnicalFailNumber</MudTd>
+                        <MudTd>@item.ApartmentNumber</MudTd>
+                        <MudTd>@item.Applicant</MudTd>
+                        <MudTd>@item.Status</MudTd>
+                        <MudTd>@item.DateTimeOfStatusUpdate.ToShortDateString()</MudTd>
+                        <MudTd>@item.ResponsibleSubject</MudTd>
+                        <MudTd>@item.Description</MudTd>
+                        <MudTd>@item.FailValue.ToString("C")</MudTd>
+                        <MudTd>@item.Restorer</MudTd>
+                        <MudTd>@item.Comment</MudTd>
+                    </RowTemplate>
+                </MudTable>
+
+                <MudCheckBox T="bool" @bind-Checked="ShowCompleted" Color="Color.Primary">Pokaż Zakończone</MudCheckBox>
+                <MudStack Row="true">
+                    <MudIconButton Variant="Variant.Filled" Style="width: 40px" Icon="@Icons.Material.Filled.Edit" OnClick="@ReportTechnicalFail" />
+                    <MudText Typo="Typo.body1">Zgłoś usterkę</MudText>
+                </MudStack>
+                
+            </MudStack>
+        </MudStack>
+    </LoggedManagerMenu>
+</MudLayout>
