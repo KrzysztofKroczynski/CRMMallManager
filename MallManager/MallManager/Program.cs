@@ -1,6 +1,7 @@
 using MallManager.Components;
 using MallManager.Components.Account;
 using MallManager.Infrastructure;
+using MallManager.Infrastructure.Configuration;
 using MallManager.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +23,10 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+
+builder.AddLogger();
+
+builder.Services.RegisterConfigurations(builder.Configuration);
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
