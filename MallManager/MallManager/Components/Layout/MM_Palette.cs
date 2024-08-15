@@ -1,25 +1,22 @@
 ﻿using MudBlazor;
 using MudBlazor.Utilities;
 
-
 namespace MallManager.Components.Layout;
 
-public class MM_Palette : Palette
+public class MmPalette : Palette
 {
-    public MudColor MM_NavyBlue { get; set; }
-    public MudColor MM_LightBgColor { get; set; }
-
+    public required MudColor MmNavyBlue { get; set; }
+    public required MudColor MmLightBgColor { get; set; }
 }
 
-public class MM_Theme : MudTheme
+public class MmTheme : MudTheme
 {
-    public MM_Theme()
+    public MmTheme()
     {
-        var Palette = new MM_Palette
+        var palette = new MmPalette
         {
-            MM_NavyBlue = MM_Colors.MM_NavyBlue,
-            MM_LightBgColor = MM_Colors.MM_LightBgColor
-            
+            MmNavyBlue = MM_Colors.MM_NavyBlue,
+            MmLightBgColor = MM_Colors.MM_LightBgColor
         };
     }
 }

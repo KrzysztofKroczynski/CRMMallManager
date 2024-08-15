@@ -1,4 +1,4 @@
-﻿using Shared.Web;
+using Shared.Web.FormModels;
 
 namespace MallManager.Infrastructure.UserState.PersonalInfoStateService;
 

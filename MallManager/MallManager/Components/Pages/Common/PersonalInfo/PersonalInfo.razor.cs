@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Shared.UseCases.GetUserState;
-using Shared.Web;
+using Shared.Web.FormModels;
 
 namespace MallManager.Components.Pages.Common.PersonalInfo;
 
@@ -35,5 +35,6 @@ public sealed partial class PersonalInfo : ComponentBase, IDisposable
 
     private void OnValidSubmit(EditContext context)
     {
+        Console.WriteLine();
     }
 }

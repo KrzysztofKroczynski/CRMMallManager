@@ -1,10 +1,7 @@
 ﻿@rendermode InteractiveServer
 @page "/AdvertisingPlaces"
 @using MallManager.Components.LoggedManagerMenu
-<MudThemeProvider @rendermode="InteractiveServer" />
-<MudDialogProvider @rendermode="InteractiveServer" />
-<MudSnackbarProvider @rendermode="InteractiveServer" />
-<MudPopoverProvider @rendermode="InteractiveServer" />
+
 
 <MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
     <LoggedManagerMenu>
@@ -39,8 +36,8 @@
                         <MudTd>@(item.DurningWeekend ? "TAK" : "NIE")</MudTd>
                         <MudTd>@item.Status</MudTd>
                         <MudTd>
-                            <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Filled.GppGood" OnClick="@(() => AcceptAdvertisingRequest(item))" Size="Size.Small" />
-                            <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => RejectAdvertisingRequest(item))" Size="Size.Small" />
+                            <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Filled.GppGood" OnClick="@(() => AcceptAdvertisingRequest(item))" Size="Size.Small"/>
+                            <MudIconButton Variant="Variant.Filled" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => RejectAdvertisingRequest(item))" Size="Size.Small"/>
                         </MudTd>
                     </RowTemplate>
                 </MudTable>

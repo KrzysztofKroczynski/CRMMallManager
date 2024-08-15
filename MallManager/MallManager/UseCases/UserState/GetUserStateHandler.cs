@@ -2,7 +2,7 @@
 using Ardalis.SharedKernel;
 using MallManager.Infrastructure.UserState;
 using Shared.UseCases.GetUserState;
-using Shared.Web;
+using Shared.Web.FormModels;
 
 namespace MallManager.UseCases.UserState;
 

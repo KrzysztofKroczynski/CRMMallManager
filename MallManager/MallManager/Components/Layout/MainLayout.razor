@@ -1,5 +1,10 @@
-﻿@inherits LayoutComponentBase
-
+﻿@using MallManager.Components.Pages
+@inherits LayoutComponentBase
+<MudThemeProvider @rendermode="InteractiveServer"/>
+<MudDialogProvider @rendermode="InteractiveServer"/>
+<MudSnackbarProvider @rendermode="InteractiveServer"/>
+<MudPopoverProvider @rendermode="InteractiveServer"/>
+<Home/>
 @Body
 
 <div id="blazor-error-ui">

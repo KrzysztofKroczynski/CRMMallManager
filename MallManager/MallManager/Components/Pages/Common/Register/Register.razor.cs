@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Shared.Web;
+using Shared.Web.FormModels;
 
 namespace MallManager.Components.Pages.Common.Register;
 

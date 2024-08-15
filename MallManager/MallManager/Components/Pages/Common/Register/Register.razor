@@ -1,9 +1,5 @@
 ﻿@page "/Register"
 @rendermode InteractiveServer
-<MudThemeProvider @rendermode="InteractiveServer" />
-<MudDialogProvider @rendermode="InteractiveServer" />
-<MudSnackbarProvider @rendermode="InteractiveServer" />
-<MudPopoverProvider @rendermode="InteractiveServer" />
 
 <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator/>
@@ -19,8 +15,8 @@
                                   @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/>
                 </MudCardContent>
                 <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" >Check</MudButton>
-                    @if(success)
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Check</MudButton>
+                    @if (success)
                     {
                         <MudNavLink Href="/EmailSent">
                             <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
@@ -33,7 +29,7 @@
                 </MudCardActions>
             </MudCard>
         </MudItem>
-        <img    src="mall.png" style="width: 250px";height="auto">
+        <img src="mall.png" style="width: 250px";height="auto">
         <MudItem xs="12" sm="5">
             <MudPaper Class="pa-4 mud-height-full">
                 <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
@@ -44,11 +40,11 @@
                 else
                 {
                     <MudText Color="@Color.Error">
-                        <ValidationSummary />
+                        <ValidationSummary/>
                     </MudText>
                 }
             </MudPaper>
         </MudItem>
     </MudGrid>
-    
+
 </EditForm>

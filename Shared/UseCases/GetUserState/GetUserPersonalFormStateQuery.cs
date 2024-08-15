@@ -1,6 +1,6 @@
 ﻿using Ardalis.Result;
 using Ardalis.SharedKernel;
-using Shared.Web;
+using Shared.Web.FormModels;
 
 namespace Shared.UseCases.GetUserState;
 

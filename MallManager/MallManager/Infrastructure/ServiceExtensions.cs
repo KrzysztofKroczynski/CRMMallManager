@@ -4,7 +4,7 @@ using MallManager.Infrastructure.Persistence;
 using MallManager.Infrastructure.UserState;
 using MallManager.Infrastructure.UserState.PersonalInfoStateService;
 using Shared.Core.Entities;
-using Shared.Web;
+using Shared.Web.FormModels;
 
 namespace MallManager.Infrastructure;
 

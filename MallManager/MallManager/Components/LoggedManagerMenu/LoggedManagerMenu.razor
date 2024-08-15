@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
-
-<MudAppBar Style="background-color:#E1E2E2; color:black" >
-    <MudIconButton Icon="@Icons.Material.Filled.Menu"  Style="color:chocolate;" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+@rendermode InteractiveServer
+<MudAppBar Style="background-color:#E1E2E2; color:black">
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Style="color:chocolate;" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
     <img src="mm-logo.png" alt="Logo" Class="mm-icon"/>
 </MudAppBar>
 <MudDrawer @bind-Open="@_drawerOpen" Class="drawer-content">
@@ -39,6 +39,3 @@
         </MudStack>
     </MudItem>
 </MudDrawer>
-<MudMainContent>
-    @ChildContent
-</MudMainContent>

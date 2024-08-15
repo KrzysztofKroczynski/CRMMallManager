@@ -1,10 +1,6 @@
 ﻿@rendermode InteractiveServer
 @page "/TechnicalFaults"
 @using MallManager.Components.LoggedManagerMenu
-<MudThemeProvider @rendermode="InteractiveServer" />
-<MudDialogProvider @rendermode="InteractiveServer" />
-<MudSnackbarProvider @rendermode="InteractiveServer" />
-<MudPopoverProvider @rendermode="InteractiveServer" />
 
 <MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
     <LoggedManagerMenu>
@@ -40,10 +36,10 @@
 
                 <MudCheckBox T="bool" @bind-Checked="ShowCompleted" Color="Color.Primary">Pokaż Zakończone</MudCheckBox>
                 <MudStack Row="true">
-                    <MudIconButton Variant="Variant.Filled" Style="width: 40px" Icon="@Icons.Material.Filled.Edit" OnClick="@ReportTechnicalFail" />
+                    <MudIconButton Variant="Variant.Filled" Style="width: 40px" Icon="@Icons.Material.Filled.Edit" OnClick="@ReportTechnicalFail"/>
                     <MudText Typo="Typo.body1">Zgłoś usterkę</MudText>
                 </MudStack>
-                
+
             </MudStack>
         </MudStack>
     </LoggedManagerMenu>

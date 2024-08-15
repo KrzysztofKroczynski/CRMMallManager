@@ -2,10 +2,7 @@
 @page "/Guests"
 @using MallManager.Components.Forms.GuestRequestProcessingForm
 @using MallManager.Components.LoggedManagerMenu
-<MudThemeProvider @rendermode="InteractiveServer" />
-<MudDialogProvider @rendermode="InteractiveServer" />
-<MudSnackbarProvider @rendermode="InteractiveServer" />
-<MudPopoverProvider @rendermode="InteractiveServer" />
+
 
 <MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
     <LoggedManagerMenu>
@@ -51,7 +48,7 @@
                                             <MudText Typo="Typo.h4">Szczegóły</MudText>
                                             <MudText Typo="Typo.body1">@item.Details</MudText>
                                         </MudStack>
-                                        
+
                                         <EditForm @ref="_form" OnValidSubmit="OnValidSubmit" Model="@typeof(MessageExampleModel)">
                                             <GuestRequestProcessingForm/>
                                         </EditForm>
@@ -61,7 +58,7 @@
                             <MudItem xs="12" Class="d-flex justify-center align-items-center">
                                 <MudPaper Elevation="0" Class="p-4 mt-1 mb-4" Style="background-color: #fcc99b">
                                     @* TODO: Make it nice because now it's not*@
-                                    
+
                                     <MudGrid Justify="Justify.SpaceAround">
                                         <MudItem>
                                             <MudButton Color="Color.Success" OnClick="@(() => AcceptRequest(item))">Zaakceptuj</MudButton>

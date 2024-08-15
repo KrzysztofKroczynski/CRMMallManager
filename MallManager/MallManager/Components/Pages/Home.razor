@@ -2,29 +2,26 @@
 @inherits LayoutComponentBase
 @rendermode InteractiveServer
 
-<MudThemeProvider @rendermode="InteractiveServer" />
-<MudDialogProvider @rendermode="InteractiveServer" />
-<MudSnackbarProvider @rendermode="InteractiveServer" />
 
 <MudLayout >
-    <MudAppBar Style="background-color:#E1E2E2; color:black" >
-        
-        <MudIconButton Icon="@Icons.Material.Filled.Menu"  Style="color:chocolate;" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+    <MudAppBar Style="background-color:#E1E2E2; color:black">
+
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Style="color:chocolate;" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
         <img src="mm-logo.png" alt="Logo" Class="mm-icon"/>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" Class="drawer-content">
         <MudItem xc="12">
             <MudStack Spacing="2">
                 <MudNavLink Href="/Login">
-                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Class="drawer-button">
-                    Zaloguj
-                </MudButton>
+                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Class="drawer-button">
+                        Zaloguj
+                    </MudButton>
                 </MudNavLink>
 
                 <MudNavLink Href="/Register">
-                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Class="drawer-button">
-                    Zarejestruj
-                </MudButton>
+                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Class="drawer-button">
+                        Zarejestruj
+                    </MudButton>
                 </MudNavLink>
             </MudStack>
         </MudItem>
@@ -36,18 +33,17 @@
 </MudLayout>
 
 
-
 @code{
 
-bool _drawerOpen = false;
+    bool _drawerOpen = false;
 
-void DrawerToggle()
-{
-_drawerOpen = !_drawerOpen;
-}
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
 
-void MoveToRegister()
-{
-}
+    void MoveToRegister()
+    {
+    }
 
 }
