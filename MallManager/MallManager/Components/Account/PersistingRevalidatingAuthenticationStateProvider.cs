@@ -1,13 +1,13 @@
 using System.Diagnostics;
 using System.Security.Claims;
+using MallManager.Client;
+using MallManager.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using MallManager.Client;
-using MallManager.Data;
 
 namespace MallManager.Components.Account;
 
@@ -16,9 +16,9 @@ namespace MallManager.Components.Account;
 // authentication state to the client which is then fixed for the lifetime of the WebAssembly application.
 internal sealed class PersistingRevalidatingAuthenticationStateProvider : RevalidatingServerAuthenticationStateProvider
 {
+    private readonly IdentityOptions options;
     private readonly IServiceScopeFactory scopeFactory;
     private readonly PersistentComponentState state;
-    private readonly IdentityOptions options;
 
     private readonly PersistingComponentStateSubscription subscription;
 

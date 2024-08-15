@@ -1,12 +1,12 @@
+using MallManager.Components;
+using MallManager.Components.Account;
+using MallManager.Infrastructure;
+using MallManager.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MallManager.Components;
-using MallManager.Components.Account;
-using MallManager.Data;
 using MudBlazor.Services;
 using MudExtensions.Services;
-using MallManager.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

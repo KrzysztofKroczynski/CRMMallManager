@@ -1,16 +1,16 @@
 using System.Security.Claims;
 using System.Text.Json;
+using MallManager.Components.Account.Pages;
+using MallManager.Components.Account.Pages.Manage;
+using MallManager.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using MallManager.Components.Account.Pages;
-using MallManager.Components.Account.Pages.Manage;
-using MallManager.Data;
 
-namespace Microsoft.AspNetCore.Routing;
+namespace MallManager.Components.Account;
 
 internal static class IdentityComponentsEndpointRouteBuilderExtensions
 {

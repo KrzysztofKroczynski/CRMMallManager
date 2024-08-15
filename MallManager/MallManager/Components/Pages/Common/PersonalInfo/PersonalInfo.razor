@@ -1,89 +1,85 @@
 ﻿@page "/PersonalInfo"
+@using MediatR
+@using Shared.Core
+@@using Shared.Core
+using MediatR
 @rendermode InteractiveServer
-<MudThemeProvider @rendermode="InteractiveServer" />
-<MudDialogProvider @rendermode="InteractiveServer" />
-<MudSnackbarProvider @rendermode="InteractiveServer" />
-<MudPopoverProvider @rendermode="InteractiveServer" />
+@inject IMediator Mediator
 
-<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+<MudThemeProvider @rendermode="InteractiveServer"/>
+<MudDialogProvider @rendermode="InteractiveServer"/>
+<MudSnackbarProvider @rendermode="InteractiveServer"/>
+<MudPopoverProvider @rendermode="InteractiveServer"/>
+
+<EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator/>
     <MudGrid Style="padding-left: 350px">
         <MudItem xs="12" sm="7">
             <MudCard Style="background-color: peachpuff;margin-bottom: 10px">
                 <MudCardContent>
                     <MudTextField Label="Imię*" Class="mt-3"
-                                  @bind-Value="model.Name" For="@(() => model.Name)"/>
+                                  @bind-Value="_model.Name" For="@(() => _model.Name)"/>
                     <MudTextField Label="Drugie Imię" Class="mt-3"
-                                  @bind-Value="model.SecondName" For="@(() => model.SecondName)" />
+                                  @bind-Value="_model.SecondName" For="@(() => _model.SecondName)"/>
                     <MudTextField Label="Nazwisko*" Class="mt-3"
-                                  @bind-Value="model.Surname" For="@(() => model.Surname)" />
+                                  @bind-Value="_model.Surname" For="@(() => _model.Surname)"/>
                     <MudTextField Label="Telefon*" Class="mt-3"
-                                  @bind-Value="model.PhoneNumber" For="@(() => model.PhoneNumber)" />
-                    <MudTextField Label="Email*" Class="mt-3"
-                                  @bind-Value="model.Email" For="@(() => model.Email)" />
+                                  @bind-Value="_model.PhoneNumber" For="@(() => _model.PhoneNumber)"/>
+
                 </MudCardContent>
             </MudCard>
             <MudCard Style="background-color: peachpuff">
                 <MudCardContent>
-                    <MudSelect T="string" Label="Kraj" HelperText="Wybierz kraj" Required="true" @bind-Value="model.Country">
-                        @foreach (var country in countries)
+                    <MudSelect T="string" Label="Kraj" HelperText="Wybierz kraj" Required="true"
+                               @bind-Value="_model.Country">
+                        @foreach (var country in Countries.CountryList)
                         {
                             <MudSelectItem T="string" Value="@country">@country</MudSelectItem>
                         }
                     </MudSelect>
                     <MudTextField Label="Miasto*" Class="mt-3"
-                                  @bind-Value="model.City" For="@(() => model.City)" />
+                                  @bind-Value="_model.City" For="@(() => _model.City)"/>
                     <MudTextField Label="Ulica*" Class="mt-3"
-                                  @bind-Value="model.Street" For="@(() => model.Street)" />
+                                  @bind-Value="_model.Street" For="@(() => _model.Street)"/>
                     <div style="display: flex; gap: 16px;">
                         <MudTextField Label="Nr Budynku*" Class="mt-3"
-                                      @bind-Value="model.BuildingNumber" For="@(() => model.BuildingNumber)" />
+                                      @bind-Value="_model.BuildingNumber" For="@(() => _model.BuildingNumber)"/>
                         <MudTextField Label="Nr Lokalu*" Class="mt-3"
-                                      @bind-Value="model.LocalNumber" For="@(() => model.LocalNumber)" />
+                                      @bind-Value="_model.LocalNumber" For="@(() => _model.LocalNumber)"/>
                     </div>
                     <MudTextField Label="Kod pocztowy*" Class="mt-3"
-                                  @bind-Value="model.PostalCode" For="@(() => model.PostalCode)" />
+                                  @bind-Value="_model.PostalCode" For="@(() => _model.PostalCode)"/>
                     <MudTextField Label="Dodatkowe informacje o adresie" Class="mt-3"
-                                  @bind-Value="model.AdditionalAddressInfo" For="@(() => model.AdditionalAddressInfo)" />
+                                  @bind-Value="_model.AdditionalAddressInfo"
+                                  For="@(() => _model.AdditionalAddressInfo)"/>
                     <MudTextField Label="NIP*" Class="mt-3"
-                                  @bind-Value="model.NIP" For="@(() => model.NIP)" />
+                                  @bind-Value="_model.Nip" For="@(() => _model.Nip)"/>
                     <MudTextField Label="KRS*" Class="mt-3"
-                                  @bind-Value="model.KRS" For="@(() => model.KRS)" />
-                    <MudSelect T="string" Label="Rozmiar firmy*" HelperText="Wybierz rozmiar adekwatny do twojej firmy" Required="true" @bind-Value="model.CompanySize">
-                        @foreach (var size in sizes)
+                                  @bind-Value="_model.Krs" For="@(() => _model.Krs)"/>
+                    <MudSelect T="string" Label="Rozmiar firmy*" HelperText="Wybierz rozmiar adekwatny do twojej firmy"
+                               Required="true" @bind-Value="_model.CompanySize">
+                        @foreach (var size in _companySizes)
                         {
-                        <MudSelectItem T="string" Value="@size">@size</MudSelectItem>
+                            <MudSelectItem T="string" Value="@size">@size</MudSelectItem>
                         }
                     </MudSelect>
                     <MudTextField Label="Kapitał początkowy" Class="mt-3"
-                                  @bind-Value="model.InitialCapital" For="@(() => model.InitialCapital)" />
+                                  @bind-Value="_model.InitialCapital" For="@(() => _model.InitialCapital)"/>
                 </MudCardContent>
                 <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" >Check</MudButton>
-                    @if(success)
-                    {
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" >Register</MudButton>
-                    }
-                    else
-                    {
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Disabled="true" Class="ml-auto">Register</MudButton>
-                    }
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                               Class="ml-auto">
+                        Register
+                    </MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
         <MudItem xs="12" sm="5">
             <MudPaper Class="pa-4 mud-height-full">
                 <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
-                @if (success)
-                {
-                <MudText Color="Color.Success">Success</MudText>
-                }
-                else
-                {
                 <MudText Color="@Color.Error">
-                    <ValidationSummary />
+                    <ValidationSummary/>
                 </MudText>
-                }
             </MudPaper>
         </MudItem>
     </MudGrid>

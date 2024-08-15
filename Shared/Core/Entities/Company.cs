@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Shared.Core.Entities;
+﻿namespace Shared.Core.Entities;
 
 public partial class Company
 {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Shared.Core.Entities;
 
-namespace MallManager.Data.Entities;
+namespace MallManager.Infrastructure.Persistence;
 
 public partial class MallManagerContext : DbContext
 {
@@ -324,7 +322,8 @@ public partial class MallManagerContext : DbContext
                         .HasConstraintName("Table_27_Lease_application"),
                     j =>
                     {
-                        j.HasKey("LeaseApplicationId", "RetailUnitPurposeId").HasName("Lease_application_tail_unit_purpose_pk");
+                        j.HasKey("LeaseApplicationId", "RetailUnitPurposeId")
+                            .HasName("Lease_application_tail_unit_purpose_pk");
                         j.ToTable("Lease_application_tail_unit_purpose");
                         j.IndexerProperty<int>("LeaseApplicationId").HasColumnName("Lease_application_ID");
                         j.IndexerProperty<int>("RetailUnitPurposeId").HasColumnName("Retail_unit_purpose_ID");
@@ -343,7 +342,8 @@ public partial class MallManagerContext : DbContext
                         .HasConstraintName("Table_28_Lease_application"),
                     j =>
                     {
-                        j.HasKey("LeaseApplicationId", "SurfaceClassDictId").HasName("Surface_class_dict_Surface_class_dict_pk");
+                        j.HasKey("LeaseApplicationId", "SurfaceClassDictId")
+                            .HasName("Surface_class_dict_Surface_class_dict_pk");
                         j.ToTable("Surface_class_dict_Surface_class_dict");
                         j.IndexerProperty<int>("LeaseApplicationId").HasColumnName("Lease_application_ID");
                         j.IndexerProperty<int>("SurfaceClassDictId").HasColumnName("Surface_class_dict_ID");

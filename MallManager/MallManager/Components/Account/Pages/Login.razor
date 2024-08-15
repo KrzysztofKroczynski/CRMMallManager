@@ -1,9 +1,8 @@
 ﻿@page "/Account/Login"
-
 @using System.ComponentModel.DataAnnotations
+@using MallManager.Infrastructure.Persistence
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
-@using MallManager.Data
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Login> Logger

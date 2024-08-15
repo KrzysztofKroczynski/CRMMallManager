@@ -1,5 +1,5 @@
+using MallManager.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
-using MallManager.Data;
 
 namespace MallManager.Components.Account;
 

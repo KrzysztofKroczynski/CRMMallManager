@@ -1,9 +1,10 @@
 ﻿using System.Reflection;
 using Ardalis.SharedKernel;
-using MallManager.Data;
-using MallManager.Data.Entities;
 using MallManager.Infrastructure.Persistence;
+using MallManager.Infrastructure.UserState;
+using MallManager.Infrastructure.UserState.PersonalInfoStateService;
 using Shared.Core.Entities;
+using Shared.Web;
 
 namespace MallManager.Infrastructure;
 
@@ -20,9 +21,9 @@ public static class ServiceExtensions
             Assembly.GetAssembly(typeof(Person)), // Shared
             Assembly.GetAssembly(typeof(ApplicationUser)) // MallManager
         };
+
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(mediatRAssemblies!));
-
-
+        services.AddSingleton<BaseStateService<PersonalForm>, PersonalInfoStateService>();
         return services;
     }
 }
