@@ -5,7 +5,7 @@ using MudExtensions;
 namespace MallManager.Components.Pages.Tenant.RegistrationPage;
 
 // TODO: Perhaps move this enum to a seperate file
-enum PurposeOfTheContractType
+internal enum PurposeOfTheContractType
 {
     APARTMENT_RENTAL,
     ADVERTISING_SPACE_RENTAL,
@@ -15,12 +15,12 @@ enum PurposeOfTheContractType
 
 public partial class RegistrationPage : ComponentBase
 {
-    MudStepperExtended _stepper = new();
-    private MudForm _form = new();
     // private Model model = new Model(); TODO: Create a data model or DTO to represent data from a form so that you can manipulate it
     private PurposeOfTheContractType _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
+    private MudForm _form = new();
     private bool _loading;
-    
+    private MudStepperExtended _stepper = new();
+
     private async Task<bool> CheckChange(StepChangeDirection direction, int targetIndex)
     {
         if (direction == StepChangeDirection.Backward)
@@ -29,23 +29,24 @@ public partial class RegistrationPage : ComponentBase
             _stepper.SetStepStatus(previousIndex, StepStatus.Continued);
             return false;
         }
-        
+
         if (_stepper.GetActiveIndex() == 1)
         {
             await _form.Validate();
             StateHasChanged();
-            
+
             if (_form.IsValid)
             {
                 Submit();
                 return false;
             }
-            
+
             return true;
         }
-        
+
         return false;
-    } 
+    }
+
     private async Task Submit()
     {
         // TODO: Write business logic to save model or do with it whatever you want
@@ -65,14 +66,13 @@ public partial class RegistrationPage : ComponentBase
         _currentPurposeOfTheContractType = PurposeOfTheContractType.ADVERTISING_SPACE_RENTAL;
         await MoveToNextStep();
     }
-    
+
     private async void RenderEventOrganizationForm()
     {
         _currentPurposeOfTheContractType = PurposeOfTheContractType.EVENT_ORGANIZATION;
         await MoveToNextStep();
+    }
 
-    } 
-    
     private async void RenderOtherPurposeForm()
     {
         _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
@@ -82,15 +82,15 @@ public partial class RegistrationPage : ComponentBase
     private async Task MoveToNextStep()
     {
         var currentStepIndex = _stepper.GetActiveIndex();
-        
+
         _loading = true;
         StateHasChanged();
-        
+
         _stepper.CompleteStep(currentStepIndex);
         _stepper.SetActiveStepByIndex(currentStepIndex + 1);
 
         await Task.Delay(1000);
-            
+
         _loading = false;
         StateHasChanged();
     }

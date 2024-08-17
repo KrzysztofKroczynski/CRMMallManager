@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Ardalis.SharedKernel;
+using Ardalis.Specification;
 using MallManager.Infrastructure.Configuration.HttpClients;
 using Ardalis.Specification;
 using MallManager.Infrastructure.Configuration.HttpClients;
@@ -7,6 +7,7 @@ using MallManager.Infrastructure.Persistence;
 using MallManager.Infrastructure.UserState;
 using MallManager.Infrastructure.UserState.ClaimsTransformation;
 using MallManager.Infrastructure.UserState.PersonalInfoStateService;
+using Microsoft.AspNetCore.Authentication;
 using Serilog;
 using Microsoft.AspNetCore.Authentication;
 using Serilog;

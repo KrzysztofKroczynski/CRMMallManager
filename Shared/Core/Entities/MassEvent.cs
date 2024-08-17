@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class MassEvent
+public sealed class MassEvent
 {
     public int Id { get; set; }
 
@@ -16,7 +16,7 @@ public partial class MassEvent
 
     public DateTime DateAdded { get; set; }
 
-    public string SystemAccessAspNetUsersId { get; set; } = null!;
+    public int SystemAccessId { get; set; }
 
-    public virtual SystemAccess SystemAccessAspNetUsers { get; set; } = null!;
+    public SystemAccess SystemAccess { get; set; } = null!;
 }

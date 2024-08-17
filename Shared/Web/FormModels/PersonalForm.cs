@@ -70,17 +70,12 @@ public class RequiredIf : ValidationAttribute
     protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
     {
         var property = validationContext.ObjectType.GetProperty(_conditionProperty);
-        if (property == null)
-        {
-            return new ValidationResult($"Nie znaleziono właściwości '{_conditionProperty}'.");
-        }
+        if (property == null) return new ValidationResult($"Nie znaleziono właściwości '{_conditionProperty}'.");
 
         var conditionValue = property.GetValue(validationContext.ObjectInstance);
 
         if (conditionValue is true && string.IsNullOrEmpty(value?.ToString()))
-        {
             return _validationAttribute.GetValidationResult(value, validationContext);
-        }
 
         return ValidationResult.Success;
     }

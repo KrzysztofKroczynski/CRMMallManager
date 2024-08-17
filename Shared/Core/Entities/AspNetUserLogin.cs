@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class AspNetUserLogin
+public sealed class AspNetUserLogin
 {
     public string LoginProvider { get; set; } = null!;
 
@@ -10,5 +10,5 @@ public partial class AspNetUserLogin
 
     public string UserId { get; set; } = null!;
 
-    public virtual AspNetUser User { get; set; } = null!;
+    public AspNetUser User { get; set; } = null!;
 }

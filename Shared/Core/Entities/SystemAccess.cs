@@ -1,7 +1,9 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class SystemAccess
+public sealed class SystemAccess
 {
+    public int Id { get; set; }
+
     public string AspNetUsersId { get; set; } = null!;
 
     public int SignupStatusDictId { get; set; }
@@ -12,21 +14,21 @@ public partial class SystemAccess
 
     public string AssignedManagerId { get; set; } = null!;
 
-    public virtual AspNetUser AspNetUsers { get; set; } = null!;
+    public AspNetUser AspNetUsers { get; set; } = null!;
 
-    public virtual Manager AssignedManager { get; set; } = null!;
+    public Manager AssignedManager { get; set; } = null!;
 
-    public virtual ICollection<LeaseApplication> LeaseApplications { get; set; } = new List<LeaseApplication>();
+    public ICollection<LeaseApplication> LeaseApplications { get; set; } = new List<LeaseApplication>();
 
-    public virtual ICollection<Lease> Leases { get; set; } = new List<Lease>();
+    public ICollection<Lease> Leases { get; set; } = new List<Lease>();
 
-    public virtual ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
+    public ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
 
-    public virtual ICollection<MassEvent> MassEvents { get; set; } = new List<MassEvent>();
+    public ICollection<MassEvent> MassEvents { get; set; } = new List<MassEvent>();
 
-    public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
+    public ICollection<Message> Messages { get; set; } = new List<Message>();
 
-    public virtual SignupStatusDict SignupStatusDict { get; set; } = null!;
+    public SignupStatusDict SignupStatusDict { get; set; } = null!;
 
-    public virtual SystemDict SystemDict { get; set; } = null!;
+    public SystemDict SystemDict { get; set; } = null!;
 }

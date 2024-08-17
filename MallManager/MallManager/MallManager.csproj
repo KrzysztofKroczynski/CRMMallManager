@@ -9,11 +9,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="8.0.0" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.3" />
+        <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.3"/>
         <PackageReference Include="Serilog.AspNetCore" Version="8.0.2"/>
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
-        <ProjectReference Include="..\..\Shared\Shared.csproj" />
+        <ProjectReference Include="..\..\Shared\Shared.csproj"/>
         <ProjectReference Include="..\MallManager.Client\MallManager.Client.csproj"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.7"/>
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.7"/>
@@ -26,41 +26,41 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Components\Pages\Common\" />
-      <Folder Include="Controllers\" />
+        <Folder Include="Components\Pages\Common\"/>
+        <Folder Include="Controllers\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Components\Pages\Common\EmailSent\EmailSent.razor" />
-      <AdditionalFiles Include="Components\Pages\Common\Login\Login.razor" />
-      <AdditionalFiles Include="Components\Pages\Common\PersonalInfo\PersonalInfo.razor" />
-      <AdditionalFiles Include="Components\Pages\Common\Register\Register.razor" />
-      <AdditionalFiles Include="Components\Pages\Manager\AdvertisingPlacesPage\AdvertisingPlacesPage.razor" />
-      <AdditionalFiles Include="Components\Pages\Manager\GuestsRequests\GuestsRequests.razor" />
-      <AdditionalFiles Include="Components\Pages\Manager\RentalsOfTenantsPage\RentalsOfTenantsPage.razor" />
-      <AdditionalFiles Include="Components\Pages\Tenant\CurrentTenantRentals\CurrentTenantRentals.razor" />
-      <AdditionalFiles Include="Components\Pages\Tenant\NewRevenueReportPage\NewRevenueReportPage.razor" />
-      <AdditionalFiles Include="Components\Pages\Tenant\RegistrationPage\RegistrationPage.razor" />
-      <AdditionalFiles Include="Components\Pages\Tenant\RequestsPage\RequestsPage.razor" />
+        <AdditionalFiles Include="Components\Pages\Common\EmailSent\EmailSent.razor"/>
+        <AdditionalFiles Include="Components\Pages\Common\Login\Login.razor"/>
+        <AdditionalFiles Include="Components\Pages\Common\PersonalInfo\PersonalInfo.razor"/>
+        <AdditionalFiles Include="Components\Pages\Common\Register\Register.razor"/>
+        <AdditionalFiles Include="Components\Pages\Manager\AdvertisingPlacesPage\AdvertisingPlacesPage.razor"/>
+        <AdditionalFiles Include="Components\Pages\Manager\GuestsRequests\GuestsRequests.razor"/>
+        <AdditionalFiles Include="Components\Pages\Manager\RentalsOfTenantsPage\RentalsOfTenantsPage.razor"/>
+        <AdditionalFiles Include="Components\Pages\Tenant\CurrentTenantRentals\CurrentTenantRentals.razor"/>
+        <AdditionalFiles Include="Components\Pages\Tenant\NewRevenueReportPage\NewRevenueReportPage.razor"/>
+        <AdditionalFiles Include="Components\Pages\Tenant\RegistrationPage\RegistrationPage.razor"/>
+        <AdditionalFiles Include="Components\Pages\Tenant\RequestsPage\RequestsPage.razor"/>
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="Components\Pages\CurrentTenantRentals\CurrentTenantRentals.razor" />
-      <_ContentIncludedByDefault Remove="Components\Pages\GuestsRequests\GuestsRequests.razor" />
-      <_ContentIncludedByDefault Remove="Components\Pages\Tenant\GuestsRequests\GuestsRequests.razor" />
-      <_ContentIncludedByDefault Remove="Components\Pages\NewRevenueReportPage\NewRevenueReportPage.razor" />
-      <_ContentIncludedByDefault Remove="Components\Pages\RegistrationPage\RegistrationPage.razor" />
-      <_ContentIncludedByDefault Remove="Components\Pages\RentalsOfTenantsPage\RentalsOfTenantsPage.razor" />
-      <_ContentIncludedByDefault Remove="Components\Pages\RequestsPage\RequestsPage.razor" />
-      <_ContentIncludedByDefault Remove="Components\Pages\Login\Login.razor" />
-      <_ContentIncludedByDefault Remove="Components\Pages\Register\Register.razor" />
-      <_ContentIncludedByDefault Remove="Components\Pages\Tenant\PersonalInfo\PersonalInfo.razor" />
+        <_ContentIncludedByDefault Remove="Components\Pages\CurrentTenantRentals\CurrentTenantRentals.razor"/>
+        <_ContentIncludedByDefault Remove="Components\Pages\GuestsRequests\GuestsRequests.razor"/>
+        <_ContentIncludedByDefault Remove="Components\Pages\Tenant\GuestsRequests\GuestsRequests.razor"/>
+        <_ContentIncludedByDefault Remove="Components\Pages\NewRevenueReportPage\NewRevenueReportPage.razor"/>
+        <_ContentIncludedByDefault Remove="Components\Pages\RegistrationPage\RegistrationPage.razor"/>
+        <_ContentIncludedByDefault Remove="Components\Pages\RentalsOfTenantsPage\RentalsOfTenantsPage.razor"/>
+        <_ContentIncludedByDefault Remove="Components\Pages\RequestsPage\RequestsPage.razor"/>
+        <_ContentIncludedByDefault Remove="Components\Pages\Login\Login.razor"/>
+        <_ContentIncludedByDefault Remove="Components\Pages\Register\Register.razor"/>
+        <_ContentIncludedByDefault Remove="Components\Pages\Tenant\PersonalInfo\PersonalInfo.razor"/>
     </ItemGroup>
 
 </Project>

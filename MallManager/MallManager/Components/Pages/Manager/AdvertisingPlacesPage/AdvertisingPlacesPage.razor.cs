@@ -4,22 +4,10 @@ namespace MallManager.Components.Pages.Manager.AdvertisingPlacesPage;
 
 public partial class AdvertisingPlacesPage : ComponentBase
 {
-    private bool ShowCompleted { get; set; }
-    private IEnumerable<AdvertisingRequest> FilteredExampleList => ShowCompleted ? exampleList : exampleList.Where(x => x.Status != "Zakończony");
-    
-    private void AcceptAdvertisingRequest(AdvertisingRequest request)
+    private readonly List<AdvertisingRequest> exampleList = new()
     {
-        // TODO: Business logic
-    }
-    
-    private void RejectAdvertisingRequest(AdvertisingRequest request)
-    {
-        // TODO: Business logic
-    }
-    
-    private List<AdvertisingRequest> exampleList = new()
-    {
-        new AdvertisingRequest {
+        new AdvertisingRequest
+        {
             TenantNumber = "1001",
             SelectedMonth = "Styczeń",
             IsInTheCenter = true,
@@ -32,7 +20,8 @@ public partial class AdvertisingPlacesPage : ComponentBase
             DurningWeekend = false,
             Status = "Aktywny"
         },
-        new AdvertisingRequest {
+        new AdvertisingRequest
+        {
             TenantNumber = "1002",
             SelectedMonth = "Luty",
             IsInTheCenter = false,
@@ -46,6 +35,21 @@ public partial class AdvertisingPlacesPage : ComponentBase
             Status = "Oczekujący"
         }
     };
+
+    private bool ShowCompleted { get; set; }
+
+    private IEnumerable<AdvertisingRequest> FilteredExampleList =>
+        ShowCompleted ? exampleList : exampleList.Where(x => x.Status != "Zakończony");
+
+    private void AcceptAdvertisingRequest(AdvertisingRequest request)
+    {
+        // TODO: Business logic
+    }
+
+    private void RejectAdvertisingRequest(AdvertisingRequest request)
+    {
+        // TODO: Business logic
+    }
 }
 
 public class AdvertisingRequest

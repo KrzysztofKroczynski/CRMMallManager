@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class MarketingCampaignReachDict
+public sealed class MarketingCampaignReachDict
 {
     public int Id { get; set; }
 
@@ -10,5 +10,5 @@ public partial class MarketingCampaignReachDict
 
     public decimal Price { get; set; }
 
-    public virtual ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
+    public ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
 }

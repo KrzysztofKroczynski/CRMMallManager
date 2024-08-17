@@ -49,7 +49,7 @@
                         <MudTd>@item.StartDate.ToShortDateString()</MudTd>
                         <MudTd>@item.EndDate.ToShortDateString()</MudTd>
                         <MudTd>
-                            @(item.DateOfSubmission != default(DateTime) ? item.DateOfSubmission.ToShortDateString() : "-.-.-")
+                            @(item.DateOfSubmission != default ? item.DateOfSubmission.ToShortDateString() : "-.-.-")
                         </MudTd>
                         <MudTd>@item.Revenue.ToString("C")</MudTd>
                         <MudTd>@item.NextRevenueSubmissionDate.ToShortDateString()</MudTd>

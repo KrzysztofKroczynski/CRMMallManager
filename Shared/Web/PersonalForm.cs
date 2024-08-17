@@ -71,17 +71,12 @@ public class PersonalInfoCompanyInfoAttribute : ValidationAttribute
     protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
     {
         var property = validationContext.ObjectType.GetProperty(_conditionProperty);
-        if (property == null)
-        {
-            return new ValidationResult($"Nie znaleziono właściwości '{_conditionProperty}'.");
-        }
+        if (property == null) return new ValidationResult($"Nie znaleziono właściwości '{_conditionProperty}'.");
 
         var conditionValue = property.GetValue(validationContext.ObjectInstance);
 
         if (conditionValue?.ToString() == _expectedValue.ToString() && value is null)
-        {
             return new ValidationResult(ErrorMessage);
-        }
 
         return ValidationResult.Success;
     }

@@ -12,7 +12,7 @@ public abstract class BaseStateService<T> : IStateService<UserState<T>, T> where
         var exists = _userStates.TryGetValue(userId, out var userState);
         if (!exists)
         {
-            userState = new UserState<T>() { State = new T() };
+            userState = new UserState<T> { State = new T() };
             _userStates.Add(userId, userState);
         }
 

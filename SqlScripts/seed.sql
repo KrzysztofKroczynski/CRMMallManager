@@ -1,0 +1,1 @@
+insert into dbo.System_dict (id, Name) values (1,'Wynajmy'), (2,'Imprezy masowe'), (3,'Kampanie Reklamowe');

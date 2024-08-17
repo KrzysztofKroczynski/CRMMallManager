@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class AspNetUserClaim
+public sealed class AspNetUserClaim
 {
     public int Id { get; set; }
 
@@ -10,5 +10,5 @@ public partial class AspNetUserClaim
 
     public string? ClaimValue { get; set; }
 
-    public virtual AspNetUser User { get; set; } = null!;
+    public AspNetUser User { get; set; } = null!;
 }

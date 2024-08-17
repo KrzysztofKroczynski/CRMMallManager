@@ -7,7 +7,7 @@ namespace MallManager.Components.Pages.Common.PersonalInfo;
 
 public sealed partial class PersonalInfo : ComponentBase, IDisposable
 {
-    private string[] _companySizes =
+    private readonly string[] _companySizes =
     {
         "Mała", "Średnia", "Duża"
     };

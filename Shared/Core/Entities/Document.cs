@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class Document
+public sealed class Document
 {
     public int Id { get; set; }
 
@@ -16,9 +16,9 @@ public partial class Document
 
     public int? MainDocumentId { get; set; }
 
-    public virtual ICollection<Document> InverseMainDocument { get; set; } = new List<Document>();
+    public ICollection<Document> InverseMainDocument { get; set; } = new List<Document>();
 
-    public virtual Lease Lease { get; set; } = null!;
+    public Lease Lease { get; set; } = null!;
 
-    public virtual Document? MainDocument { get; set; }
+    public Document? MainDocument { get; set; }
 }

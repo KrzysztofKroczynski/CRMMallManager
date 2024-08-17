@@ -6,7 +6,7 @@ using Shared.Web.FormModels;
 
 namespace MallManager.UseCases.UserState;
 
-public class GetUserStateHandler : IQueryHandler<GetUserPersonalFormStateQuery, Result<UserState<PersonalForm>>>
+public sealed class GetUserStateHandler : IQueryHandler<GetUserPersonalFormStateQuery, Result<UserState<PersonalForm>>>
 {
     private readonly BaseStateService<PersonalForm> _personalFormStateService;
 

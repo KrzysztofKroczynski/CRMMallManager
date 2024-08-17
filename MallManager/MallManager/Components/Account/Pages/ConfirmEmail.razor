@@ -17,9 +17,9 @@
 
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromQuery] private string? UserId { get; set; }
+    [SupplyParameterFromQuery] private string? UserId { get; }
 
-    [SupplyParameterFromQuery] private string? Code { get; set; }
+    [SupplyParameterFromQuery] private string? Code { get; }
 
     protected override async Task OnInitializedAsync()
     {

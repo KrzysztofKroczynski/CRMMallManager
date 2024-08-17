@@ -1,10 +1,8 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class LeaseApplication
+public sealed class LeaseApplication
 {
     public int Id { get; set; }
-
-    public string LeaseAccessAspNetUsersId { get; set; } = null!;
 
     public DateOnly DateStart { get; set; }
 
@@ -14,11 +12,13 @@ public partial class LeaseApplication
 
     public int SignupStatusDictId { get; set; }
 
-    public virtual SystemAccess LeaseAccessAspNetUsers { get; set; } = null!;
+    public int SystemAccessId { get; set; }
 
-    public virtual SignupStatusDict SignupStatusDict { get; set; } = null!;
+    public SignupStatusDict SignupStatusDict { get; set; } = null!;
 
-    public virtual ICollection<RetailUnitPurpose> RetailUnitPurposes { get; set; } = new List<RetailUnitPurpose>();
+    public SystemAccess SystemAccess { get; set; } = null!;
 
-    public virtual ICollection<SurfaceClassDict> SurfaceClassDicts { get; set; } = new List<SurfaceClassDict>();
+    public ICollection<RetailUnitPurpose> RetailUnitPurposes { get; set; } = new List<RetailUnitPurpose>();
+
+    public ICollection<SurfaceClassDict> SurfaceClassDicts { get; set; } = new List<SurfaceClassDict>();
 }

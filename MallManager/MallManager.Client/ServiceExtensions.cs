@@ -13,8 +13,8 @@ public static class ServiceExtensions
             Assembly.GetAssembly(typeof(Person)) // Shared
         };
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(mediatRAssemblies!));
-        
-        
+
+
         return services;
     }
 }
