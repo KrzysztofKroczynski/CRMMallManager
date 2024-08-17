@@ -1,6 +1,8 @@
-﻿namespace Shared.Core.Entities;
+﻿using Ardalis.SharedKernel;
 
-public partial class RetailUnit
+namespace Shared.Core.Entities;
+
+public partial class RetailUnit : IAggregateRoot
 {
     public int Id { get; set; }
 

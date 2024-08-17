@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using MallManager.Components.Forms.ApartmentRentalForm;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudExtensions;
+using Shared.Web.FormModels;
 
 namespace MallManager.Components.Pages.Tenant.RegistrationPage;
 
@@ -16,7 +18,10 @@ enum PurposeOfTheContractType
 public partial class RegistrationPage : ComponentBase
 {
     MudStepperExtended _stepper = new();
-    private MudForm _form = new();
+
+    private ApartmentRentalForm _apartmentRentalForm;
+
+    private RentalForm _rentalForm = new();
     // private Model model = new Model(); TODO: Create a data model or DTO to represent data from a form so that you can manipulate it
     private PurposeOfTheContractType _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
     private bool _loading;
@@ -32,21 +37,33 @@ public partial class RegistrationPage : ComponentBase
         
         if (_stepper.GetActiveIndex() == 1)
         {
-            await _form.Validate();
-            StateHasChanged();
-            
-            if (_form.IsValid)
+            switch (_currentPurposeOfTheContractType)
             {
-                Submit();
-                return false;
+                case PurposeOfTheContractType.APARTMENT_RENTAL:
+                    if (await _apartmentRentalForm.IsFormValid())
+                    {
+                        SubmitApartmentRental();
+                        return false;
+                    }
+                    break;
+                case PurposeOfTheContractType.ADVERTISING_SPACE_RENTAL:
+                    // TODO: Advertising space rental form validation and submitting
+                    break;
+                case PurposeOfTheContractType.EVENT_ORGANIZATION:
+                    // TODO: Event organization form validation and submitting
+                    break;
+                case PurposeOfTheContractType.OTHER:
+                    // TODO: Other form validation and submitting
+                    break;
             }
+            StateHasChanged();
             
             return true;
         }
         
         return false;
     } 
-    private async Task Submit()
+    private async Task SubmitApartmentRental()
     {
         // TODO: Write business logic to save model or do with it whatever you want
         Console.WriteLine("Submitting...");

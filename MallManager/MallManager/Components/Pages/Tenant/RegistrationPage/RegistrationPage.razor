@@ -36,14 +36,7 @@
                             case PurposeOfTheContractType.APARTMENT_RENTAL:
                                 <MudStack Row="true">
                                     <MudStack Class="purpose-form">
-                                        @* [Model classname]="[model object name]" TODO: Customize the name and put this as an attribute of the form below when you will write [Model] class *@
-                                        <MudForm @ref="_form">
-                                            <ApartmentRentalForm/>
-                                        </MudForm>
-                                    </MudStack>
-
-                                    <MudStack Class="purpose-form">
-                                        <ResultOfFilterApartmentsComponent/>
+                                        <ApartmentRentalForm @ref="_apartmentRentalForm" RentalForm="@_rentalForm"/>
                                     </MudStack>
                                 </MudStack>
 
@@ -56,9 +49,9 @@
                                 <MudStack Row="true">
                                     <MudStack>
                                         @* [Model classname]="[model object name]" TODO: Customize the name and put this as an attribute of the form below when you will write [Model] class *@
-                                        <MudForm @ref="_form">
+                                        @* <MudForm @ref="_form"> *@
                                             <AdvertisingSpaceRentalForm/>
-                                        </MudForm>
+                                        @* </MudForm> *@
                                     </MudStack>
                                 </MudStack>
 
@@ -71,18 +64,18 @@
                             case PurposeOfTheContractType.EVENT_ORGANIZATION:
                                 <MudStack Style="background-color: #d5dcdc;  padding: 1%">
                                     @* [Model classname]="[model object name]" TODO: Customize the name and put this as an attribute of the form below when you will write [Model] class *@
-                                    <MudForm @ref="_form">
+                                    @* <MudForm @ref="_form"> *@
                                         <EventOrganizationForm/>
-                                    </MudForm>
+                                    @* </MudForm> *@
                                 </MudStack>
                                 <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
                                 break;
                             case PurposeOfTheContractType.OTHER:
                                 <MudStack Style="background-color: #d5dcdc; padding: 1%">
                                     @* [Model classname]="[model object name]" TODO: Customize the name and put this as an attribute of the form below when you will write [Model] class *@
-                                    <MudForm @ref="_form">
+                                    @* <MudForm @ref="_form"> *@
                                         <OtherPurposeForm/>
-                                    </MudForm>
+                                    @* </MudForm> *@
                                 </MudStack>
 
                                 <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>

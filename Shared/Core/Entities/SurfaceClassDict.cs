@@ -1,6 +1,8 @@
-﻿namespace Shared.Core.Entities;
+﻿using Ardalis.SharedKernel;
 
-public partial class SurfaceClassDict
+namespace Shared.Core.Entities;
+
+public partial class SurfaceClassDict : IAggregateRoot
 {
     public int Id { get; set; }
 
