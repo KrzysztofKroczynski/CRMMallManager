@@ -26,7 +26,6 @@
 
     <ItemGroup>
       <Folder Include="Infrastructure\" />
-        <Folder Include="Usecases\"/>
     </ItemGroup>
 
 </Project>
