@@ -1,12 +1,12 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class SignupStatusDict
+public sealed class SignupStatusDict
 {
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<LeaseApplication> LeaseApplications { get; set; } = new List<LeaseApplication>();
+    public ICollection<LeaseApplication> LeaseApplications { get; set; } = new List<LeaseApplication>();
 
-    public virtual ICollection<SystemAccess> SystemAccesses { get; set; } = new List<SystemAccess>();
+    public ICollection<SystemAccess> SystemAccesses { get; set; } = new List<SystemAccess>();
 }

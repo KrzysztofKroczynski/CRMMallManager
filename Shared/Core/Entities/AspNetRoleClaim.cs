@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class AspNetRoleClaim
+public sealed class AspNetRoleClaim
 {
     public int Id { get; set; }
 
@@ -10,5 +10,5 @@ public partial class AspNetRoleClaim
 
     public string? ClaimValue { get; set; }
 
-    public virtual AspNetRole Role { get; set; } = null!;
+    public AspNetRole Role { get; set; } = null!;
 }

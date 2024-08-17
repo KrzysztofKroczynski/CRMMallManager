@@ -4,11 +4,11 @@ namespace MallManager.Components.Forms.EventOrganizationForm;
 
 public partial class EventOrganizationForm : ComponentBase
 {
-    private string? _eventName;
-    private DateTime? _startDate;
-    private DateTime? _endDate;
-    private string? _eventType;
     private string? _description;
-    private int? _minMembersCount;
+    private DateTime? _endDate;
+    private string? _eventName;
+    private string? _eventType;
     private int? _maxMembersCount;
+    private int? _minMembersCount;
+    private DateTime? _startDate;
 }

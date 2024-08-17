@@ -16,5 +16,8 @@ public class UserState<T> where T : class
 
     public event Action OnChange = delegate { };
 
-    public void NotifyStateChanged() => Task.Run(() => OnChange?.Invoke());
+    public void NotifyStateChanged()
+    {
+        Task.Run(() => OnChange?.Invoke());
+    }
 }

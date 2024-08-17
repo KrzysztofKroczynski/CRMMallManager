@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class Company
+public sealed class Company
 {
     public int Id { get; set; }
 
@@ -16,9 +16,9 @@ public partial class Company
 
     public int CompanySizeId { get; set; }
 
-    public virtual AspNetUser? AspNetUsers { get; set; }
+    public AspNetUser? AspNetUsers { get; set; }
 
-    public virtual CompanySize CompanySize { get; set; } = null!;
+    public CompanySize CompanySize { get; set; } = null!;
 
-    public virtual ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
+    public ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
 }

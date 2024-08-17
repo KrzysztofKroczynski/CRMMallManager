@@ -76,7 +76,7 @@
 
     [SupplyParameterFromForm] private string? ProviderKey { get; set; }
 
-    [SupplyParameterFromQuery] private string? Action { get; set; }
+    [SupplyParameterFromQuery] private string? Action { get; }
 
     protected override async Task OnInitializedAsync()
     {

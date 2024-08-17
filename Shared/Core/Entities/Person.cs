@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class Person
+public sealed class Person
 {
     public int Id { get; set; }
 
@@ -16,7 +16,7 @@ public partial class Person
 
     public string? SecondName { get; set; }
 
-    public virtual AspNetUser? AspNetUsers { get; set; }
+    public AspNetUser? AspNetUsers { get; set; }
 
-    public virtual ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
+    public ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
 }

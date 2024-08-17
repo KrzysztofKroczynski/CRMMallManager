@@ -4,12 +4,11 @@ namespace MallManager.Components.LoggedTenantMenu;
 
 public partial class LoggedTenantMenu : LayoutComponentBase
 {
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
-    
-    bool _drawerOpen = false;
+    private bool _drawerOpen = false;
 
-    void DrawerToggle()
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    private void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }

@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class Lease
+public sealed class Lease
 {
     public int Id { get; set; }
 
@@ -22,13 +22,13 @@ public partial class Lease
 
     public decimal? MonthlyRentAmount { get; set; }
 
-    public string SystemAccessAspNetUsersId { get; set; } = null!;
-
     public int RetailUnitId { get; set; }
 
-    public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
+    public int SystemAccessId { get; set; }
 
-    public virtual RetailUnit RetailUnit { get; set; } = null!;
+    public ICollection<Document> Documents { get; set; } = new List<Document>();
 
-    public virtual SystemAccess SystemAccessAspNetUsers { get; set; } = null!;
+    public RetailUnit RetailUnit { get; set; } = null!;
+
+    public SystemAccess SystemAccess { get; set; } = null!;
 }

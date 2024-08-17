@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class Appsetting
+public sealed class Appsetting
 {
     public int Id { get; set; }
 

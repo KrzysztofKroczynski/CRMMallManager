@@ -6,8 +6,8 @@ namespace MallManager.Components.Pages.Common.Register;
 
 public partial class Register : ComponentBase
 {
-    private RegistrationForm model = new();
-    bool success;
+    private readonly RegistrationForm model = new();
+    private bool success;
 
     private void OnValidSubmit(EditContext context)
     {

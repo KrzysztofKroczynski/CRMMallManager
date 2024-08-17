@@ -7,7 +7,7 @@ using Shared.Web.FormModels;
 namespace MallManager.Components.Pages.Tenant.RegistrationPage;
 
 // TODO: Perhaps move this enum to a seperate file
-enum PurposeOfTheContractType
+internal enum PurposeOfTheContractType
 {
     APARTMENT_RENTAL,
     ADVERTISING_SPACE_RENTAL,
@@ -63,6 +63,7 @@ public partial class RegistrationPage : ComponentBase
         
         return false;
     } 
+    
     private async Task SubmitApartmentRental()
     {
         // TODO: Write business logic to save model or do with it whatever you want

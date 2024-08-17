@@ -5,15 +5,10 @@ namespace MallManager.Components.Pages.Tenant.CurrentTenantRentals;
 
 public partial class CurrentTenantRentals : ComponentBase
 {
-    public bool ShowCompleted { get; set; } = false;
-    public bool ShowPlanned { get; set; } = false;
-    public string SearchCriteria { get; set; }
-    
-    public IEnumerable<ExampleRentalModel> FilteredExampleList => ShowCompleted ? exampleList : exampleList.Where(x => x.EndDate > DateTime.Now);
-    
-    private List<ExampleRentalModel> exampleList = new List<ExampleRentalModel>
+    private readonly List<ExampleRentalModel> exampleList = new()
     {
-        new ExampleRentalModel {
+        new()
+        {
             RentalNumber = "RN001",
             ApartmentNumber = "A101",
             StartDate = new DateTime(2022, 01, 01),
@@ -23,7 +18,8 @@ public partial class CurrentTenantRentals : ComponentBase
             LastRevenueAmount = 1150.00M,
             NextRevenueSubmissionDate = new DateTime(2022, 07, 15)
         },
-        new ExampleRentalModel {
+        new()
+        {
             RentalNumber = "RN002",
             ApartmentNumber = "A102",
             StartDate = new DateTime(2022, 02, 01),
@@ -33,7 +29,8 @@ public partial class CurrentTenantRentals : ComponentBase
             LastRevenueAmount = 1450.00M,
             NextRevenueSubmissionDate = new DateTime(2022, 08, 15)
         },
-        new ExampleRentalModel {
+        new()
+        {
             RentalNumber = "RN003",
             ApartmentNumber = "A103",
             StartDate = new DateTime(2022, 03, 01),
@@ -44,4 +41,11 @@ public partial class CurrentTenantRentals : ComponentBase
             NextRevenueSubmissionDate = new DateTime(2022, 09, 15)
         }
     };
+
+    public bool ShowCompleted { get; set; } = false;
+    public bool ShowPlanned { get; set; } = false;
+    public string SearchCriteria { get; set; }
+
+    public IEnumerable<ExampleRentalModel> FilteredExampleList =>
+        ShowCompleted ? exampleList : exampleList.Where(x => x.EndDate > DateTime.Now);
 }

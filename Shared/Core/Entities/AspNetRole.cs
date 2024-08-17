@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class AspNetRole
+public sealed class AspNetRole
 {
     public string Id { get; set; } = null!;
 
@@ -10,7 +10,7 @@ public partial class AspNetRole
 
     public string? ConcurrencyStamp { get; set; }
 
-    public virtual ICollection<AspNetRoleClaim> AspNetRoleClaims { get; set; } = new List<AspNetRoleClaim>();
+    public ICollection<AspNetRoleClaim> AspNetRoleClaims { get; set; } = new List<AspNetRoleClaim>();
 
-    public virtual ICollection<AspNetUser> Users { get; set; } = new List<AspNetUser>();
+    public ICollection<AspNetUser> Users { get; set; } = new List<AspNetUser>();
 }

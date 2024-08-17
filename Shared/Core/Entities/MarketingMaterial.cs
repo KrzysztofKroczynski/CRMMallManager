@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class MarketingMaterial
+public sealed class MarketingMaterial
 {
     public int Id { get; set; }
 
@@ -12,5 +12,5 @@ public partial class MarketingMaterial
 
     public decimal? PriceFactor { get; set; }
 
-    public virtual MarketingCampaign MarketingCampaign { get; set; } = null!;
+    public MarketingCampaign MarketingCampaign { get; set; } = null!;
 }

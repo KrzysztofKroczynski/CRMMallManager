@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class Message
+public sealed class Message
 {
     public int Id { get; set; }
 
@@ -8,7 +8,11 @@ public partial class Message
 
     public DateTime DateTimeAdded { get; set; }
 
-    public string SystemAccessAspNetUsersId { get; set; } = null!;
+    public int SystemAccessId { get; set; }
 
-    public virtual SystemAccess SystemAccessAspNetUsers { get; set; } = null!;
+    public string AspNetUsersId { get; set; } = null!;
+
+    public AspNetUser AspNetUsers { get; set; } = null!;
+
+    public SystemAccess SystemAccess { get; set; } = null!;
 }

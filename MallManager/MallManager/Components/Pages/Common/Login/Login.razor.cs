@@ -4,8 +4,8 @@ namespace MallManager.Components.Pages.Common.Login;
 
 public partial class Login : ComponentBase
 {
-    private LoginModel Model = new();
-    
+    private readonly LoginModel Model = new();
+
 
     public class LoginModel
     {

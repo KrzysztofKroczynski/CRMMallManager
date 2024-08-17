@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class AspNetUserToken
+public sealed class AspNetUserToken
 {
     public string UserId { get; set; } = null!;
 
@@ -10,5 +10,5 @@ public partial class AspNetUserToken
 
     public string? Value { get; set; }
 
-    public virtual AspNetUser User { get; set; } = null!;
+    public AspNetUser User { get; set; } = null!;
 }

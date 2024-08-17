@@ -67,7 +67,9 @@ public partial class MallManagerContext : DbContext
     public virtual DbSet<SystemDict> SystemDicts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DefaultConnection");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer(
+            "Data Source=localhost;Initial Catalog=MallManager;Integrated Security=True;Encrypt=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -267,17 +269,15 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.ReminderDate).HasColumnName("Reminder_date");
             entity.Property(e => e.RetailUnitId).HasColumnName("Retail_unit_Id");
             entity.Property(e => e.StartDate).HasColumnName("Start_date");
-            entity.Property(e => e.SystemAccessAspNetUsersId)
-                .HasMaxLength(450)
-                .HasColumnName("System_access_AspNetUsers_Id");
+            entity.Property(e => e.SystemAccessId).HasColumnName("System_access_ID");
 
             entity.HasOne(d => d.RetailUnit).WithMany(p => p.Leases)
                 .HasForeignKey(d => d.RetailUnitId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Lease_Retail_unit");
 
-            entity.HasOne(d => d.SystemAccessAspNetUsers).WithMany(p => p.Leases)
-                .HasForeignKey(d => d.SystemAccessAspNetUsersId)
+            entity.HasOne(d => d.SystemAccess).WithMany(p => p.Leases)
+                .HasForeignKey(d => d.SystemAccessId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Lease_System_access");
         });
@@ -294,20 +294,18 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.DateEnd).HasColumnName("Date_end");
             entity.Property(e => e.DateStart).HasColumnName("Date_start");
             entity.Property(e => e.Description).HasMaxLength(1);
-            entity.Property(e => e.LeaseAccessAspNetUsersId)
-                .HasMaxLength(450)
-                .HasColumnName("Lease_access_AspNetUsers_Id");
             entity.Property(e => e.SignupStatusDictId).HasColumnName("Signup_status_dict_Id");
-
-            entity.HasOne(d => d.LeaseAccessAspNetUsers).WithMany(p => p.LeaseApplications)
-                .HasForeignKey(d => d.LeaseAccessAspNetUsersId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Table_24_Lease_access");
+            entity.Property(e => e.SystemAccessId).HasColumnName("System_access_ID");
 
             entity.HasOne(d => d.SignupStatusDict).WithMany(p => p.LeaseApplications)
                 .HasForeignKey(d => d.SignupStatusDictId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Lease_application_Signup_status_dict");
+
+            entity.HasOne(d => d.SystemAccess).WithMany(p => p.LeaseApplications)
+                .HasForeignKey(d => d.SystemAccessId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Lease_application_System_access");
 
             entity.HasMany(d => d.RetailUnitPurposes).WithMany(p => p.LeaseApplications)
                 .UsingEntity<Dictionary<string, object>>(
@@ -315,11 +313,11 @@ public partial class MallManagerContext : DbContext
                     r => r.HasOne<RetailUnitPurpose>().WithMany()
                         .HasForeignKey("RetailUnitPurposeId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("Table_27_Retail_unit_purpose"),
+                        .HasConstraintName("Lease_application_tail_unit_purpose_Retail_unit_purpose"),
                     l => l.HasOne<LeaseApplication>().WithMany()
                         .HasForeignKey("LeaseApplicationId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("Table_27_Lease_application"),
+                        .HasConstraintName("Lease_application_tail_unit_purpose_Lease_application"),
                     j =>
                     {
                         j.HasKey("LeaseApplicationId", "RetailUnitPurposeId")
@@ -327,26 +325,6 @@ public partial class MallManagerContext : DbContext
                         j.ToTable("Lease_application_tail_unit_purpose");
                         j.IndexerProperty<int>("LeaseApplicationId").HasColumnName("Lease_application_ID");
                         j.IndexerProperty<int>("RetailUnitPurposeId").HasColumnName("Retail_unit_purpose_ID");
-                    });
-
-            entity.HasMany(d => d.SurfaceClassDicts).WithMany(p => p.LeaseApplications)
-                .UsingEntity<Dictionary<string, object>>(
-                    "SurfaceClassDictSurfaceClassDict",
-                    r => r.HasOne<SurfaceClassDict>().WithMany()
-                        .HasForeignKey("SurfaceClassDictId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("Table_28_Surface_class_dict"),
-                    l => l.HasOne<LeaseApplication>().WithMany()
-                        .HasForeignKey("LeaseApplicationId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("Table_28_Lease_application"),
-                    j =>
-                    {
-                        j.HasKey("LeaseApplicationId", "SurfaceClassDictId")
-                            .HasName("Surface_class_dict_Surface_class_dict_pk");
-                        j.ToTable("Surface_class_dict_Surface_class_dict");
-                        j.IndexerProperty<int>("LeaseApplicationId").HasColumnName("Lease_application_ID");
-                        j.IndexerProperty<int>("SurfaceClassDictId").HasColumnName("Surface_class_dict_ID");
                     });
         });
 
@@ -385,9 +363,7 @@ public partial class MallManagerContext : DbContext
                 .HasDefaultValue(true)
                 .HasColumnName("Regards_In_Mall");
             entity.Property(e => e.StartDate).HasColumnName("Start_Date");
-            entity.Property(e => e.SystemAccessAspNetUsersId)
-                .HasMaxLength(450)
-                .HasColumnName("System_access_AspNetUsers_Id");
+            entity.Property(e => e.SystemAccessId).HasColumnName("System_access_ID");
 
             entity.HasOne(d => d.Company).WithMany(p => p.MarketingCampaigns)
                 .HasForeignKey(d => d.CompanyId)
@@ -402,8 +378,8 @@ public partial class MallManagerContext : DbContext
                 .HasForeignKey(d => d.PersonId)
                 .HasConstraintName("Marketing_Campaign_Person");
 
-            entity.HasOne(d => d.SystemAccessAspNetUsers).WithMany(p => p.MarketingCampaigns)
-                .HasForeignKey(d => d.SystemAccessAspNetUsersId)
+            entity.HasOne(d => d.SystemAccess).WithMany(p => p.MarketingCampaigns)
+                .HasForeignKey(d => d.SystemAccessId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Marketing_Campaign_System_access");
         });
@@ -466,12 +442,10 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.Location)
                 .HasMaxLength(20)
                 .IsUnicode(false);
-            entity.Property(e => e.SystemAccessAspNetUsersId)
-                .HasMaxLength(450)
-                .HasColumnName("System_access_AspNetUsers_Id");
+            entity.Property(e => e.SystemAccessId).HasColumnName("System_access_ID");
 
-            entity.HasOne(d => d.SystemAccessAspNetUsers).WithMany(p => p.MassEvents)
-                .HasForeignKey(d => d.SystemAccessAspNetUsersId)
+            entity.HasOne(d => d.SystemAccess).WithMany(p => p.MassEvents)
+                .HasForeignKey(d => d.SystemAccessId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Mass_event_System_access");
         });
@@ -485,16 +459,22 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("ID");
+            entity.Property(e => e.AspNetUsersId)
+                .HasMaxLength(450)
+                .HasColumnName("AspNetUsers_Id");
             entity.Property(e => e.Content).HasMaxLength(1);
             entity.Property(e => e.DateTimeAdded)
                 .HasColumnType("datetime")
                 .HasColumnName("DateTime_added");
-            entity.Property(e => e.SystemAccessAspNetUsersId)
-                .HasMaxLength(450)
-                .HasColumnName("System_access_AspNetUsers_Id");
+            entity.Property(e => e.SystemAccessId).HasColumnName("System_access_ID");
 
-            entity.HasOne(d => d.SystemAccessAspNetUsers).WithMany(p => p.Messages)
-                .HasForeignKey(d => d.SystemAccessAspNetUsersId)
+            entity.HasOne(d => d.AspNetUsers).WithMany(p => p.Messages)
+                .HasForeignKey(d => d.AspNetUsersId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Message_AspNetUsers");
+
+            entity.HasOne(d => d.SystemAccess).WithMany(p => p.Messages)
+                .HasForeignKey(d => d.SystemAccessId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Message_System_access");
         });
@@ -592,15 +572,40 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(20)
                 .IsUnicode(false);
+
+            entity.HasMany(d => d.LeaseApplications).WithMany(p => p.SurfaceClassDicts)
+                .UsingEntity<Dictionary<string, object>>(
+                    "SurfaceClassDictSurfaceClassDict",
+                    r => r.HasOne<LeaseApplication>().WithMany()
+                        .HasForeignKey("LeaseApplicationId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("Surface_class_dict_Surface_class_dict_Lease_application"),
+                    l => l.HasOne<SurfaceClassDict>().WithMany()
+                        .HasForeignKey("SurfaceClassDictId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("Surface_class_dict_Surface_class_dict_Surface_class_dict"),
+                    j =>
+                    {
+                        j.HasKey("SurfaceClassDictId", "LeaseApplicationId")
+                            .HasName("Surface_class_dict_Surface_class_dict_pk");
+                        j.ToTable("Surface_class_dict_Surface_class_dict");
+                        j.IndexerProperty<int>("SurfaceClassDictId").HasColumnName("Surface_class_dict_ID");
+                        j.IndexerProperty<int>("LeaseApplicationId").HasColumnName("Lease_application_ID");
+                    });
         });
 
         modelBuilder.Entity<SystemAccess>(entity =>
         {
-            entity.HasKey(e => e.AspNetUsersId).HasName("System_access_pk");
+            entity.HasKey(e => e.Id).HasName("System_access_pk");
 
             entity.ToTable("System_access");
 
-            entity.Property(e => e.AspNetUsersId).HasColumnName("AspNetUsers_Id");
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
+            entity.Property(e => e.AspNetUsersId)
+                .HasMaxLength(450)
+                .HasColumnName("AspNetUsers_Id");
             entity.Property(e => e.AssignedManagerId)
                 .HasMaxLength(450)
                 .HasColumnName("Assigned_Manager_ID");
@@ -610,8 +615,8 @@ public partial class MallManagerContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("Valid_until");
 
-            entity.HasOne(d => d.AspNetUsers).WithOne(p => p.SystemAccess)
-                .HasForeignKey<SystemAccess>(d => d.AspNetUsersId)
+            entity.HasOne(d => d.AspNetUsers).WithMany(p => p.SystemAccesses)
+                .HasForeignKey(d => d.AspNetUsersId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Local_access_AspNetUsers");
 

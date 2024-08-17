@@ -6,7 +6,7 @@
 
             <MudSelectItem Value='"Sample 1"'/>
             <MudSelectItem Value='"Sample 2"'/>
-        </MudSelect>        
+        </MudSelect>
     </MudStack>
 
     <MudText Typo="Typo.caption" Class="mt-20">Data Rozpoczęcia i Zakończenia*</MudText>
@@ -19,13 +19,13 @@
     </MudStack>
 
     <MudTextField @bind-Value="_description" Label="Opis Wydarzenia" Variant="Variant.Filled"
-                 MaxLength="1000" Lines="7" MaxLines="7" HelperText="Max. 1000 znaków." />
+                  MaxLength="1000" Lines="7" MaxLines="7" HelperText="Max. 1000 znaków."/>
 
 
     <MudText Typo="Typo.caption" Class="mt-20">Spodziewana liczba Uczestników</MudText>
-    
+
     <MudStack Row="true">
-        <MudNumericField Label="Od" @bind-Value="_minMembersCount" Variant="Variant.Filled" />
-        <MudNumericField Label="Do" @bind-Value="_maxMembersCount" Variant="Variant.Filled" />
+        <MudNumericField Label="Od" @bind-Value="_minMembersCount" Variant="Variant.Filled"/>
+        <MudNumericField Label="Do" @bind-Value="_maxMembersCount" Variant="Variant.Filled"/>
     </MudStack>
 </MudStack>

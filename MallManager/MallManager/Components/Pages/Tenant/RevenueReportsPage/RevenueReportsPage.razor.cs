@@ -4,11 +4,9 @@ namespace MallManager.Components.Pages.Tenant.RevenueReportsPage;
 
 public partial class RevenueReportsPage : ComponentBase
 {
-    public string? SearchCriteria { get; set; }
-    
-    private List<ExampleModel> exampleList = new List<ExampleModel>
+    private readonly List<ExampleModel> exampleList = new()
     {
-        new ExampleModel
+        new()
         {
             ReportNumber = "RN001",
             ApartmentNumber = "A101",
@@ -19,7 +17,7 @@ public partial class RevenueReportsPage : ComponentBase
             NextRevenueSubmissionDate = new DateTime(2021, 2, 28),
             WasSubmittedAfterEndDate = false
         },
-        new ExampleModel
+        new()
         {
             ReportNumber = "RN002",
             ApartmentNumber = "A102",
@@ -30,7 +28,7 @@ public partial class RevenueReportsPage : ComponentBase
             NextRevenueSubmissionDate = new DateTime(2021, 3, 31),
             WasSubmittedAfterEndDate = true
         },
-        new ExampleModel
+        new()
         {
             ReportNumber = "RN003",
             ApartmentNumber = "A103",
@@ -43,18 +41,18 @@ public partial class RevenueReportsPage : ComponentBase
         }
     };
 
+    public string? SearchCriteria { get; set; }
+
     private string ChangeRowBackgroundColor(ExampleModel item, int index)
     {
-        if (item.DateOfSubmission == default)
-        {
-            return "background-color: #bbc3d4";
-        }
-        
-        return item.WasSubmittedAfterEndDate ? "background-color: #f26868" : "background-color: #6ff772";;
+        if (item.DateOfSubmission == default) return "background-color: #bbc3d4";
+
+        return item.WasSubmittedAfterEndDate ? "background-color: #f26868" : "background-color: #6ff772";
+        ;
     }
 }
 
-class ExampleModel
+internal class ExampleModel
 {
     public string ReportNumber { get; set; }
     public string ApartmentNumber { get; set; }
@@ -62,6 +60,6 @@ class ExampleModel
     public DateTime EndDate { get; set; }
     public DateTime DateOfSubmission { get; set; }
     public double Revenue { get; set; }
-    public DateTime NextRevenueSubmissionDate { get; set; }                                                                                     
+    public DateTime NextRevenueSubmissionDate { get; set; }
     public bool WasSubmittedAfterEndDate { get; set; }
 }

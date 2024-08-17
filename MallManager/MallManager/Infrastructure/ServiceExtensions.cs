@@ -1,9 +1,15 @@
 ﻿using System.Reflection;
-using Ardalis.SharedKernel;
+using Ardalis.Specification;
+using MallManager.Infrastructure.Configuration.HttpClients;
+using Ardalis.Specification;
 using MallManager.Infrastructure.Configuration.HttpClients;
 using MallManager.Infrastructure.Persistence;
 using MallManager.Infrastructure.UserState;
+using MallManager.Infrastructure.UserState.ClaimsTransformation;
 using MallManager.Infrastructure.UserState.PersonalInfoStateService;
+using Microsoft.AspNetCore.Authentication;
+using Serilog;
+using Microsoft.AspNetCore.Authentication;
 using Serilog;
 using Shared.Core.Entities;
 using Shared.Web.FormModels;
@@ -15,14 +21,16 @@ public static class ServiceExtensions
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
         ConfigurationManager config)
     {
-        services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-        services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
+        services.AddScoped(typeof(IRepositoryBase<>), typeof(Repository<>));
+        services.AddScoped(typeof(IReadRepositoryBase<>), typeof(Repository<>));
 
         var mediatRAssemblies = new[]
         {
             Assembly.GetAssembly(typeof(Person)), // Shared
             Assembly.GetAssembly(typeof(ApplicationUser)) // MallManager
         };
+
+        services.AddScoped<IClaimsTransformation, UserRoleAdder>();
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(mediatRAssemblies!));
         services.AddSingleton<BaseStateService<PersonalForm>, PersonalInfoStateService>();

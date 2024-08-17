@@ -10,5 +10,5 @@
     build:
       context: .
       dockerfile: MallManager/MallManager/Dockerfile
-    ports: 
+    ports:
       - "8080:8080"

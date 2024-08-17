@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public partial class AspNetUser
+public sealed class AspNetUser
 {
     public string Id { get; set; } = null!;
 
@@ -32,21 +32,23 @@ public partial class AspNetUser
 
     public int AccessFailedCount { get; set; }
 
-    public virtual AdditionalUserInfo? AdditionalUserInfo { get; set; }
+    public AdditionalUserInfo? AdditionalUserInfo { get; set; }
 
-    public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; } = new List<AspNetUserClaim>();
+    public ICollection<AspNetUserClaim> AspNetUserClaims { get; set; } = new List<AspNetUserClaim>();
 
-    public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; } = new List<AspNetUserLogin>();
+    public ICollection<AspNetUserLogin> AspNetUserLogins { get; set; } = new List<AspNetUserLogin>();
 
-    public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; } = new List<AspNetUserToken>();
+    public ICollection<AspNetUserToken> AspNetUserTokens { get; set; } = new List<AspNetUserToken>();
 
-    public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
+    public ICollection<Company> Companies { get; set; } = new List<Company>();
 
-    public virtual Manager? Manager { get; set; }
+    public Manager? Manager { get; set; }
 
-    public virtual ICollection<Person> People { get; set; } = new List<Person>();
+    public ICollection<Message> Messages { get; set; } = new List<Message>();
 
-    public virtual SystemAccess? SystemAccess { get; set; }
+    public ICollection<Person> People { get; set; } = new List<Person>();
 
-    public virtual ICollection<AspNetRole> Roles { get; set; } = new List<AspNetRole>();
+    public ICollection<SystemAccess> SystemAccesses { get; set; } = new List<SystemAccess>();
+
+    public ICollection<AspNetRole> Roles { get; set; } = new List<AspNetRole>();
 }

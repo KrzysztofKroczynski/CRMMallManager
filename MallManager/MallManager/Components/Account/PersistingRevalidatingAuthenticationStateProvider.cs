@@ -54,20 +54,16 @@ internal sealed class PersistingRevalidatingAuthenticationStateProvider : Revali
         ClaimsPrincipal principal)
     {
         var user = await userManager.GetUserAsync(principal);
-        if (user is null)
-        {
-            return false;
-        }
-        else if (!userManager.SupportsUserSecurityStamp)
+        if (user is null) return false;
+
+        if (!userManager.SupportsUserSecurityStamp)
         {
             return true;
         }
-        else
-        {
-            var principalStamp = principal.FindFirstValue(options.ClaimsIdentity.SecurityStampClaimType);
-            var userStamp = await userManager.GetSecurityStampAsync(user);
-            return principalStamp == userStamp;
-        }
+
+        var principalStamp = principal.FindFirstValue(options.ClaimsIdentity.SecurityStampClaimType);
+        var userStamp = await userManager.GetSecurityStampAsync(user);
+        return principalStamp == userStamp;
     }
 
     private void OnAuthenticationStateChanged(Task<AuthenticationState> task)
@@ -78,9 +74,7 @@ internal sealed class PersistingRevalidatingAuthenticationStateProvider : Revali
     private async Task OnPersistingAsync()
     {
         if (authenticationStateTask is null)
-        {
             throw new UnreachableException($"Authentication state not set in {nameof(OnPersistingAsync)}().");
-        }
 
         var authenticationState = await authenticationStateTask;
         var principal = authenticationState.User;
@@ -91,13 +85,11 @@ internal sealed class PersistingRevalidatingAuthenticationStateProvider : Revali
             var email = principal.FindFirst(options.ClaimsIdentity.EmailClaimType)?.Value;
 
             if (userId != null && email != null)
-            {
                 state.PersistAsJson(nameof(UserInfo), new UserInfo
                 {
                     UserId = userId,
-                    Email = email,
+                    Email = email
                 });
-            }
         }
     }
 

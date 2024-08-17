@@ -15,18 +15,17 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Shared\Shared.csproj" />
+        <ProjectReference Include="..\..\Shared\Shared.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Infrastructure\" />
-        <Folder Include="Usecases\"/>
+        <Folder Include="Infrastructure\"/>
     </ItemGroup>
 
 </Project>
