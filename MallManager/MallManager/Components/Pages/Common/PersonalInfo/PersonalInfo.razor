@@ -3,8 +3,9 @@
 @using Shared.Core
 @rendermode InteractiveServer
 @inject IMediator Mediator
+@* @attribute [Authorize] *@
 
-<MspPaersonalInfo/>
+<MspPersonalInfo/>
 <MudContainer Class="from-container">
     <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
         <DataAnnotationsValidator/>

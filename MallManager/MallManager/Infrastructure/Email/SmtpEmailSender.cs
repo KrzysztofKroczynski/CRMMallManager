@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using MallManager.Infrastructure.Configuration;
+using MallManager.Infrastructure.Configuration.Options;
 using Microsoft.Extensions.Options;
 using Shared.Core.Interfaces;
 

@@ -4,7 +4,7 @@ namespace MallManager.Infrastructure.Persistence;
 
 public sealed class Repository<T> : RepositoryBase<T> where T : class
 {
-    public Repository(ApplicationDbContext dbContext) : base(dbContext)
+    public Repository(MallManagerContext dbContext) : base(dbContext)
     {
     }
 }
