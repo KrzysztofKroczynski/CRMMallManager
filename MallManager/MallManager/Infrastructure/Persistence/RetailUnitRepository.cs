@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using Ardalis.SharedKernel;
+﻿using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Shared.Core.Entities;
 
 namespace MallManager.Infrastructure.Persistence;
 
-public class RetailUnitRepository
+public class RetailUnitRepository : IRetailUnitRepository
 {
     private readonly MallManagerContext _context;
 
@@ -14,20 +13,24 @@ public class RetailUnitRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<RetailUnit>> GetAllRetailUnits()
+    public async Task<ICollection<RetailUnit>> GetAllRetailUnits()
     {
         return await _context.RetailUnits.ToListAsync();
     }
     
-    public async Task<IEnumerable<RetailUnitPurpose>> GetAllRetailUnitPurposes()
+    public async Task<ICollection<RetailUnitPurpose>> GetAllRetailUnitPurposes()
     {
         return await _context.RetailUnitPurposes.ToListAsync();
     }
     
-    public async Task<IEnumerable<Lease>> GetAllLeasesOfRetailUnit(RetailUnit retailUnit)
+    public async Task<ICollection<Lease>> GetAllLeasesOfRetailUnit(RetailUnit retailUnit)
     {
         return await _context.Leases
-            .Where(lease => lease.RetailUnit.Equals(retailUnit))
-            .ToListAsync();
+            .Where(lease => lease.RetailUnit.Equals(retailUnit)).ToListAsync();
+    }
+    
+    public async Task<ICollection<SurfaceClassDict>> GetAllSurfaceClassDicts()
+    {
+        return await _context.SurfaceClassDicts.ToListAsync();
     }
 }
