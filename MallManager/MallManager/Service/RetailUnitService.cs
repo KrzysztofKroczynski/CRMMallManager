@@ -1,32 +1,40 @@
-﻿using System.Collections;
-using Ardalis.SharedKernel;
-using MallManager.Infrastructure.Persistence;
+﻿using MallManager.Infrastructure.Persistence;
 using Shared.Core.Entities;
 
 namespace MallManager.Service;
 
-public class RetailUnitService
+public sealed class RetailUnitService : IRetailUnitService
 {
-    private readonly IRepository<RetailUnit> _repositoryRetailUnits;
-    private readonly IRepository<SurfaceClassDict> _repositorySurfaceClassDict;
+    private readonly IRetailUnitRepository _repository;
 
-    public IEnumerable<RetailUnit> RetailUnits { get; set; }
-    public List<SurfaceClassDict> RetailUnitPurposes { get; set; }
+    public IEnumerable<RetailUnit> RetailUnits { get; private set; } = Enumerable.Empty<RetailUnit>();
+    public IEnumerable<RetailUnitPurpose> RetailUnitPurposes { get; private set; } = Enumerable.Empty<RetailUnitPurpose>();
+    public IEnumerable<SurfaceClassDict> SurfaceClassDicts { get; private set; } = Enumerable.Empty<SurfaceClassDict>();
 
-    public RetailUnitService(IRepository<RetailUnit> repository1, IRepository<SurfaceClassDict> repository2)
+    public RetailUnitService(IRetailUnitRepository repository)
     {
-        _repositoryRetailUnits = repository1;
-        _repositorySurfaceClassDict = repository2;
-        RetailUnits = _repositoryRetailUnits.ListAsync().Result;
-        RetailUnitPurposes = _repositorySurfaceClassDict.ListAsync().Result;
+        _repository = repository;
     }
 
-    public async Task<IEnumerable<RetailUnit>> FilterRetailUnits(SurfaceClassDict surfaceClassDict,
+    public async Task LoadDataAsync()
+    {
+        RetailUnits = await _repository.GetAllRetailUnits();
+        RetailUnitPurposes = await _repository.GetAllRetailUnitPurposes();
+        SurfaceClassDicts = await _repository.GetAllSurfaceClassDicts();
+    }
+
+    public IEnumerable<RetailUnit> FilterRetailUnits(SurfaceClassDict surfaceClassDict,
         RetailUnitPurpose retailUnitPurpose, DateOnly? startDate, DateOnly? endDate)
     {
-        return RetailUnits.Where(item => !item.Leases.Any(lease => lease.StartDate < endDate && lease.EndDate > startDate) 
-                                         && item.LocalSurfaceArea >= surfaceClassDict.MinimalSurface 
-                                         && item.LocalSurfaceArea <= surfaceClassDict.MaximumSurface 
-                                         && item.RetailUnitPurpose.Equals(retailUnitPurpose)).ToList();
+        return RetailUnits.Where(item =>
+            !item.Leases.Any(lease => lease.StartDate < endDate && lease.EndDate > startDate)
+            && item.LocalSurfaceArea >= surfaceClassDict.MinimalSurface
+            && item.LocalSurfaceArea <= surfaceClassDict.MaximumSurface
+            && item.RetailUnitPurpose.Equals(retailUnitPurpose)).ToList();
+    }
+    
+    public string SurfaceClassDictsAsString(SurfaceClassDict surfaceClassDict)
+    {
+        return $"{surfaceClassDict.Name} ({surfaceClassDict.MinimalSurface} - {surfaceClassDict.MaximumSurface} m²)";
     }
 }
