@@ -1,4 +1,4 @@
-﻿namespace MallManager.Infrastructure.Configuration.HttpClients;
+﻿namespace MallManager.Infrastructure.Configuration.Options;
 
 public sealed class HttpClientsConfig
 {
