@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using MallManager.Infrastructure.Persistence;
-using MallManager.Service;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using MudBlazor;
 using Shared.Core.Entities;
 using Shared.Web.FormModels;
 
@@ -11,27 +7,41 @@ namespace MallManager.Components.Forms.ApartmentRentalForm;
 
 public partial class ApartmentRentalForm : ComponentBase
 {
-    [Parameter] public RentalForm RentalForm { get; set; }
-    private EditForm _editForm;
+    [Parameter] public RentalForm? RentalForm { get; set; }
+    private EditForm? _editForm;
     
-    private IEnumerable<RetailUnit> _allRetailUnits;
-    private IEnumerable<RetailUnit> _filteredRetailUnits;
-    private string _errorMessage;
+    private IEnumerable<RetailUnit> _allRetailUnits = Enumerable.Empty<RetailUnit>();
+    private IEnumerable<RetailUnit> _filteredRetailUnits = Enumerable.Empty<RetailUnit>();
+    private string? _errorMessage;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await RetailUnitService.LoadDataAsync();
         _allRetailUnits = RetailUnitService.RetailUnits;
+        _filteredRetailUnits = _allRetailUnits;
     }
 
     private void ApplyFilter()
     {
-        _filteredRetailUnits = RetailUnitService.FilterRetailUnits(RentalForm.SurfaceClassDict,
-            RentalForm.RetailUnitPurpose, DateOnly.FromDateTime(RentalForm.StartDate.Value), DateOnly.FromDateTime(RentalForm.EndDate.Value)).Result;
+        if (RentalForm.SurfaceClassDict != null && RentalForm.RetailUnitPurpose != null && 
+            RentalForm.StartDate.HasValue && RentalForm.EndDate.HasValue)
+        {
+            _filteredRetailUnits = RetailUnitService.FilterRetailUnits(
+                RentalForm.SurfaceClassDict,
+                RentalForm.RetailUnitPurpose,
+                DateOnly.FromDateTime(RentalForm.StartDate.Value),
+                DateOnly.FromDateTime(RentalForm.EndDate.Value)
+            );
+        }
+        else
+        {
+            _filteredRetailUnits = _allRetailUnits;
+        }
         
         StateHasChanged();
     }
     
-    private string ValidateStartDate(DateOnly? startDate)
+    private string? ValidateStartDate(DateOnly? startDate)
     {
         if (RentalForm.EndDate.HasValue && startDate.HasValue && startDate >= DateOnly.FromDateTime(RentalForm.EndDate.Value))
         {
@@ -63,6 +73,6 @@ public partial class ApartmentRentalForm : ComponentBase
     {
         await RentalForm.Validate();
 
-        return RentalForm.IsValid ? true : false;
+        return RentalForm.IsValid;
     }
 }

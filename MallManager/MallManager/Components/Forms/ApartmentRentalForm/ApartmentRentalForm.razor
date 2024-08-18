@@ -1,33 +1,34 @@
 @using MallManager.Service
 @using Shared.Core.Entities
-@inject SurfaceClassService SurfaceClassService
 @inject RetailUnitService RetailUnitService
 
 <EditForm Model="@RentalForm">
     <MudStack Row="true">
-        <MudStack Row="true">
-            <MudSelect T="SurfaceClassDict" @bind-Value="RentalForm.SurfaceClassDict" Label="Metraż" Variant="Variant.Filled" Required="true" OnChange="@ApplyFilter">
-                @foreach (var surfaceClass in SurfaceClassService.SurfaceClassDicts)
-                {
-                <MudSelectItem Value="@surfaceClass">@SurfaceClassService.SurfaceClassDictsAsString(surfaceClass)</MudSelectItem>
-                }
-            </MudSelect>
+        <MudStack Class="purpose-form">
+            <MudStack Row="true">
+                <MudSelect T="SurfaceClassDict" @bind-Value="RentalForm.SurfaceClassDict" Label="Metraż" Variant="Variant.Filled" Required="true" OnChange="@ApplyFilter">
+                    @foreach (var surfaceClass in RetailUnitService.SurfaceClassDicts)
+                    {
+                    <MudSelectItem Value="@surfaceClass">@RetailUnitService.SurfaceClassDictsAsString(surfaceClass)</MudSelectItem>
+                    }
+                </MudSelect>
 
-            <MudSelect T="RetailUnitPurpose" @bind-Value="RentalForm.RetailUnitPurpose" Label="Typ działalności" Variant="Variant.Filled" Required="true" OnChange="@ApplyFilter">
-                @foreach (var retailUnitPurpose in RetailUnitService.RetailUnitPurposes)
-                {
-                <MudSelectItem Value="@retailUnitPurpose">@retailUnitPurpose.Name</MudSelectItem>
-                }
-            </MudSelect>
-        </MudStack>
+                <MudSelect T="RetailUnitPurpose" @bind-Value="RentalForm.RetailUnitPurpose" Label="Typ działalności" Variant="Variant.Filled" Required="true" OnChange="@ApplyFilter">
+                    @foreach (var retailUnitPurpose in RetailUnitService.RetailUnitPurposes)
+                    {
+                    <MudSelectItem Value="@retailUnitPurpose">@retailUnitPurpose.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudStack>
 
-        <MudText Typo="Typo.caption" Class="mt-20">Okres Wynajmu*</MudText>
+            <MudText Typo="Typo.caption" Class="mt-20">Okres Wynajmu*</MudText>
 
-        <MudStack Row="true">
-            <MudDatePicker @bind-Date="RentalForm.StartDate" Label="Od" Variant="Variant.Filled" Required="true" Validation="ValidateStartDate" OnChange="@ApplyFilter"/>
-            <MudDatePicker @bind-Date="RentalForm.EndDate" Label="Do" Variant="Variant.Filled" Required="true" Validation="ValidateEndDate" OnChange="@ApplyFilter"/>
+            <MudStack Row="true">
+                <MudDatePicker @bind-Date="RentalForm.StartDate" Label="Od" Variant="Variant.Filled" Required="true" Validation="ValidateStartDate" OnChange="@ApplyFilter"/>
+                <MudDatePicker @bind-Date="RentalForm.EndDate" Label="Do" Variant="Variant.Filled" Required="true" Validation="ValidateEndDate" OnChange="@ApplyFilter"/>
 
-            <MudText Typo="Typo.subtitle1" Color="Color.Error" Hidden="@string.IsNullOrEmpty(_errorMessage)">@_errorMessage</MudText>
+                <MudText Typo="Typo.subtitle1" Color="Color.Error" Hidden="@string.IsNullOrEmpty(_errorMessage)">@_errorMessage</MudText>
+            </MudStack>
         </MudStack>
 
         <MudStack>
@@ -46,7 +47,7 @@
                         <MudTd>@item.LocalNumber</MudTd>
                         <MudTd>@item.LocalSurfaceArea</MudTd>
                         <MudTd>
-                            <MudRadio Value="@item.Id"></MudRadio>
+                            <MudRadio Value="@item"></MudRadio>
                         </MudTd>
                     </RowTemplate>
                 </MudTable>
