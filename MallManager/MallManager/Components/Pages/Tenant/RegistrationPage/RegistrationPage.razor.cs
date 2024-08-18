@@ -17,12 +17,7 @@ internal enum PurposeOfTheContractType
 
 public partial class RegistrationPage : ComponentBase
 {
-    MudStepperExtended _stepper = new();
-
-    private ApartmentRentalForm _apartmentRentalForm;
-    private RentalForm _rentalForm = new();
-    
-    // private Model model = new Model(); TODO: Create a data model or DTO to represent data from a form so that you can manipulate it
+    private MudStepperExtended _stepper = new();
     private PurposeOfTheContractType _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
     private bool _loading;
     
@@ -35,42 +30,8 @@ public partial class RegistrationPage : ComponentBase
             return false;
         }
         
-        if (_stepper.GetActiveIndex() == 1)
-        {
-            switch (_currentPurposeOfTheContractType)
-            { 
-                case PurposeOfTheContractType.APARTMENT_RENTAL:
-                    if (await _apartmentRentalForm.IsFormValid())
-                    {
-                        SubmitApartmentRental();
-                        return false;
-                    }
-                    break;
-                case PurposeOfTheContractType.ADVERTISING_SPACE_RENTAL:
-                    // TODO: Advertising space rental form validation and submitting
-                    break;
-                case PurposeOfTheContractType.EVENT_ORGANIZATION:
-                    // TODO: Event organization form validation and submitting
-                    break;
-                case PurposeOfTheContractType.OTHER:
-                    // TODO: Other form validation and submitting
-                    break;
-            }
-            StateHasChanged();
-            
-            return true;
-        }
-        
         return false;
     } 
-    
-    private async Task SubmitApartmentRental()
-    {
-        // TODO: Write business logic to save model or do with it whatever you want
-        Console.WriteLine("Submitting...");
-        await Task.Delay(1000);
-        Console.WriteLine("Done...");
-    }
 
     private async Task RenderApartmentRentalForm()
     {
@@ -88,7 +49,6 @@ public partial class RegistrationPage : ComponentBase
     {
         _currentPurposeOfTheContractType = PurposeOfTheContractType.EVENT_ORGANIZATION;
         await MoveToNextStep();
-
     } 
     
     private async Task RenderOtherPurposeForm()
@@ -96,16 +56,19 @@ public partial class RegistrationPage : ComponentBase
         _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
         await MoveToNextStep();
     }
-
+    
     private async Task MoveToNextStep()
     {
         var currentStepIndex = _stepper.GetActiveIndex();
         
         _loading = true;
         StateHasChanged();
-        _stepper.CompleteStep(currentStepIndex);
-        _stepper.SetActiveStepByIndex(currentStepIndex + 1);
+        
+        await _stepper.CompleteStep(currentStepIndex);
+        await _stepper.SetActiveStepByIndex(currentStepIndex + 1);
+        
         await Task.Delay(1000);
+        
         _loading = false;
         StateHasChanged();
     }
