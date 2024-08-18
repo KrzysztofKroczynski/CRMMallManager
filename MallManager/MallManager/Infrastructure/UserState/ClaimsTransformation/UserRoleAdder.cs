@@ -31,16 +31,17 @@ public sealed class UserRoleAdder : IClaimsTransformation
 
         if (user is null) return principal;
 
-        if (user.Manager is not null)
+        if (user.Manager is not null && !principal.HasClaim(claim =>
+                claim.Type == ClaimTypes.Role && claim.Value == Roles.RoleClaimValues.Manager.ToString()))
         {
             identity.AddClaim(new Claim(ClaimTypes.Role, Roles.RoleClaimValues.Manager.ToString()));
         }
 
         foreach (var userSystemAccess in user.SystemAccesses)
         {
-            if (!Roles.SystemToRoleClaimValueMap.TryGetValue(userSystemAccess.SystemDict.Name, out var claimValues))
+            if (!Roles.SystemToRoleClaimValueMap.TryGetValue(userSystemAccess.SystemDict.Name, out var claimValues)
+                && principal.HasClaim(claim => claim.Type == ClaimTypes.Role && claim.Value == claimValues.ToString()))
             {
-                _logger.LogWarning("No role found for: {systemName}", userSystemAccess.SystemDict.Name);
                 continue;
             }
 
