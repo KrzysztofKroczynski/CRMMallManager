@@ -9,6 +9,7 @@ public class RentalForm : MudForm
     [Required(ErrorMessage = "Metraż jest wymagany")]
     public SurfaceClassDict SurfaceClassDict { get; set; }
     
+    [Required(ErrorMessage = "Typ działalności jest wymagany")]
     public RetailUnitPurpose RetailUnitPurpose { get; set; }
     
     [Required(ErrorMessage = "Data \"od\" jest wymagana")]

@@ -7,7 +7,8 @@ namespace MallManager.Components.Forms.ApartmentRentalForm;
 
 public partial class ApartmentRentalForm : ComponentBase
 {
-    [Parameter] public RentalForm? RentalForm { get; set; }
+    // [Parameter] public RentalForm? RentalForm { get; set; }
+    public RentalForm RentalForm = new();
     private EditForm? _editForm;
     
     private IEnumerable<RetailUnit> _allRetailUnits = Enumerable.Empty<RetailUnit>();
@@ -23,6 +24,7 @@ public partial class ApartmentRentalForm : ComponentBase
 
     private void ApplyFilter()
     {
+        Console.Beep();
         if (RentalForm.SurfaceClassDict != null && RentalForm.RetailUnitPurpose != null && 
             RentalForm.StartDate.HasValue && RentalForm.EndDate.HasValue)
         {
@@ -74,5 +76,10 @@ public partial class ApartmentRentalForm : ComponentBase
         await RentalForm.Validate();
 
         return RentalForm.IsValid;
+    }
+
+    private void OnValidSubmit(EditContext context)
+    {
+        Console.WriteLine("Poprawny");
     }
 }

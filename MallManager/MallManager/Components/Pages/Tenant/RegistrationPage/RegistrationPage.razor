@@ -20,10 +20,10 @@
                     <ChildContent>
                         <MudText Typo="Typo.h4" Class="d-flex justify-center">Cel zapisu</MudText>
                         <MudStack Row="true" Class="d-flex justify-center">
-                            <MudButton OnClick="@RenderApartmentRentalForm">Wynajem lokalu</MudButton>
-                            <MudButton OnClick="@RenderAdvertisingSpaceRentalForm">Wynajem reklamy</MudButton>
-                            <MudButton OnClick="@RenderEventOrganizationForm">Organizacja imprezy</MudButton>
-                            <MudButton OnClick="@RenderOtherPurposeForm">Inne</MudButton>
+                            <MudButton OnClick="RenderApartmentRentalForm">Wynajem lokalu</MudButton>
+                            <MudButton OnClick="RenderAdvertisingSpaceRentalForm">Wynajem reklamy</MudButton>
+                            <MudButton OnClick="RenderEventOrganizationForm">Organizacja imprezy</MudButton>
+                            <MudButton OnClick="RenderOtherPurposeForm">Inne</MudButton>
                         </MudStack>
                     </ChildContent>
                 </MudStepExtended>
@@ -34,11 +34,7 @@
                         @switch (_currentPurposeOfTheContractType)
                         {
                             case PurposeOfTheContractType.APARTMENT_RENTAL:
-                                <MudStack Row="true">
-                                    <MudStack Class="purpose-form">
-                                        <ApartmentRentalForm @ref="_apartmentRentalForm" RentalForm="@_rentalForm"/>
-                                    </MudStack>
-                                </MudStack>
+                                <ApartmentRentalForm />
 
                                 <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
                                 <MudText Typo="Typo.body1">**Podane daty rozpoczęcia i zakończenia mają charakter poglądowy i nie stanowią oferty.</MudText>

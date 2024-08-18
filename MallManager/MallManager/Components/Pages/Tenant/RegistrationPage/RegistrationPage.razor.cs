@@ -20,8 +20,8 @@ public partial class RegistrationPage : ComponentBase
     MudStepperExtended _stepper = new();
 
     private ApartmentRentalForm _apartmentRentalForm;
-
     private RentalForm _rentalForm = new();
+    
     // private Model model = new Model(); TODO: Create a data model or DTO to represent data from a form so that you can manipulate it
     private PurposeOfTheContractType _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
     private bool _loading;
@@ -38,7 +38,7 @@ public partial class RegistrationPage : ComponentBase
         if (_stepper.GetActiveIndex() == 1)
         {
             switch (_currentPurposeOfTheContractType)
-            {
+            { 
                 case PurposeOfTheContractType.APARTMENT_RENTAL:
                     if (await _apartmentRentalForm.IsFormValid())
                     {
@@ -72,26 +72,26 @@ public partial class RegistrationPage : ComponentBase
         Console.WriteLine("Done...");
     }
 
-    private async void RenderApartmentRentalForm()
+    private async Task RenderApartmentRentalForm()
     {
         _currentPurposeOfTheContractType = PurposeOfTheContractType.APARTMENT_RENTAL;
         await MoveToNextStep();
     }
 
-    private async void RenderAdvertisingSpaceRentalForm()
+    private async Task RenderAdvertisingSpaceRentalForm()
     {
         _currentPurposeOfTheContractType = PurposeOfTheContractType.ADVERTISING_SPACE_RENTAL;
         await MoveToNextStep();
     }
     
-    private async void RenderEventOrganizationForm()
+    private async Task RenderEventOrganizationForm()
     {
         _currentPurposeOfTheContractType = PurposeOfTheContractType.EVENT_ORGANIZATION;
         await MoveToNextStep();
 
     } 
     
-    private async void RenderOtherPurposeForm()
+    private async Task RenderOtherPurposeForm()
     {
         _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
         await MoveToNextStep();
@@ -103,12 +103,9 @@ public partial class RegistrationPage : ComponentBase
         
         _loading = true;
         StateHasChanged();
-        
         _stepper.CompleteStep(currentStepIndex);
         _stepper.SetActiveStepByIndex(currentStepIndex + 1);
-
         await Task.Delay(1000);
-            
         _loading = false;
         StateHasChanged();
     }
