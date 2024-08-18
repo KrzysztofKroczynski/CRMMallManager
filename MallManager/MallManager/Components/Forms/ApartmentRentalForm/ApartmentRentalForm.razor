@@ -1,22 +1,22 @@
 @using MallManager.Service
-@using Shared.Core.Entities
 @inject RetailUnitService RetailUnitService
 
-<EditForm Model="@RentalForm" OnValidSubmit="OnValidSubmit">
+<EditForm Model="@_rentalForm" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator/>
     <MudStack Row="true">
         <MudStack Class="purpose-form">
             <MudStack Row="true">
-                <MudSelect T="SurfaceClassDict" For="() => RentalForm.SurfaceClassDict" Required="true" @bind-Value="RentalForm.SurfaceClassDict" Label="Metraż" Variant="Variant.Filled" ValueChanged="@ApplyFilter">
+                <MudSelect T="string" For="() => _rentalForm.SurfaceClassDictName" @bind-Value="_rentalForm.SurfaceClassDictName" Label="Metraż*" Variant="Variant.Filled">
                     @foreach (var surfaceClass in RetailUnitService.SurfaceClassDicts)
                     {
-                        <MudSelectItem Value="@surfaceClass">@RetailUnitService.SurfaceClassDictsAsString(surfaceClass)</MudSelectItem>
+                        <MudSelectItem Value="@surfaceClass.Name">@RetailUnitService.SurfaceClassDictsAsString(surfaceClass)</MudSelectItem>
                     }
                 </MudSelect>
 
-                <MudSelect T="RetailUnitPurpose" For="() => RentalForm.RetailUnitPurpose" @bind-Value="RentalForm.RetailUnitPurpose" Label="Typ działalności" Variant="Variant.Filled" OnChange="@ApplyFilter">
+                <MudSelect T="string" For="() => _rentalForm.RetailUnitPurposeName" @bind-Value="_rentalForm.RetailUnitPurposeName" Label="Typ działalności*" Variant="Variant.Filled" OnChange="@ApplyFilter">
                     @foreach (var retailUnitPurpose in RetailUnitService.RetailUnitPurposes)
                     {
-                        <MudSelectItem Value="@retailUnitPurpose">@retailUnitPurpose.Name</MudSelectItem>
+                        <MudSelectItem Value="@retailUnitPurpose.Name">@retailUnitPurpose.Name</MudSelectItem>
                     }
                 </MudSelect>
             </MudStack>
@@ -24,15 +24,13 @@
             <MudText Typo="Typo.caption" Class="mt-20">Okres Wynajmu*</MudText>
 
             <MudStack Row="true">
-                <MudDatePicker @bind-Date="RentalForm.StartDate" For="() => RentalForm.StartDate" Label="Od" Variant="Variant.Filled" Validation="ValidateStartDate" OnChange="@ApplyFilter"/>
-                <MudDatePicker @bind-Date="RentalForm.EndDate"  For="() => RentalForm.EndDate" Label="Do" Variant="Variant.Filled" Validation="ValidateEndDate" OnChange="@ApplyFilter"/>
-
-                <MudText Typo="Typo.subtitle1" Color="Color.Error" Hidden="@string.IsNullOrEmpty(_errorMessage)">@_errorMessage</MudText>
+                <MudDatePicker @bind-Date="_rentalForm.StartDate" For="() => _rentalForm.StartDate" Label="Od*" Variant="Variant.Filled" />
+                <MudDatePicker @bind-Date="_rentalForm.EndDate" For="() => _rentalForm.EndDate" Label="Do*" Variant="Variant.Filled" />
             </MudStack>
         </MudStack>
 
         <MudStack>
-            <MudRadioGroup T="RetailUnit" For="() => RentalForm.SelectedRetailUnit" @bind-SelectedOption="RentalForm.SelectedRetailUnit">
+            <MudRadioGroup T="int" For="() => _rentalForm.RentalUnitId" @bind-SelectedOption="_rentalForm.RentalUnitId">
                 <MudTable Items="_filteredRetailUnits">
                     <HeaderContent>
                         <MudTh>Kod lokalu</MudTh>
@@ -47,7 +45,7 @@
                         <MudTd>@item.LocalNumber</MudTd>
                         <MudTd>@item.LocalSurfaceArea</MudTd>
                         <MudTd>
-                            <MudRadio Value="@item"></MudRadio>
+                            <MudRadio Value="@item.Id"></MudRadio>
                         </MudTd>
                     </RowTemplate>
                 </MudTable>
@@ -55,8 +53,10 @@
         </MudStack>
     </MudStack>
 
-    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
-               Class="ml-auto">
-        Zatwierdź
-    </MudButton>
+    <MudStack>
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                   Class="ml-auto">
+            Zatwierdź
+        </MudButton>
+    </MudStack>
 </EditForm>
