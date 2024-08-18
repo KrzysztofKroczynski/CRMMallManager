@@ -12,15 +12,15 @@
     <div class="col-md-12">
         @foreach (var recoveryCode in RecoveryCodes)
         {
-            <div>
-                <code class="recovery-code">@recoveryCode</code>
-            </div>
+        <div>
+            <code class="recovery-code">@recoveryCode</code>
+        </div>
         }
     </div>
 </div>
 
 @code {
-    [Parameter] public string[] RecoveryCodes { get; set; } = [];
+[Parameter] public string[] RecoveryCodes { get; set; } = [];
 
-    [Parameter] public string? StatusMessage { get; set; }
+[Parameter] public string? StatusMessage { get; set; }
 }
