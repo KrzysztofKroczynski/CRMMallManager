@@ -14,7 +14,7 @@ public class PersonalForm : MudForm
     public string Surname { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "PESEL jest wymagany.")]
-    [RegularExpression("([0-9]11)", ErrorMessage = "Format Pesel niepoprawny.")]
+    [RegularExpression("([0-9]+)", ErrorMessage = "Format Pesel niepoprawny.")]
     public string Pesel { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Numer telefonu jest wymagany.")]
@@ -57,25 +57,26 @@ public class PersonalForm : MudForm
     public decimal? InitialCapital { get; set; }
 }
 
-public class RequiredIf : ValidationAttribute
+public class RequiredIfAttribute : RequiredAttribute
 {
     private readonly string _conditionProperty;
-    private readonly ValidationAttribute _validationAttribute = new RequiredAttribute();
 
-    public RequiredIf(string conditionProperty)
+    public RequiredIfAttribute(string booleanPropertyName)
     {
-        _conditionProperty = conditionProperty;
+        _conditionProperty = booleanPropertyName;
     }
 
-    protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
+    protected new ValidationResult? GetValidationResult(object? value, ValidationContext validationContext)
     {
         var property = validationContext.ObjectType.GetProperty(_conditionProperty);
         if (property == null) return new ValidationResult($"Nie znaleziono właściwości '{_conditionProperty}'.");
 
         var conditionValue = property.GetValue(validationContext.ObjectInstance);
 
-        if (conditionValue is true && string.IsNullOrEmpty(value?.ToString()))
-            return _validationAttribute.GetValidationResult(value, validationContext);
+        if (conditionValue is true)
+        {
+            return base.GetValidationResult(value, validationContext);
+        }
 
         return ValidationResult.Success;
     }

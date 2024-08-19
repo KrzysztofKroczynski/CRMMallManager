@@ -1,4 +1,3 @@
-using Ardalis.SharedKernel;
 using MallManager.Components;
 using MallManager.Components.Account;
 using MallManager.Infrastructure;
@@ -7,10 +6,8 @@ using MallManager.Infrastructure.Persistence;
 using MallManager.Service;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using MudExtensions.Services;
-using Shared.Core.Entities;
 using _Imports = MallManager.Client._Imports;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,12 +38,8 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                       throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<MallManagerContext>(options =>
-    options.UseSqlServer(connectionString));
+
+builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -55,7 +48,6 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IRetailUnitService, RetailUnitService>();
-builder.Services.AddScoped<RetailUnitService>();
 builder.Services.AddScoped<IRetailUnitRepository, RetailUnitRepository>();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
