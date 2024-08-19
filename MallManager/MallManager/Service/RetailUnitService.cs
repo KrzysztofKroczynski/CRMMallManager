@@ -23,15 +23,10 @@ public sealed class RetailUnitService : IRetailUnitService
         SurfaceClassDicts = await _repository.GetAllSurfaceClassDicts();
     }
 
-    public IEnumerable<RetailUnit> FilterRetailUnits(SurfaceClassDict surfaceClassDict,
-        RetailUnitPurpose retailUnitPurpose, DateOnly? startDate, DateOnly? endDate)
+    public async Task<IEnumerable<Lease>> GetAllLeasesForRetailUnitId(int retailUnitId)
     {
-        return RetailUnits.Where(item =>
-            !item.Leases.Any(lease => lease.StartDate < endDate && lease.EndDate > startDate)
-            && item.LocalSurfaceArea >= surfaceClassDict.MinimalSurface
-            && item.LocalSurfaceArea <= surfaceClassDict.MaximumSurface
-            && item.RetailUnitPurpose.Equals(retailUnitPurpose)).ToList();
-    }
+        return await _repository.GetAllLeasesOfRetailUnit(retailUnitId);
+    } 
     
     public string SurfaceClassDictsAsString(SurfaceClassDict surfaceClassDict)
     {

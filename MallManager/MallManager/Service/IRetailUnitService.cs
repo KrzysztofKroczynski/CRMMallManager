@@ -5,8 +5,6 @@ namespace MallManager.Service;
 public interface IRetailUnitService
 {
     public Task LoadDataAsync();
-    public IEnumerable<RetailUnit> FilterRetailUnits(SurfaceClassDict surfaceClassDict,
-        RetailUnitPurpose retailUnitPurpose, DateOnly? startDate, DateOnly? endDate);
-
+    public Task<IEnumerable<Lease>> GetAllLeasesForRetailUnitId(int retailUnitId);
     public string SurfaceClassDictsAsString(SurfaceClassDict surfaceClassDict);
 }
