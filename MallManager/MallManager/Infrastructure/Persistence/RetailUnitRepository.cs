@@ -23,10 +23,10 @@ public class RetailUnitRepository : IRetailUnitRepository
         return await _context.RetailUnitPurposes.ToListAsync();
     }
     
-    public async Task<ICollection<Lease>> GetAllLeasesOfRetailUnit(RetailUnit retailUnit)
+    public async Task<ICollection<Lease>> GetAllLeasesOfRetailUnit(int retailUnitId)
     {
         return await _context.Leases
-            .Where(lease => lease.RetailUnit.Equals(retailUnit)).ToListAsync();
+            .Where(lease => lease.RetailUnit.Id == retailUnitId).ToListAsync();
     }
     
     public async Task<ICollection<SurfaceClassDict>> GetAllSurfaceClassDicts()

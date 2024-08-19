@@ -6,6 +6,6 @@ public interface IRetailUnitRepository
 {
     public Task<ICollection<RetailUnit>> GetAllRetailUnits();
     public Task<ICollection<RetailUnitPurpose>> GetAllRetailUnitPurposes();
-    public Task<ICollection<Lease>> GetAllLeasesOfRetailUnit(RetailUnit retailUnit);
+    public Task<ICollection<Lease>> GetAllLeasesOfRetailUnit(int retailUnitId);
     public Task<ICollection<SurfaceClassDict>> GetAllSurfaceClassDicts();
 }
