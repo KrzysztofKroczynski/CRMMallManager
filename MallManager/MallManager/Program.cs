@@ -47,7 +47,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<IRetailUnitService, RetailUnitService>();
+builder.Services.AddScoped<RetailUnitService>();
 builder.Services.AddScoped<IRetailUnitRepository, RetailUnitRepository>();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
