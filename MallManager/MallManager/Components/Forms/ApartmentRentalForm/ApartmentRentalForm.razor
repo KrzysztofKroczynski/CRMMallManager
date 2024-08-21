@@ -1,5 +1,5 @@
-@using MallManager.Service
-@inject RetailUnitService RetailUnitService
+@using MallManager.Infrastructure.RetailUnitLeaseApplicationService
+@inject RetailUnitLeaseApplicationService RetailUnitLeaseApplicationService
 
 <EditForm Model="@_rentalForm" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator/>
@@ -7,14 +7,14 @@
         <MudStack Class="purpose-form">
             <MudStack Row="true">
                 <MudSelect T="int" For="() => _rentalForm.SurfaceClassDictId" @bind-Value="_rentalForm.SurfaceClassDictId" Label="Metraż*" Variant="Variant.Filled">
-                    @foreach (var surfaceClass in RetailUnitService.SurfaceClassDicts)
+                    @foreach (var surfaceClass in RetailUnitLeaseApplicationService.SurfaceClassDicts)
                     {
-                        <MudSelectItem Value="@surfaceClass.Id">@RetailUnitService.SurfaceClassDictsAsString(surfaceClass)</MudSelectItem>
+                        <MudSelectItem Value="@surfaceClass.Id">@RetailUnitLeaseApplicationService.SurfaceClassDictsAsString(surfaceClass)</MudSelectItem>
                     }
                 </MudSelect>
 
                 <MudSelect T="int" For="() => _rentalForm.RetailUnitPurposeId" @bind-Value="_rentalForm.RetailUnitPurposeId" Label="Typ działalności*" Variant="Variant.Filled" OnChange="@ApplyFilter">
-                    @foreach (var retailUnitPurpose in RetailUnitService.RetailUnitPurposes)
+                    @foreach (var retailUnitPurpose in RetailUnitLeaseApplicationService.RetailUnitPurposes)
                     {
                         <MudSelectItem Value="@retailUnitPurpose.Id">@retailUnitPurpose.Name</MudSelectItem>
                     }

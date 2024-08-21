@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using Ardalis.Specification;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Shared.Core.Entities;
@@ -21,8 +20,8 @@ public partial class ApartmentRentalForm : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await RetailUnitService.LoadDataAsync();
-        _allRetailUnits = RetailUnitService.RetailUnits;
+        await RetailUnitLeaseApplicationService.LoadDataAsync();
+        _allRetailUnits = RetailUnitLeaseApplicationService.RetailUnits;
         _filteredRetailUnits = _allRetailUnits;
         _rentalForm.PropertyChanged += FormModelPropertyChanged;
     }
@@ -54,7 +53,7 @@ public partial class ApartmentRentalForm : ComponentBase
         if (_rentalForm.SurfaceClassDictId != null && _rentalForm.SurfaceClassDictId != _previousSurfaceClassDictId)
         {
             _filteredRetailUnits = _filteredRetailUnits.Where(retailUnit => 
-                    RetailUnitService.SurfaceClassDicts.Any(surfaceClassDict => 
+                    RetailUnitLeaseApplicationService.SurfaceClassDicts.Any(surfaceClassDict => 
                         surfaceClassDict.Id == _rentalForm.SurfaceClassDictId 
                         && retailUnit.LocalSurfaceArea >= surfaceClassDict.MinimalSurface 
                         && retailUnit.LocalSurfaceArea <= surfaceClassDict.MaximumSurface)
@@ -69,7 +68,7 @@ public partial class ApartmentRentalForm : ComponentBase
             var startDateAsDateOnly = new DateOnly?(DateOnly.FromDateTime(_rentalForm.StartDate.Value));
             
             _filteredRetailUnits = _filteredRetailUnits.Where(retailUnit =>
-                    RetailUnitService.GetAllLeasesForRetailUnitId(retailUnit.Id).Result.Where(lease =>
+                    RetailUnitLeaseApplicationService.GetAllLeasesForRetailUnitId(retailUnit.Id).Where(lease =>
                         startDateAsDateOnly < lease.EndDate).ToList()
                     .Count == 0)
                 .ToList();
@@ -82,7 +81,7 @@ public partial class ApartmentRentalForm : ComponentBase
             var endDateAsDateOnly = new DateOnly?(DateOnly.FromDateTime(_rentalForm.EndDate.Value));
             
             _filteredRetailUnits = _filteredRetailUnits.Where(retailUnit =>
-                    RetailUnitService.GetAllLeasesForRetailUnitId(retailUnit.Id).Result.Where(lease =>
+                    RetailUnitLeaseApplicationService.GetAllLeasesForRetailUnitId(retailUnit.Id).Where(lease =>
                             endDateAsDateOnly > lease.StartDate).ToList()
                         .Count == 0)
                 .ToList();
@@ -96,7 +95,6 @@ public partial class ApartmentRentalForm : ComponentBase
 
     private void OnValidSubmit(EditContext context)
     {
-        // TODO: Add logic responsible for sending and navigating to convirmation page
-        Console.WriteLine("Poprawny");
+        RetailUnitLeaseApplicationService.CreateLeaseApplication(_rentalForm.SurfaceClassDictId, _rentalForm.RetailUnitPurposeId, _rentalForm.StartDate, _rentalForm.EndDate, _rentalForm.Description);
     }
 }
