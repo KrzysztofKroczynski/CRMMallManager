@@ -17,17 +17,8 @@ public sealed class SystemAccessService : ISystemAccessService
         _logger = logger;
     }
 
-    public async Task<bool> CreateSystemAccess(SystemDict systemDict, AspNetUser aspNetUser)
+    public async Task<SystemAccess> CreateSystemAccess(AspNetUser aspNetUser, SystemDict systemDict)
     {
-        var existingValidSystemAccessesForUserToSystem =
-            aspNetUser.SystemAccesses.Count(systemAccess => systemAccess.SystemDict.Equals(systemDict) && systemAccess.ValidUntil >= DateTime.Today);
-
-        if (existingValidSystemAccessesForUserToSystem > 0)
-        {
-            _logger.LogInformation($"This AspNetUser {aspNetUser.UserName} already has valid access to {systemDict.Name} system");
-            return false;
-        }
-
         var signupStatusByName = new SignupStatusByName("OCZEKUJĄCY");
         var pendingSignupStatus = await _signupStatusRepository.FirstOrDefaultAsync(signupStatusByName);
 
@@ -53,9 +44,34 @@ public sealed class SystemAccessService : ISystemAccessService
         catch (Exception e)
         {
             _logger.LogError(e.StackTrace);
-            return false;
+            return null;
+        }
+        
+        _logger.LogInformation($"Successfully created pending approval system access for user {aspNetUser.UserName} to the {systemDict.Name} system");
+
+        return systemAccess;
+    }
+
+    public bool DoesUserHasAccessToTheSystem(AspNetUser aspNetUser, SystemDict systemDict)
+    {
+        var existingValidSystemAccessesForUserToSystem =
+            aspNetUser.SystemAccesses.Count(systemAccess => systemAccess.SystemDict.Equals(systemDict) && systemAccess.ValidUntil >= DateTime.Today);
+
+        if (existingValidSystemAccessesForUserToSystem > 0)
+        {
+            _logger.LogInformation($"The {aspNetUser.UserName} AspNetUser has valid access to {systemDict.Name} system");
+            return true;
         }
 
-        return true;
+        _logger.LogInformation($"The {aspNetUser.UserName} AspNetUser does not hav valid access to the {systemDict.Name} system");
+        return false;
+    }
+
+    public SystemAccess? GetValidSystemAccessOfUser(AspNetUser aspNetUser, SystemDict systemDict)
+    {
+        var validSystemAccess = aspNetUser.SystemAccesses.FirstOrDefault(systemAccess =>
+            systemAccess.AspNetUsers.Equals(aspNetUser) && systemAccess.SystemDict.Equals(systemDict), null);
+
+        return validSystemAccess;
     }
 }
