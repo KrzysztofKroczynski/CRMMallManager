@@ -54,6 +54,12 @@ public sealed class SystemAccessService : ISystemAccessService
 
     public bool DoesUserHasAccessToTheSystem(AspNetUser aspNetUser, SystemDict systemDict)
     {
+        if (aspNetUser is null || systemDict is null)
+        {
+            _logger.LogError($"User: {aspNetUser}, System {systemDict}. The provided argument cannot be null");
+            throw new ArgumentNullException();
+        }
+        
         var existingValidSystemAccessesForUserToSystem =
             aspNetUser.SystemAccesses.Count(systemAccess => systemAccess.SystemDict.Equals(systemDict) && systemAccess.ValidUntil >= DateTime.Today);
 

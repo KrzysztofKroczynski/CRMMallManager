@@ -55,17 +55,23 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
 
     public async Task CreateLeaseApplication(int surfaceClassDictId, int retailUnitPurposeId, DateTime? startDate, DateTime? endDate, string description)
     {
-        var signupStatusByName = new SignupStatusByName("OCZEKUJĄCY");
-        var pendingSignupStatus = await _signupStatusRepository.FirstOrDefaultAsync(signupStatusByName);
-        
+        var pendingSignupStatus = await _signupStatusRepository.GetByIdAsync(1);
         if (pendingSignupStatus is null)
         {
             _logger.LogError("There is no status \"OCZEKUJĄCY\" in the database");
             // TODO: Instead of exceptions maybe create error codes?
-            throw new Exception();
+            throw new ArgumentNullException();
         }
+        _logger.LogInformation("Successfully fetched the \"OCZEKUJĄCY\" status");
         
         var systemDict = await _systemDictRepository.GetByIdAsync(1);
+        if (systemDict is null)
+        {
+            _logger.LogError("There is no system \"WYNAJEM_LOKALI\" in the database");
+            // TODO: Instead of exceptions maybe create error codes?
+            throw new ArgumentNullException();
+        }
+        _logger.LogInformation("Successfully fetched the WYNAJEM_LOKALU system name");
         
         var retailUnitPurpose = RetailUnitPurposes.First(item => item.Id == retailUnitPurposeId);
         var surfaceClass = SurfaceClassDicts.First(item => item.Id == surfaceClassDictId);
