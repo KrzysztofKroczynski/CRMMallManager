@@ -11,5 +11,7 @@ public class RegistrationForm : MudForm
     [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
     public string Password { get; set; } = string.Empty;
 
-    [Required] [Compare(nameof(Password))] public string Password2 { get; set; } = string.Empty;
+    [Required(ErrorMessage = "Repeating password is required")]
+    [Compare(nameof(Password), ErrorMessage = "Password does not mach")]
+    public string Password2 { get; set; } = string.Empty;
 }
