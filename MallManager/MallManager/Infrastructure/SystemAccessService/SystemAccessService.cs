@@ -17,23 +17,27 @@ public sealed class SystemAccessService : ISystemAccessService
         _logger = logger;
     }
 
-    public async Task<SystemAccess> CreateSystemAccess(AspNetUser aspNetUser, SystemDict systemDict)
+    public async Task<SystemAccess> CreateSystemAccess(AspNetUser aspNetUser, Manager assignedManager, SystemDict systemDict)
     {
-        var signupStatusByName = new SignupStatusByName("OCZEKUJĄCY");
-        var pendingSignupStatus = await _signupStatusRepository.FirstOrDefaultAsync(signupStatusByName);
+        var pendingSignupStatus = await _signupStatusRepository.GetByIdAsync(1);
 
         if (pendingSignupStatus is null)
         {
-            _logger.LogError("There is no status OCZEKUJĄCY in the database");
+            _logger.LogError("There is no status Oczekujący in the database");
             // TODO: Instead of exceptions maybe create error codes?
             throw new Exception();
         }
+        
+        _logger.LogInformation($"Creating system access for user {aspNetUser.UserName}");
+        var newId = await GenerateNewId();
 
         var systemAccess = new SystemAccess()
         {
+            Id = newId,
             AspNetUsers = aspNetUser,
             SignupStatusDict = pendingSignupStatus,
-            SystemDict = systemDict
+            SystemDict = systemDict,
+            AssignedManager = assignedManager
         };
 
         try
@@ -46,7 +50,6 @@ public sealed class SystemAccessService : ISystemAccessService
             _logger.LogError(e.StackTrace);
             return null;
         }
-        
         _logger.LogInformation($"Successfully created pending approval system access for user {aspNetUser.UserName} to the {systemDict.Name} system");
 
         return systemAccess;
@@ -69,7 +72,7 @@ public sealed class SystemAccessService : ISystemAccessService
             return true;
         }
 
-        _logger.LogInformation($"The {aspNetUser.UserName} AspNetUser does not hav valid access to the {systemDict.Name} system");
+        _logger.LogInformation($"The {aspNetUser.UserName} AspNetUser does not have valid access to the {systemDict.Name} system");
         return false;
     }
 
@@ -79,5 +82,11 @@ public sealed class SystemAccessService : ISystemAccessService
             systemAccess.AspNetUsers.Equals(aspNetUser) && systemAccess.SystemDict.Equals(systemDict), null);
 
         return validSystemAccess;
+    }
+
+    private async Task<int> GenerateNewId()
+    {
+        var value = await _systemAccessRepository.CountAsync() + 1;
+        return value;
     }
 }

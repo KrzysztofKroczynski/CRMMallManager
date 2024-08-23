@@ -3,7 +3,6 @@ using MallManager.Components.Account;
 using MallManager.Infrastructure;
 using MallManager.Infrastructure.Configuration;
 using MallManager.Infrastructure.Persistence;
-using MallManager.Infrastructure.Persistence.LeaseApplicationRepository;
 using MallManager.Infrastructure.RetailUnitLeaseApplicationService;
 using MallManager.Service;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -51,7 +50,6 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 
 builder.Services.AddScoped<RetailUnitLeaseApplicationService>();
 builder.Services.AddScoped<ISystemAccessService, SystemAccessService>();
-builder.Services.AddScoped<ILeaseApplicationRepository, LeaseApplicationRepository>();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 

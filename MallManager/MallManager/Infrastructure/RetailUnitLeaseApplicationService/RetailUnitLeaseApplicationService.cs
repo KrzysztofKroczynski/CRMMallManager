@@ -1,8 +1,6 @@
 ﻿using Ardalis.Specification;
-using MallManager.Infrastructure.Persistence.LeaseApplicationRepository;
 using MallManager.Service;
 using Shared.Core.Entities;
-using Shared.Core.Specifications;
 
 namespace MallManager.Infrastructure.RetailUnitLeaseApplicationService;
 
@@ -12,7 +10,7 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
     private readonly ISystemAccessService _systemAccessService;
     
     private readonly IRepositoryBase<SignupStatusDict> _signupStatusRepository;
-    private readonly ILeaseApplicationRepository _leaseApplicationRepository;
+    private readonly IRepositoryBase<LeaseApplication> _leaseApplicationRepository;
     private readonly IRepositoryBase<RetailUnit> _retailUnitRepository;
     private readonly IRepositoryBase<RetailUnitPurpose> _retailUnitPurposeRepository;
     private readonly IRepositoryBase<SurfaceClassDict> _surfaceClassDictRepository;
@@ -22,7 +20,7 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
     public IEnumerable<RetailUnitPurpose> RetailUnitPurposes { get; private set; } = Enumerable.Empty<RetailUnitPurpose>();
     public IEnumerable<SurfaceClassDict> SurfaceClassDicts { get; private set; } = Enumerable.Empty<SurfaceClassDict>();
 
-    public RetailUnitLeaseApplicationService(ILogger<RetailUnitLeaseApplicationService> logger, ISystemAccessService systemAccessService, IRepositoryBase<SignupStatusDict> signupStatusRepository, ILeaseApplicationRepository leaseApplicationRepository,
+    public RetailUnitLeaseApplicationService(ILogger<RetailUnitLeaseApplicationService> logger, ISystemAccessService systemAccessService, IRepositoryBase<SignupStatusDict> signupStatusRepository, IRepositoryBase<LeaseApplication> leaseApplicationRepository,
         IRepositoryBase<RetailUnit> retailUnitRepository, IRepositoryBase<RetailUnitPurpose> retailUnitPurposeRepository, IRepositoryBase<SurfaceClassDict> surfaceClassDictRepository, IRepositoryBase<SystemDict> systemDictRepository)
     {
         _logger = logger;
@@ -53,41 +51,81 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
         return $"{surfaceClassDict.Name} ({surfaceClassDict.MinimalSurface} - {surfaceClassDict.MaximumSurface} m²)";
     }
 
-    public async Task CreateLeaseApplication(int surfaceClassDictId, int retailUnitPurposeId, DateTime? startDate, DateTime? endDate, string description)
+    public async Task CreateLeaseApplication(int surfaceClassDictId, int retailUnitPurposeId, DateTime? startDate,
+        DateTime? endDate, string description)
     {
         var pendingSignupStatus = await _signupStatusRepository.GetByIdAsync(1);
         if (pendingSignupStatus is null)
         {
-            _logger.LogError("There is no status \"OCZEKUJĄCY\" in the database");
+            _logger.LogError("There is no status \"Oczekujący\" in the database");
             // TODO: Instead of exceptions maybe create error codes?
             throw new ArgumentNullException();
         }
-        _logger.LogInformation("Successfully fetched the \"OCZEKUJĄCY\" status");
-        
+
         var systemDict = await _systemDictRepository.GetByIdAsync(1);
         if (systemDict is null)
         {
-            _logger.LogError("There is no system \"WYNAJEM_LOKALI\" in the database");
+            _logger.LogError("There is no system \"Wynajmy\" in the database");
             // TODO: Instead of exceptions maybe create error codes?
             throw new ArgumentNullException();
         }
-        _logger.LogInformation("Successfully fetched the WYNAJEM_LOKALU system name");
-        
+
         var retailUnitPurpose = RetailUnitPurposes.First(item => item.Id == retailUnitPurposeId);
         var surfaceClass = SurfaceClassDicts.First(item => item.Id == surfaceClassDictId);
-        
-        // PLACEHOLDER
-        var aspNetUser = new AspNetUser
+
+        // PLACEHOLDERS
+        var aspNetUserManager = new AspNetUser
         {
-            
+            Id = "1",
+            UserName = null,
+            NormalizedUserName = null,
+            Email = null,
+            NormalizedEmail = null,
+            EmailConfirmed = false,
+            PasswordHash = null,
+            SecurityStamp = null,
+            ConcurrencyStamp = null,
+            PhoneNumber = null,
+            PhoneNumberConfirmed = false,
+            TwoFactorEnabled = false,
+            LockoutEnd = null,
+            LockoutEnabled = false,
+            AccessFailedCount = 0
         };
 
-        var systemAccess = _systemAccessService.DoesUserHasAccessToTheSystem(aspNetUser, systemDict)
-            ? _systemAccessService.GetValidSystemAccessOfUser(aspNetUser, systemDict)
-            : await _systemAccessService.CreateSystemAccess(aspNetUser, systemDict);
+        var aspNetUserTenant = new AspNetUser
+        {
+            Id = "2",
+            UserName = null,
+            NormalizedUserName = null,
+            Email = null,
+            NormalizedEmail = null,
+            EmailConfirmed = false,
+            PasswordHash = null,
+            SecurityStamp = null,
+            ConcurrencyStamp = null,
+            PhoneNumber = null,
+            PhoneNumberConfirmed = false,
+            TwoFactorEnabled = false,
+            LockoutEnd = null,
+            LockoutEnabled = false,
+            AccessFailedCount = 0
+        };
 
+        var manager = new Manager()
+        {
+            Id = "1",
+            IdNavigation = aspNetUserManager
+        };
+
+        var systemAccess = _systemAccessService.DoesUserHasAccessToTheSystem(aspNetUserTenant, systemDict)
+            ? _systemAccessService.GetValidSystemAccessOfUser(aspNetUserTenant, systemDict)
+            : await _systemAccessService.CreateSystemAccess(aspNetUserTenant, manager, systemDict);
+
+        var newId = await GenerateNewId();
         var leaseApplication = new LeaseApplication
         {
+            Id = newId,
             DateStart = DateOnly.FromDateTime(startDate.Value),
             DateEnd = DateOnly.FromDateTime(endDate.Value),
             Description = description,
@@ -95,19 +133,24 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
             SystemAccess = systemAccess
         };
 
-        leaseApplication.SurfaceClassDicts.Add(surfaceClass);
         leaseApplication.RetailUnitPurposes.Add(retailUnitPurpose);
-        
-        surfaceClass.LeaseApplications.Add(leaseApplication);
-        retailUnitPurpose.LeaseApplications.Add(leaseApplication);
-        
+        leaseApplication.SurfaceClassDicts.Add(surfaceClass);
+
         try
         {
-            await _leaseApplicationRepository.AddAsync(leaseApplication, surfaceClass, retailUnitPurpose);
-            _logger.LogInformation($"Successfully created pending approval lease application for user {aspNetUser.UserName} to the {systemDict.Name} system");
-        } catch (Exception e)
+            await _leaseApplicationRepository.AddAsync(leaseApplication);
+        }
+        catch (Exception e)
         {
             _logger.LogError(e.StackTrace);
         }
+        _logger.LogInformation(
+            $"Successfully created pending approval lease application for user {aspNetUserTenant.UserName} to the {systemDict.Name} system");
+    }
+    
+    private async Task<int> GenerateNewId()
+    {
+        var value = await _leaseApplicationRepository.CountAsync();
+        return value + 1;
     }
 }
