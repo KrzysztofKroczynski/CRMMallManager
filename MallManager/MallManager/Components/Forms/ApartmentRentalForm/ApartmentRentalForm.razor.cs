@@ -9,6 +9,8 @@ namespace MallManager.Components.Forms.ApartmentRentalForm;
 public partial class ApartmentRentalForm : ComponentBase
 {
     private RentalForm? _rentalForm = new();
+    public bool ShowSuccess { get; set; }
+    public bool ShowFailure { get; set; }
     
     private IEnumerable<RetailUnit> _allRetailUnits = Enumerable.Empty<RetailUnit>();
     private IEnumerable<RetailUnit> _filteredRetailUnits = Enumerable.Empty<RetailUnit>();
@@ -93,8 +95,19 @@ public partial class ApartmentRentalForm : ComponentBase
     }
     
 
-    private void OnValidSubmit(EditContext context)
+    private async void OnValidSubmit(EditContext context)
     {
-        RetailUnitLeaseApplicationService.CreateLeaseApplication(_rentalForm.SurfaceClassDictId, _rentalForm.RetailUnitPurposeId, _rentalForm.StartDate, _rentalForm.EndDate, _rentalForm.Description);
+        var isSuccessfull = await RetailUnitLeaseApplicationService.CreateLeaseApplication(_rentalForm.SurfaceClassDictId, _rentalForm.RetailUnitPurposeId, _rentalForm.StartDate, _rentalForm.EndDate, _rentalForm.Description);
+
+        if (isSuccessfull)
+        {
+            ShowSuccess = true;
+        }
+        else
+        {
+            ShowFailure = true;
+        }
+        
+        StateHasChanged();
     }
 }

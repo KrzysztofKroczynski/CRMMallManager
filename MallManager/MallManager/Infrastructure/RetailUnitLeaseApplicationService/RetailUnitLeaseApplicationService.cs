@@ -51,23 +51,23 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
         return $"{surfaceClassDict.Name} ({surfaceClassDict.MinimalSurface} - {surfaceClassDict.MaximumSurface} m²)";
     }
 
-    public async Task CreateLeaseApplication(int surfaceClassDictId, int retailUnitPurposeId, DateTime? startDate,
+    public async Task<bool> CreateLeaseApplication(int surfaceClassDictId, int retailUnitPurposeId, DateTime? startDate,
         DateTime? endDate, string description)
     {
         var pendingSignupStatus = await _signupStatusRepository.GetByIdAsync(1);
         if (pendingSignupStatus is null)
         {
             _logger.LogError("There is no status \"Oczekujący\" in the database");
-            // TODO: Instead of exceptions maybe create error codes?
-            throw new ArgumentNullException();
+            return false;
+            // TODO: Perhaps create error codes?
         }
 
         var systemDict = await _systemDictRepository.GetByIdAsync(1);
         if (systemDict is null)
         {
             _logger.LogError("There is no system \"Wynajmy\" in the database");
-            // TODO: Instead of exceptions maybe create error codes?
-            throw new ArgumentNullException();
+            return false;
+            // TODO: Perhaps create error codes?
         }
 
         var retailUnitPurpose = RetailUnitPurposes.First(item => item.Id == retailUnitPurposeId);
@@ -118,9 +118,16 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
             IdNavigation = aspNetUserManager
         };
 
-        var systemAccess = _systemAccessService.DoesUserHasAccessToTheSystem(aspNetUserTenant, systemDict)
-            ? _systemAccessService.GetValidSystemAccessOfUser(aspNetUserTenant, systemDict)
-            : await _systemAccessService.CreateSystemAccess(aspNetUserTenant, manager, systemDict);
+        SystemAccess systemAccess;
+        if (_systemAccessService.DoesUserHasAccessToTheSystem(aspNetUserTenant, systemDict))
+        {
+            systemAccess = _systemAccessService.GetValidSystemAccessOfUser(aspNetUserTenant, systemDict);
+        }
+        else
+        {
+            aspNetUserTenant.AccessFailedCount += 1;
+            systemAccess = await _systemAccessService.CreateSystemAccess(aspNetUserTenant, manager, systemDict);
+        }
 
         var newId = await GenerateNewId();
         var leaseApplication = new LeaseApplication
@@ -146,6 +153,7 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
         }
         _logger.LogInformation(
             $"Successfully created pending approval lease application for user {aspNetUserTenant.UserName} to the {systemDict.Name} system");
+        return true;
     }
     
     private async Task<int> GenerateNewId()

@@ -65,3 +65,27 @@
         </MudButton>
     </MudStack>
 </EditForm>
+
+@if (ShowSuccess)
+{
+    <MudDialog Visible="true" CloseOnEsc="true" NoHeader="true" DisableOverlay="false">
+        <DialogContent>
+            <MudStack Row="true">
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color: green;" Size="Size.Large" />
+                <MudText Typo="Typo.h5" Class="mt-1">Złożono wniosek o dostęp do systemu wynajmu</MudText>
+            </MudStack>
+        </DialogContent>
+    </MudDialog>
+}
+
+@if (ShowFailure)
+{
+    <MudDialog Visible="true" CloseOnEsc="true" NoHeader="true" DisableOverlay="false">
+        <DialogContent>
+            <MudStack Row="true">
+                <MudIcon Icon="@Icons.Material.Filled.Close" Style="color: red; font-size: 48px;" />
+                <MudText Typo="Typo.h5" Class="mt-2">Napotkano problem</MudText>
+            </MudStack>
+        </DialogContent>
+    </MudDialog>
+}
