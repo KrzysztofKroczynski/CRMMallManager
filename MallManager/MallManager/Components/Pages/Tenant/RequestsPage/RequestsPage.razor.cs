@@ -1,43 +1,66 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Shared.Core.Entities;
 
 namespace MallManager.Components.Pages.Tenant.RequestsPage;
 
 public partial class RequestsPage : ComponentBase
 {
-    private readonly List<Request> exampleList = new()
-    {
-        new()
-        {
-            RequestNumber = "REQ001", Status = "Open", SubmissionDate = new DateTime(2021, 12, 01),
-            StatusChangedDate = new DateTime(2021, 12, 05)
-        },
-        new()
-        {
-            RequestNumber = "REQ002", Status = "Closed", SubmissionDate = new DateTime(2021, 12, 02),
-            StatusChangedDate = new DateTime(2021, 12, 06)
-        },
-        new()
-        {
-            RequestNumber = "REQ003", Status = "In Progress", SubmissionDate = new DateTime(2021, 12, 03),
-            StatusChangedDate = new DateTime(2021, 12, 07)
-        }
-    };
 
-    private void EditRequest(Request request)
+
+    public bool ShowLeaseApplications { get; set; }
+    public bool ShowMassEvents { get; set; }
+    public bool ShowMarketingCampaign { get; set; }
+    
+    private IEnumerable<LeaseApplication> _leaseApplications = Enumerable.Empty<LeaseApplication>();
+    private IEnumerable<MassEvent> _massEvents = Enumerable.Empty<MassEvent>();
+    private IEnumerable<MarketingCampaign> _marketingCampaigns = Enumerable.Empty<MarketingCampaign>();
+    
+    
+    protected override async Task OnInitializedAsync()
+    {
+        // PLACEHOLDER
+        var userId = 2;
+        await ManageRequestsService.LoadAspNetUserRequestsAsync(userId);
+
+        _leaseApplications = ManageRequestsService.LeaseApplications;
+        _massEvents = ManageRequestsService.MassEvents;
+        _marketingCampaigns = ManageRequestsService.MarketingCampaigns;
+    }
+
+    public void ShowLeaseApplicationsOnScreen()
+    {
+        ShowLeaseApplications = true;
+        ShowMassEvents = false;
+        ShowMarketingCampaign = false;
+        
+        StateHasChanged();
+    }
+    
+    public void ShowMarketingCampaignsOnScreen()
+    {
+        ShowLeaseApplications = false;
+        ShowMassEvents = false;
+        ShowMarketingCampaign = true;
+        
+        StateHasChanged();
+    }
+    
+    public void ShowMassEventsOnScreen()
+    {
+        ShowLeaseApplications = false;
+        ShowMassEvents = true;
+        ShowMarketingCampaign = false;
+        
+        StateHasChanged();
+    }
+    
+    private void EditRequest()
     {
         // Business logic to edit request
     }
 
-    private void DeleteRequest(Request request)
+    private void DeleteRequest()
     {
         // Business logic to delete request
     }
-}
-
-internal class Request
-{
-    public string RequestNumber { get; set; }
-    public string Status { get; set; }
-    public DateTime SubmissionDate { get; set; }
-    public DateTime StatusChangedDate { get; set; }
 }

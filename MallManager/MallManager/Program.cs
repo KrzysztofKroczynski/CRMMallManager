@@ -2,6 +2,7 @@ using MallManager.Components;
 using MallManager.Components.Account;
 using MallManager.Infrastructure;
 using MallManager.Infrastructure.Configuration;
+using MallManager.Infrastructure.ManageRequestsService;
 using MallManager.Infrastructure.Persistence;
 using MallManager.Infrastructure.RetailUnitLeaseApplicationService;
 using MallManager.Service;
@@ -49,6 +50,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<RetailUnitLeaseApplicationService>();
+builder.Services.AddScoped<ManageRequestsService>();
 builder.Services.AddScoped<ISystemAccessService, SystemAccessService>();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
