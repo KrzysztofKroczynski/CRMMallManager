@@ -8,6 +8,7 @@ public class MarketingCampaignsByUserId : Specification<MarketingCampaign>
     public MarketingCampaignsByUserId(string userId)
     {
         Query
-            .Where(marketingCampaign => marketingCampaign.SystemAccess.AspNetUsers.Id == userId);
+            .Where(marketingCampaign => marketingCampaign.SystemAccess.AspNetUsers.Id == userId)
+            .Include(marketingCampaign => marketingCampaign.MarketingCampaignReachDict);
     }
 }

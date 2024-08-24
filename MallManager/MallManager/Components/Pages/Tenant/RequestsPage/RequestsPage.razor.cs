@@ -7,7 +7,7 @@ public partial class RequestsPage : ComponentBase
 {
 
 
-    public bool ShowLeaseApplications { get; set; }
+    public bool ShowLeaseApplications { get; set; } = true;
     public bool ShowMassEvents { get; set; }
     public bool ShowMarketingCampaign { get; set; }
     
