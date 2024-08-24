@@ -17,6 +17,10 @@ public class PersonalForm : MudForm
     [RegularExpression("([0-9]+)", ErrorMessage = "Format Pesel niepoprawny.")]
     public string Pesel { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "Data urodzenia jest wymagana.")]
+    [MinimumAge(ErrorMessage = "Osoba musi mieć co najmniej 18 lat.")]
+    public DateTime? Date { get; set; }
+
     [Required(ErrorMessage = "Numer telefonu jest wymagany.")]
     [Phone(ErrorMessage = "Numer telefonu jest niepoprawny")]
     public string PhoneNumber { get; set; } = string.Empty;
@@ -76,6 +80,27 @@ public class RequiredIfAttribute : RequiredAttribute
         if (conditionValue is true)
         {
             return base.GetValidationResult(value, validationContext);
+        }
+
+        return ValidationResult.Success;
+    }
+}
+public class MinimumAgeAttribute : ValidationAttribute
+{
+    private readonly int _minimumAge = 18;
+
+    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    {
+        if (value is DateTime birthDate)
+        {
+            
+            var today = DateTime.Today;
+            var age = today.Year - birthDate.Year;
+            
+            if (age < _minimumAge)
+            {
+                return new ValidationResult($"Wiek musi wynosić co najmniej {_minimumAge} lat.");
+            }
         }
 
         return ValidationResult.Success;
