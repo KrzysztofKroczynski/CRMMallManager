@@ -20,6 +20,8 @@
                             <MudTh>Numer zgłoszenia</MudTh>
                             <MudTh>Data od</MudTh>
                             <MudTh>Data do</MudTh>
+                            <MudTh>Klasa powierzchni</MudTh>
+                            <MudTh>Typ działalności</MudTh>
                             <MudTh>Status</MudTh>
                             <MudTh>Akcje</MudTh>
                         </HeaderContent>
@@ -27,6 +29,8 @@
                             <MudTd>@item.Id</MudTd>
                             <MudTd>@item.DateStart</MudTd>
                             <MudTd>@item.DateEnd</MudTd>
+                            <MudTd>@item.SurfaceClassDicts.First().Name</MudTd>
+                            <MudTd>@item.RetailUnitPurposes.First().Name</MudTd>
                             <MudTd>@item.SignupStatusDict.Name</MudTd>
                             <MudTd>
                                 <MudIconButton OnClick="@(() => EditRequest())" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>

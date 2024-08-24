@@ -9,6 +9,8 @@ public class LeaseApplicationsByUserId : Specification<LeaseApplication>
     {
         Query
             .Where(lease => lease.SystemAccess.AspNetUsers.Id == userId)
-            .Include(lease => lease.SignupStatusDict);
+            .Include(lease => lease.SignupStatusDict)
+            .Include(lease => lease.RetailUnitPurposes)
+            .Include(lease => lease.SurfaceClassDicts);
     }
 }
