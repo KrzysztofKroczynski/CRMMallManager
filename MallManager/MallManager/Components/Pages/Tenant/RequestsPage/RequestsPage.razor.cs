@@ -5,8 +5,6 @@ namespace MallManager.Components.Pages.Tenant.RequestsPage;
 
 public partial class RequestsPage : ComponentBase
 {
-
-
     public bool ShowLeaseApplications { get; set; } = true;
     public bool ShowMassEvents { get; set; }
     public bool ShowMarketingCampaign { get; set; }
@@ -59,8 +57,18 @@ public partial class RequestsPage : ComponentBase
         // Business logic to edit request
     }
 
-    private void DeleteRequest()
+    public async Task DeleteLeaseApplication(LeaseApplication leaseApplication)
     {
-        // Business logic to delete request
+        await ManageRequestsService.DeleteLeaseApplication(leaseApplication);
+    }
+    
+    private async Task DeleteMarketingCampaign(MarketingCampaign marketingCampaign)
+    {
+        await ManageRequestsService.DeleteMarketingCampaign(marketingCampaign);
+    }
+    
+    private async Task DeleteMassEvent(MassEvent massEvent)
+    {
+        await ManageRequestsService.DeleteMassEvent(massEvent);
     }
 }

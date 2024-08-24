@@ -42,4 +42,22 @@ public class ManageRequestsService : IManageRequestsService
         _logger.LogInformation($"Successfully loaded requests of user with Id {userIdString}");
         
     }
+
+    public async Task DeleteLeaseApplication(LeaseApplication leaseApplication)
+    {
+        await _leaseApplicationRepository.DeleteAsync(leaseApplication);
+        _logger.LogInformation("The lease application has been deleted successfully");
+    }
+    
+    public async Task DeleteMarketingCampaign(MarketingCampaign marketingCampaign)
+    {
+        await _marketingCampaignRepository.DeleteAsync(marketingCampaign);
+        _logger.LogInformation("The marketing campaign has been deleted successfully");
+    }
+    
+    public async Task DeleteMassEvent(MassEvent massEvent)
+    {
+        await _massEventRepository.DeleteAsync(massEvent);
+        _logger.LogInformation("The mass event has been deleted successfully");
+    }
 }
