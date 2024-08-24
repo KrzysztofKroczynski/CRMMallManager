@@ -1,10 +1,22 @@
-﻿@rendermode InteractiveServer
-@page "/Login"
+﻿@page "/Login"
+@rendermode InteractiveServer
 
+<MspLogin/>
 
-<MudForm Style="    display: flex;flex-direction: column;justify-content: flex-start;align-items: center;height: 100%;padding-top: 60px;">
-    <MudTextField Label="Email" @bind-Value="Model.Username"/>
-    <MudTextField Label="Password" Type="Password" @bind-Value="Model.Password"/>
+@if (!_success)
+{
+    <MudAlert Severity="_severity" Variant="Variant.Filled">
+        @_message
+    </MudAlert>
+}
+
+<EditForm Model="@_model" OnValidSubmit="OnValidSubmit" class="custom-mudform">
+    <DataAnnotationsValidator/>
+    <MudTextField Label="Email"
+                  @bind-Value="_model.Email" For="@(() => _model.Email)"/>
+    <MudTextField Label="Password" Type="Password"
+                  @bind-Value="_model.Password" For="@(() => _model.Password)"/>
+
     <MudButton Href="https://github.com/MudBlazor/MudBlazor"
                Target="_blank"
                Variant="Variant.Text"
@@ -12,6 +24,6 @@
                Style="text-transform:none">
         Nie pamiętasz hasła?
     </MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary">Login</MudButton>
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Login</MudButton>
 
-</MudForm>
+</EditForm>

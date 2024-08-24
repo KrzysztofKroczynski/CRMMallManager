@@ -1,15 +1,30 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using MudBlazor;
+using Shared.Web.FormModels;
 
 namespace MallManager.Components.Pages.Common.Login;
 
 public partial class Login : ComponentBase
 {
-    private readonly LoginModel Model = new();
+    private readonly LoginForm _model = new();
+    private string _message = string.Empty;
+    private Severity _severity;
+    private bool _success = true;
 
 
-    public class LoginModel
+    private async Task OnValidSubmit(EditContext context)
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        try
+        {
+            _success = true;
+            _message = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            _success = false;
+            _severity = Severity.Error;
+            _message = ex.Message;
+        }
     }
 }
