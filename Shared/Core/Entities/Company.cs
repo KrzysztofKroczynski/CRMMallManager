@@ -16,9 +16,15 @@ public sealed class Company
 
     public int CompanySizeId { get; set; }
 
+    public DateTime DateAdded { get; set; }
+
+    public int ValidationId { get; set; }
+
     public AspNetUser? AspNetUsers { get; set; }
 
     public CompanySize CompanySize { get; set; } = null!;
 
     public ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
+
+    public Validation Validation { get; set; } = null!;
 }

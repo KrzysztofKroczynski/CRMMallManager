@@ -16,7 +16,13 @@ public sealed class Person
 
     public string? SecondName { get; set; }
 
+    public DateTime DateAdded { get; set; }
+
+    public int ValidationId { get; set; }
+
     public AspNetUser? AspNetUsers { get; set; }
 
     public ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
+
+    public Validation Validation { get; set; } = null!;
 }
