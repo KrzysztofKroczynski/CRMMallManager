@@ -25,29 +25,26 @@ public partial class RequestsPage : ComponentBase
         _marketingCampaigns = ManageRequestsService.MarketingCampaigns;
     }
 
-    public void ShowLeaseApplicationsOnScreen()
+    public void ShowSpecificTypeOfRequests(bool showLeaseApplications, bool showMarketingCampaigns, bool showMassEvents)
     {
-        ShowLeaseApplications = true;
-        ShowMassEvents = false;
-        ShowMarketingCampaign = false;
+        if ((showLeaseApplications && showMarketingCampaigns) || (showLeaseApplications && showMassEvents) ||
+            (showMarketingCampaigns && showMassEvents))
+        {
+            throw new ArgumentException("Two or all three values are true. Only one value should be true");
+        } 
         
-        StateHasChanged();
-    }
-    
-    public void ShowMarketingCampaignsOnScreen()
-    {
-        ShowLeaseApplications = false;
-        ShowMassEvents = false;
-        ShowMarketingCampaign = true;
-        
-        StateHasChanged();
-    }
-    
-    public void ShowMassEventsOnScreen()
-    {
-        ShowLeaseApplications = false;
-        ShowMassEvents = true;
-        ShowMarketingCampaign = false;
+        if (!showLeaseApplications && !showMarketingCampaigns && !showMassEvents)
+        {
+            ShowLeaseApplications = true;
+            ShowMassEvents = false;
+            ShowMarketingCampaign = false;
+        }
+        else
+        {
+            ShowLeaseApplications = showLeaseApplications;
+            ShowMassEvents = showMarketingCampaigns;
+            ShowMarketingCampaign = showMassEvents;
+        }
         
         StateHasChanged();
     }

@@ -7,9 +7,9 @@
     <LoggedTenantMenu>
         <MudStack>
             <MudStack Row="true"  Class="d-flex justify-center align-items-center">
-                <MudButton Color="Color.Primary" OnClick="ShowLeaseApplicationsOnScreen">Wynajem lokalu</MudButton>
-                <MudButton Color="Color.Primary" OnClick="ShowMarketingCampaignsOnScreen">Kampania reklamowa</MudButton>
-                <MudButton Color="Color.Primary" OnClick="ShowMassEventsOnScreen">Organizacja imprezy</MudButton>
+                <MudButton Color="Color.Primary" OnClick="() => ShowSpecificTypeOfRequests(true, false, false)">Wynajem lokalu</MudButton>
+                <MudButton Color="Color.Primary" OnClick="() => ShowSpecificTypeOfRequests(false, true, false)">Kampania reklamowa</MudButton>
+                <MudButton Color="Color.Primary" OnClick="() => ShowSpecificTypeOfRequests(false, false, true)">Organizacja imprezy</MudButton>
             </MudStack>
             
             <MudStack>
