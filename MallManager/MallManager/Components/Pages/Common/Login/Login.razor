@@ -3,19 +3,20 @@
 
 <MspLogin/>
 
-@if (!_success)
+@if (_submitted)
 {
     <MudAlert Severity="_severity" Variant="Variant.Filled">
         @_message
     </MudAlert>
 }
 
-<EditForm Model="@_model" OnValidSubmit="OnValidSubmit" class="custom-mudform">
+<EditForm Model="@_model" OnSubmit="OnValidSubmit" class="custom-mudform">
     <DataAnnotationsValidator/>
     <MudTextField Label="Email"
                   @bind-Value="_model.Email" For="@(() => _model.Email)"/>
     <MudTextField Label="Password" Type="Password"
                   @bind-Value="_model.Password" For="@(() => _model.Password)"/>
+    <MudCheckBox Label="Remember me" @bind-Value="_model.RememberMe"></MudCheckBox>
 
     <MudButton Href="https://github.com/MudBlazor/MudBlazor"
                Target="_blank"
@@ -25,5 +26,4 @@
         Nie pamiętasz hasła?
     </MudButton>
     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Login</MudButton>
-
 </EditForm>

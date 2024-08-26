@@ -42,7 +42,11 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentityCore<ApplicationUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount =
+            false; // rozwiązanie tymczasowe, do zmienienia na true gdy będzie działała weryfikacja mail-a
+    })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();

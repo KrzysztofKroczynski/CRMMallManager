@@ -1,51 +1,31 @@
 using MallManager.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
-using Shared.Web;
+using Shared.Web.FormModels;
 
 namespace MallManager.UseCases.UserRegistration;
 
-public sealed class RegistrationHandler
+public sealed class RegistrationHandler(
+    UserManager<ApplicationUser> userManager,
+    IUserStore<ApplicationUser> userStore,
+    IEmailSender<ApplicationUser> emailSender,
+    ILogger<RegistrationHandler> logger)
 {
-    private readonly IEmailSender<ApplicationUser> _emailSender;
-    private readonly ILogger<RegistrationHandler> _logger;
-    private readonly NavigationManager _navigationManager;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IUserStore<ApplicationUser> _userStore;
-
-    private IEnumerable<IdentityError>? identityErrors;
-
-
-    public RegistrationHandler(
-        UserManager<ApplicationUser> userManager,
-        IUserStore<ApplicationUser> userStore,
-        IEmailSender<ApplicationUser> emailSender,
-        ILogger<RegistrationHandler> logger,
-        NavigationManager navigationManager
-    )
-    {
-        _userManager = userManager;
-        _userStore = userStore;
-        _emailSender = emailSender;
-        _logger = logger;
-        _navigationManager = navigationManager;
-    }
-
+    private readonly IEmailSender<ApplicationUser> _emailSender = emailSender;
 
     public async Task RegisterUserAsync(RegistrationForm form)
     {
         var user = CreateUser();
 
-        await _userStore.SetUserNameAsync(user, form.Email, CancellationToken.None);
-        var emailStore = GetEmailStore();
+        await userStore.SetUserNameAsync(user, form.Email, CancellationToken.None);
+        IUserEmailStore<ApplicationUser> emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, form.Email, CancellationToken.None);
-        var result = await _userManager.CreateAsync(user, form.Password);
+        IdentityResult result = await userManager.CreateAsync(user, form.Password);
 
         if (!result.Succeeded)
             throw new InvalidOperationException(
                 $"Registration failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
 
-        _logger.LogInformation("User created a new account with password.");
+        logger.LogInformation("User created a new account with password.");
         // TO DO WYSYŁANIE MAILA
 
         // String userId = await _userManager.GetUserIdAsync(user);
@@ -57,7 +37,7 @@ public sealed class RegistrationHandler
         //
         // await _emailSender.SendConfirmationLinkAsync(user, form.Email, HtmlEncoder.Default.Encode(callbackUrl)); Object reference not set to an instance of an object.
 
-        if (_userManager.Options.SignIn.RequireConfirmedAccount)
+        if (userManager.Options.SignIn.RequireConfirmedAccount)
         {
             // _redirectManager.RedirectTo(
             //     "/EmailSent",
@@ -80,9 +60,9 @@ public sealed class RegistrationHandler
 
     private IUserEmailStore<ApplicationUser> GetEmailStore()
     {
-        if (!_userManager.SupportsUserEmail)
+        if (!userManager.SupportsUserEmail)
             throw new NotSupportedException("The default UI requires a user store with email support.");
 
-        return (IUserEmailStore<ApplicationUser>)_userStore;
+        return (IUserEmailStore<ApplicationUser>)userStore;
     }
 }
