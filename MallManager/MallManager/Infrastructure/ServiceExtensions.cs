@@ -4,6 +4,7 @@ using MallManager.Infrastructure.Configuration.Options;
 using MallManager.Infrastructure.Persistence;
 using MallManager.Infrastructure.UserState;
 using MallManager.Infrastructure.UserState.ClaimsTransformation;
+using MallManager.Infrastructure.UserState.LeaseApplicationEditStateService;
 using MallManager.Infrastructure.UserState.PersonalInfoStateService;
 using Microsoft.AspNetCore.Authentication;
 using Serilog;
@@ -33,6 +34,7 @@ public static class ServiceExtensions
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(mediatRAssemblies!));
         services.AddSingleton<BaseStateService<PersonalForm>, PersonalInfoStateService>();
+        services.AddSingleton<BaseStateService<LeaseApplication>, LeaseApplicationEditStateService>();
         return services;
     }
 

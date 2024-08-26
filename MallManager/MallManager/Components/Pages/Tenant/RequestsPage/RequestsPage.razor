@@ -2,14 +2,18 @@
 @page "/Requests"
 @using MallManager.Components.LoggedTenantMenu
 @using MallManager.Infrastructure.ManageRequestsService
+@using MediatR
 @inject ManageRequestsService ManageRequestsService
+@inject IMediator Mediator
+@inject NavigationManager NavigationManager
+
 <MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
     <LoggedTenantMenu>
         <MudStack>
             <MudStack Row="true"  Class="d-flex justify-center align-items-center">
-                <MudButton Color="Color.Primary" OnClick="() => ShowSpecificTypeOfRequests(true, false, false)">Wynajem lokalu</MudButton>
-                <MudButton Color="Color.Primary" OnClick="() => ShowSpecificTypeOfRequests(false, true, false)">Kampania reklamowa</MudButton>
-                <MudButton Color="Color.Primary" OnClick="() => ShowSpecificTypeOfRequests(false, false, true)">Organizacja imprezy</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@(() => ShowSpecificTypeOfRequests(true, false, false))">Wynajem lokalu</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@(() => ShowSpecificTypeOfRequests(false, true, false))">Kampania reklamowa</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@(() => ShowSpecificTypeOfRequests(false, false, true))">Organizacja imprezy</MudButton>
             </MudStack>
             
             <MudStack>
@@ -33,7 +37,7 @@
                             <MudTd>@item.RetailUnitPurposes.First().Name</MudTd>
                             <MudTd>@item.SignupStatusDict.Name</MudTd>
                             <MudTd>
-                                <MudIconButton OnClick="@(() => EditRequest())" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
+                                <MudIconButton OnClick="@(() => EditLeaseApplication(@item.Id))" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
                                 <MudIconButton OnClick="@(() => DeleteLeaseApplication(item))" Color="Color.Error" Size="Size.Small" Icon="@Icons.Material.Filled.Delete"/>
                             </MudTd>
                         </RowTemplate>
@@ -64,7 +68,7 @@
                             <MudTd>@item.OnWeekdays</MudTd>
                             <MudTd>@item.OnWeekends</MudTd>
                             <MudTd>
-                                <MudIconButton OnClick="@(() => EditRequest())" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
+                                <MudIconButton Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
                                 <MudIconButton OnClick="@(() => DeleteMarketingCampaign(item))" Color="Color.Error" Size="Size.Small" Icon="@Icons.Material.Filled.Delete"/>
                             </MudTd>
                         </RowTemplate>
@@ -91,7 +95,7 @@
                             <MudTd>@item.IsApproved</MudTd>
                             <MudTd>@item.DateAdded</MudTd>
                             <MudTd>
-                                <MudIconButton OnClick="@(() => EditRequest())" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
+                                <MudIconButton Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
                                 <MudIconButton OnClick="@(() => DeleteMassEvent(item))" Color="Color.Error" Size="Size.Small" Icon="@Icons.Material.Filled.Delete"/>
                             </MudTd>
                         </RowTemplate>

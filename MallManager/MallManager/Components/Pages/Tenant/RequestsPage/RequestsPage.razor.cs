@@ -53,7 +53,9 @@ public partial class RequestsPage : ComponentBase
     
     private async Task EditLeaseApplication(int leaseApplicationId)
     {
-        //StateEditLeaseApplication = await Mediator.Send(new GetEditedLeaseApplicationStateQuery(leaseApplicationId + ""));
+        throw new NotImplementedException("This functionality is not implemented yet");
+        StateEditLeaseApplication = await Mediator.Send(new GetEditedLeaseApplicationStateQuery(leaseApplicationId + ""));
+        NavigationManager.NavigateTo($"/Requests/EditLeaseApplication/{leaseApplicationId}");
     }
 
     public async Task DeleteLeaseApplication(LeaseApplication leaseApplication)
