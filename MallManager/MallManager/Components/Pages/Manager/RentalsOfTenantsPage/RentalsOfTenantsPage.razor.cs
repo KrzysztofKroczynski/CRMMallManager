@@ -1,50 +1,84 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Shared.Core.Entities;
 
 namespace MallManager.Components.Pages.Manager.RentalsOfTenantsPage;
 
 public partial class RentalsOfTenantsPage : ComponentBase
 {
-    private readonly List<ExampleRentalModel> exampleList = new()
+    public bool ShowLeaseApplications { get; set; } = true;
+    public bool ShowMassEvents { get; set; }
+    public bool ShowMarketingCampaign { get; set; }
+    
+    private IEnumerable<LeaseApplication> _leaseApplications = Enumerable.Empty<LeaseApplication>();
+    private IEnumerable<MassEvent> _massEvents = Enumerable.Empty<MassEvent>();
+    private IEnumerable<MarketingCampaign> _marketingCampaigns = Enumerable.Empty<MarketingCampaign>();
+    
+    
+    protected override async Task OnInitializedAsync()
     {
-        new()
+        // PLACEHOLDER
+        await AnswerRequestsService.LoadRequestsAsync();
+
+        _leaseApplications = AnswerRequestsService.LeaseApplications;
+        _massEvents = AnswerRequestsService.MassEvents;
+        _marketingCampaigns = AnswerRequestsService.MarketingCampaigns;
+    }
+
+    public void ShowSpecificTypeOfRequests(bool showLeaseApplications, bool showMarketingCampaigns, bool showMassEvents)
+    {
+        if ((showLeaseApplications && showMarketingCampaigns) || (showLeaseApplications && showMassEvents) ||
+            (showMarketingCampaigns && showMassEvents))
         {
-            RentalNumber = "RN001",
-            ApartmentNumber = "A101",
-            StartDate = new DateTime(2022, 01, 01),
-            EndDate = new DateTime(2022, 12, 31),
-            DateOfNextRentPayment = new DateTime(2022, 07, 01),
-            RentAmount = 1200.00M,
-            LastRevenueAmount = 1150.00M,
-            NextRevenueSubmissionDate = new DateTime(2022, 07, 15)
-        },
-        new()
+            throw new ArgumentException("Two or all three values are true. Only one value should be true");
+        } 
+        
+        if (!showLeaseApplications && !showMarketingCampaigns && !showMassEvents)
         {
-            RentalNumber = "RN002",
-            ApartmentNumber = "A102",
-            StartDate = new DateTime(2022, 02, 01),
-            EndDate = new DateTime(2022, 11, 30),
-            DateOfNextRentPayment = new DateTime(2022, 08, 01),
-            RentAmount = 1500.00M,
-            LastRevenueAmount = 1450.00M,
-            NextRevenueSubmissionDate = new DateTime(2022, 08, 15)
-        },
-        new()
-        {
-            RentalNumber = "RN003",
-            ApartmentNumber = "A103",
-            StartDate = new DateTime(2022, 03, 01),
-            EndDate = new DateTime(2023, 03, 01),
-            DateOfNextRentPayment = new DateTime(2022, 09, 01),
-            RentAmount = 1300.00M,
-            LastRevenueAmount = 1250.00M,
-            NextRevenueSubmissionDate = new DateTime(2022, 09, 15)
+            ShowLeaseApplications = true;
+            ShowMassEvents = false;
+            ShowMarketingCampaign = false;
         }
-    };
+        else
+        {
+            ShowLeaseApplications = showLeaseApplications;
+            ShowMassEvents = showMarketingCampaigns;
+            ShowMarketingCampaign = showMassEvents;
+        }
+        
+        StateHasChanged();
+    }
+    
+    private void EditRequest()
+    {
+        // Business logic to edit request
+    }
 
-    public bool ShowCompleted { get; set; } = false;
-
-    public IEnumerable<ExampleRentalModel> FilteredExampleList =>
-        ShowCompleted ? exampleList : exampleList.Where(x => x.EndDate > DateTime.Now);
+    public async Task AcceptLeaseApplication(LeaseApplication leaseApplication)
+    {
+        await AnswerRequestsService.AcceptLeaseApplication(leaseApplication);
+    }
+    public async Task DenyLeaseApplication(LeaseApplication leaseApplication)
+    {
+        await AnswerRequestsService.DenyLeaseApplication(leaseApplication);
+    }
+    
+    private async Task AcceptMarketingCampaign(MarketingCampaign marketingCampaign)
+    {
+        await AnswerRequestsService.AcceptMarketingCampaign(marketingCampaign);
+    }
+    private async Task DenyMarketingCampaign(MarketingCampaign marketingCampaign)
+    {
+        await AnswerRequestsService.DenyMarketingCampaign(marketingCampaign);
+    }
+    
+    private async Task AcceptMassEvent(MassEvent massEvent)
+    {
+        await AnswerRequestsService.AcceptMassEvent(massEvent);
+    }
+    private async Task DenyMassEvent(MassEvent massEvent)
+    {
+        await AnswerRequestsService.DenyMassEvent(massEvent);
+    }
 }
 
 public class ExampleRentalModel

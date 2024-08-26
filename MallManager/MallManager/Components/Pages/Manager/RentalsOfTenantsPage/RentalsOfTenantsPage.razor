@@ -1,38 +1,75 @@
 ﻿@rendermode InteractiveServer
 @page "/RentalsOfTenants"
 @using MallManager.Components.LoggedManagerMenu
-
-
+@using MallManager.Infrastructure.ManageRequestsService
+@using Microsoft.AspNetCore.Authorization
+@inject AnswerRequestsService AnswerRequestsService
+@attribute [Authorize]
 <MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
-    <LoggedManagerMenu>
-        <MudStack Style="width: 80%; margin-left: auto; margin-right: auto">
-            <MudStack Style="background-color: #fcc99b; padding: 2%;">
-                <MudText Typo="Typo.h4" Align="Align.Center">WYNAJMY</MudText>
-                <MudTable Items="exampleList">
-                    <HeaderContent>
-                        <MudTh>Numer Wynajmu</MudTh>
-                        <MudTh>Numer Lokalu</MudTh>
-                        <MudTh>Data Początku Wynajmu</MudTh>
-                        <MudTh>Data Końca Wynajmu</MudTh>
-                        <MudTh>Następny Czynsz</MudTh>
-                        <MudTh>Kwota Czynszu</MudTh>
-                        <MudTh>Kwota Ostatniego RoP</MudTh>
-                        <MudTh>Data Następnego RoP</MudTh>
-                    </HeaderContent>
-                    <RowTemplate Context="item">
-                        <MudTd>@item.RentalNumber</MudTd>
-                        <MudTd>@item.ApartmentNumber</MudTd>
-                        <MudTd>@item.StartDate.ToShortDateString()</MudTd>
-                        <MudTd>@item.EndDate.ToShortDateString()</MudTd>
-                        <MudTd>@item.DateOfNextRentPayment.ToShortDateString()</MudTd>
-                        <MudTd>@item.RentAmount.ToString("C")</MudTd>
-                        <MudTd>@item.LastRevenueAmount.ToString("C")</MudTd>
-                        <MudTd>@item.NextRevenueSubmissionDate.ToShortDateString()</MudTd>
-                    </RowTemplate>
-                </MudTable>
-
-                <MudCheckBox T="bool" @bind-Checked="ShowCompleted" Color="Color.Primary">Pokaż Zakończone</MudCheckBox>
-            </MudStack>
+    <MudStack>
+        <MudStack Row="true"  Class="d-flex justify-center align-items-center">
+            <MudButton Color="Color.Primary" OnClick="() => ShowSpecificTypeOfRequests(true, false, false)">Wynajem lokalu</MudButton>
+            <MudButton Color="Color.Primary" OnClick="() => ShowSpecificTypeOfRequests(false, true, false)">Kampania reklamowa</MudButton>
+            <MudButton Color="Color.Primary" OnClick="() => ShowSpecificTypeOfRequests(false, false, true)">Organizacja imprezy</MudButton>
         </MudStack>
-    </LoggedManagerMenu>
+
+    <MudStack>
+        @if (ShowLeaseApplications)
+        {
+        <MudTable Items="@_leaseApplications">
+            <HeaderContent>
+                <MudTh>Numer zgłoszenia</MudTh>
+                <MudTh>Data od</MudTh>
+                <MudTh>Data do</MudTh>
+                <MudTh>Klasa powierzchni</MudTh>
+                <MudTh>Typ działalności</MudTh>
+                <MudTh>Status</MudTh>
+                <MudTh>Akcje</MudTh>
+            </HeaderContent>
+            <RowTemplate Context="item">
+                <MudTd>@item.Id</MudTd>
+                <MudTd>@item.DateStart</MudTd>
+                <MudTd>@item.DateEnd</MudTd>
+                <MudTd>@item.SurfaceClassDicts.First().Name</MudTd>
+                <MudTd>@item.RetailUnitPurposes.First().Name</MudTd>
+                <MudTd>@item.SignupStatusDict.Name</MudTd>
+                <MudTd>
+                    <MudIconButton OnClick="@(() => EditRequest())" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
+                    <MudIconButton OnClick="@(() => DenyLeaseApplication(item))" Color="Color.Error" Size="Size.Small" Icon="@Icons.Material.Filled.Delete"/>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+        }
+    </MudStack>
+    </MudStack>
+        @* <MudStack Style="width: 80%; margin-left: auto; margin-right: auto"> *@
+    @*         <MudStack Style="background-color: #fcc99b; padding: 2%;"> *@
+    @*             <MudText Typo="Typo.h4" Align="Align.Center">WYNAJMY</MudText> *@
+    @*             <MudTable Items="exampleList"> *@
+    @*                 <HeaderContent> *@
+    @*                     <MudTh>Numer Wynajmu</MudTh> *@
+    @*                     <MudTh>Numer Lokalu</MudTh> *@
+    @*                     <MudTh>Data Początku Wynajmu</MudTh> *@
+    @*                     <MudTh>Data Końca Wynajmu</MudTh> *@
+    @*                     <MudTh>Następny Czynsz</MudTh> *@
+    @*                     <MudTh>Kwota Czynszu</MudTh> *@
+    @*                     <MudTh>Kwota Ostatniego RoP</MudTh> *@
+    @*                     <MudTh>Data Następnego RoP</MudTh> *@
+    @*                 </HeaderContent> *@
+    @*                 <RowTemplate Context="item"> *@
+    @*                     <MudTd>@item.RentalNumber</MudTd> *@
+    @*                     <MudTd>@item.ApartmentNumber</MudTd> *@
+    @*                     <MudTd>@item.StartDate.ToShortDateString()</MudTd> *@
+    @*                     <MudTd>@item.EndDate.ToShortDateString()</MudTd> *@
+    @*                     <MudTd>@item.DateOfNextRentPayment.ToShortDateString()</MudTd> *@
+    @*                     <MudTd>@item.RentAmount.ToString("C")</MudTd> *@
+    @*                     <MudTd>@item.LastRevenueAmount.ToString("C")</MudTd> *@
+    @*                     <MudTd>@item.NextRevenueSubmissionDate.ToShortDateString()</MudTd> *@
+    @*                 </RowTemplate> *@
+    @*             </MudTable> *@
+    @* *@
+    @*             <MudCheckBox T="bool" @bind-Checked="ShowCompleted" Color="Color.Primary">Pokaż Zakończone</MudCheckBox> *@
+    @*         </MudStack> *@
+    @*     </MudStack> *@
+   
 </MudLayout>
