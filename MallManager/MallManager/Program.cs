@@ -55,6 +55,12 @@ builder.Services.AddScoped<ISystemAccessService, SystemAccessService>();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Login";
+    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

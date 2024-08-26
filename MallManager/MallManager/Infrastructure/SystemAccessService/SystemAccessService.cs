@@ -1,4 +1,5 @@
-﻿using Ardalis.Specification;
+﻿using System.Data.Common;
+using Ardalis.Specification;
 using Microsoft.EntityFrameworkCore;
 using Shared.Core.Entities;
 using Shared.Core.Specifications;
@@ -10,15 +11,17 @@ public sealed class SystemAccessService : ISystemAccessService
     private readonly ILogger<SystemAccessService> _logger;
     private readonly IRepositoryBase<SystemAccess> _systemAccessRepository;
     private readonly IRepositoryBase<SignupStatusDict> _signupStatusRepository;
+    private readonly IRepositoryBase<AspNetUser> _aspNetUserRepository;
 
-    public SystemAccessService(IRepositoryBase<SystemAccess> systemAccessRepository, IRepositoryBase<SignupStatusDict> signupStatusRepository, ILogger<SystemAccessService> logger)
+    public SystemAccessService(IRepositoryBase<SystemAccess> systemAccessRepository, IRepositoryBase<SignupStatusDict> signupStatusRepository, IRepositoryBase<AspNetUser> aspNetUserRepository, ILogger<SystemAccessService> logger)
     {
         _systemAccessRepository = systemAccessRepository;
         _signupStatusRepository = signupStatusRepository;
+        _aspNetUserRepository = aspNetUserRepository;
         _logger = logger;
     }
 
-    public async Task<SystemAccess> CreateSystemAccess(AspNetUser aspNetUser, Manager assignedManager, SystemDict systemDict)
+    public async Task<SystemAccess> CreateSystemAccess(string userId, Manager assignedManager, SystemDict systemDict)
     {
         var pendingSignupStatus = await _signupStatusRepository.GetByIdAsync(1);
 
@@ -29,13 +32,13 @@ public sealed class SystemAccessService : ISystemAccessService
             throw new Exception();
         }
         
-        _logger.LogInformation($"Creating system access for user {aspNetUser.UserName}");
+        _logger.LogInformation($"Creating system access for user with ID {userId}");
         var newId = await GenerateNewId();
 
         var systemAccess = new SystemAccess()
         {
             Id = newId,
-            AspNetUsers = aspNetUser,
+            AspNetUsersId = userId,
             SignupStatusDict = pendingSignupStatus,
             SystemDict = systemDict,
             AssignedManager = assignedManager
@@ -51,36 +54,56 @@ public sealed class SystemAccessService : ISystemAccessService
             _logger.LogError(e.StackTrace);
             throw;
         }
-        _logger.LogInformation($"Successfully created pending approval system access for user {aspNetUser.UserName} to the {systemDict.Name} system");
+        _logger.LogInformation($"Successfully created pending approval system access for user with {userId} to the {systemDict.Name} system");
 
         return systemAccess;
     }
 
-    public bool DoesUserHasAccessToTheSystem(AspNetUser aspNetUser, SystemDict systemDict)
+    public async Task<bool> DoesUserHasAccessToTheSystem(string userId, SystemDict systemDict)
     {
-        if (aspNetUser is null || systemDict is null)
+        AspNetUser user = null;
+        try
         {
-            _logger.LogError($"User: {aspNetUser}, System {systemDict}. The provided argument cannot be null");
+            user = await _aspNetUserRepository.GetByIdAsync(int.Parse(userId));
+        }
+        catch (DbException e)
+        {
+            throw;
+        }
+        
+        if (user is null || systemDict is null)
+        {
+            _logger.LogError($"User: {user}, System {systemDict}. The provided argument cannot be null");
             throw new ArgumentNullException();
         }
         
         var existingValidSystemAccessesForUserToSystem =
-            aspNetUser.SystemAccesses.Count(systemAccess => systemAccess.SystemDict.Equals(systemDict) && systemAccess.ValidUntil >= DateTime.Today);
+            user.SystemAccesses.Count(systemAccess => systemAccess.SystemDict.Equals(systemDict) && systemAccess.ValidUntil >= DateTime.Today);
 
         if (existingValidSystemAccessesForUserToSystem > 0)
         {
-            _logger.LogInformation($"The {aspNetUser.UserName} AspNetUser has valid access to {systemDict.Name} system");
+            _logger.LogInformation($"The {user.UserName} AspNetUser has valid access to {systemDict.Name} system");
             return true;
         }
 
-        _logger.LogInformation($"The {aspNetUser.UserName} AspNetUser does not have valid access to the {systemDict.Name} system");
+        _logger.LogInformation($"The {user.UserName} AspNetUser does not have valid access to the {systemDict.Name} system");
         return false;
     }
 
-    public SystemAccess? GetValidSystemAccessOfUser(AspNetUser aspNetUser, SystemDict systemDict)
+    public async Task<SystemAccess>? GetValidSystemAccessOfUser(string userId, SystemDict systemDict)
     {
-        var validSystemAccess = aspNetUser.SystemAccesses.FirstOrDefault(systemAccess =>
-            systemAccess.AspNetUsers.Equals(aspNetUser) && systemAccess.SystemDict.Equals(systemDict), null);
+        AspNetUser user = null;
+        try
+        {
+            user = await _aspNetUserRepository.GetByIdAsync(int.Parse(userId));
+        }
+        catch (DbException e)
+        {
+            throw;
+        }
+        
+        var validSystemAccess = user.SystemAccesses.FirstOrDefault(systemAccess =>
+            systemAccess.AspNetUsers.Equals(user) && systemAccess.SystemDict.Equals(systemDict), null);
 
         return validSystemAccess;
     }

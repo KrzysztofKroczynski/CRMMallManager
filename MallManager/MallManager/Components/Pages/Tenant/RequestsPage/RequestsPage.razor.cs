@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Shared.Core.Entities;
 using Shared.UseCases.GetUserState;
 
@@ -14,12 +16,30 @@ public partial class RequestsPage : ComponentBase
     private ICollection<MassEvent> _massEvents = new List<MassEvent>();
     private ICollection<MarketingCampaign> _marketingCampaigns = new List<MarketingCampaign>();
     
+    [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = null!;
+    
     private UserState<LeaseApplication> StateEditLeaseApplication { get; set; }
     
     protected override async Task OnInitializedAsync()
     {
-        // PLACEHOLDER
-        var userId = 2;
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (!user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/Login");
+            return;
+        }
+
+        var userIdString = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdString))
+        {
+            NavigationManager.NavigateTo("/Login");
+            return;
+        }
+        
+        var userId = int.Parse(userIdString);
         await ManageRequestsService.LoadAspNetUserRequestsAsync(userId);
 
         _leaseApplications = ManageRequestsService.LeaseApplications;

@@ -1,5 +1,6 @@
 ﻿using MallManager.Components.Forms.ApartmentRentalForm;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 using MudExtensions;
 using Shared.Web.FormModels;
@@ -21,6 +22,20 @@ public partial class RegistrationPage : ComponentBase
     private PurposeOfTheContractType _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
     private bool _loading;
     
+    [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (!user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/Login");
+            return;
+        }
+    }
+
     private async Task<bool> CheckChange(StepChangeDirection direction, int targetIndex)
     {
         if (direction == StepChangeDirection.Backward)

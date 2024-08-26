@@ -1,5 +1,7 @@
 @using MallManager.Infrastructure.RetailUnitLeaseApplicationService
+@using Microsoft.AspNetCore.Authorization
 @inject RetailUnitLeaseApplicationService RetailUnitLeaseApplicationService
+@inject NavigationManager NavigationManager
 
 <EditForm Model="@_rentalForm" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator/>

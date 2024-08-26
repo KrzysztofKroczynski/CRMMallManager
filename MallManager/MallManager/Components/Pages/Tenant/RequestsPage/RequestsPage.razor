@@ -2,10 +2,12 @@
 @page "/Requests"
 @using MallManager.Components.LoggedTenantMenu
 @using MallManager.Infrastructure.ManageRequestsService
+@using Microsoft.AspNetCore.Authorization
 @using MediatR
 @inject ManageRequestsService ManageRequestsService
 @inject IMediator Mediator
 @inject NavigationManager NavigationManager
+@attribute [Authorize]
 
 <MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
     <LoggedTenantMenu>

@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Shared.Core.Entities;
 using Shared.Web.FormModels;
@@ -19,9 +21,29 @@ public partial class ApartmentRentalForm : ComponentBase
     private int _previousSurfaceClassDictId = 0;
     private DateTime? _previousStartDate = DateTime.Today;
     private DateTime? _previousEndDate = DateTime.Today;
+    
+    [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = null!;
+    private string _userId;
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (!user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/Login");
+            return;
+        }
+
+        _userId = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(_userId))
+        {
+            NavigationManager.NavigateTo("/Login");
+            return;
+        }
+        
         await RetailUnitLeaseApplicationService.LoadDataAsync();
         _allRetailUnits = RetailUnitLeaseApplicationService.RetailUnits;
         _filteredRetailUnits = _allRetailUnits;
@@ -97,7 +119,7 @@ public partial class ApartmentRentalForm : ComponentBase
 
     private async void OnValidSubmit(EditContext context)
     {
-        var isSuccessfull = await RetailUnitLeaseApplicationService.CreateLeaseApplication(_rentalForm.SurfaceClassDictId, _rentalForm.RetailUnitPurposeId, _rentalForm.StartDate, _rentalForm.EndDate, _rentalForm.Description);
+        var isSuccessfull = await RetailUnitLeaseApplicationService.CreateLeaseApplication(_userId, _rentalForm.SurfaceClassDictId, _rentalForm.RetailUnitPurposeId, _rentalForm.StartDate, _rentalForm.EndDate, _rentalForm.Description);
 
         if (isSuccessfull)
         {

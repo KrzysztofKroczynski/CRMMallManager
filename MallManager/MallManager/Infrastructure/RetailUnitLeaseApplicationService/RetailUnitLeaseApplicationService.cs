@@ -52,7 +52,7 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
         return $"{surfaceClassDict.Name} ({surfaceClassDict.MinimalSurface} - {surfaceClassDict.MaximumSurface} m²)";
     }
 
-    public async Task<bool> CreateLeaseApplication(int surfaceClassDictId, int retailUnitPurposeId, DateTime? startDate,
+    public async Task<bool> CreateLeaseApplication(string userId, int surfaceClassDictId, int retailUnitPurposeId, DateTime? startDate,
         DateTime? endDate, string description)
     {
         var pendingSignupStatus = await _signupStatusRepository.GetByIdAsync(1);
@@ -94,25 +94,6 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
             AccessFailedCount = 0
         };
 
-        var aspNetUserTenant = new AspNetUser
-        {
-            Id = "2",
-            UserName = null,
-            NormalizedUserName = null,
-            Email = null,
-            NormalizedEmail = null,
-            EmailConfirmed = false,
-            PasswordHash = null,
-            SecurityStamp = null,
-            ConcurrencyStamp = null,
-            PhoneNumber = null,
-            PhoneNumberConfirmed = false,
-            TwoFactorEnabled = false,
-            LockoutEnd = null,
-            LockoutEnabled = false,
-            AccessFailedCount = 0
-        };
-
         var manager = new Manager()
         {
             Id = "1",
@@ -120,17 +101,15 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
         };
 
         SystemAccess systemAccess;
-        if (_systemAccessService.DoesUserHasAccessToTheSystem(aspNetUserTenant, systemDict))
+        if (await _systemAccessService.DoesUserHasAccessToTheSystem(userId, systemDict))
         {
-            systemAccess = _systemAccessService.GetValidSystemAccessOfUser(aspNetUserTenant, systemDict);
+            systemAccess = await _systemAccessService.GetValidSystemAccessOfUser(userId, systemDict);
         }
         else
         {
-            aspNetUserTenant.AccessFailedCount += 1;
-
             try
             {
-                systemAccess = await _systemAccessService.CreateSystemAccess(aspNetUserTenant, manager, systemDict);
+                systemAccess = await _systemAccessService.CreateSystemAccess(userId, manager, systemDict);
             }
             catch (DbUpdateException e)
             {
@@ -162,7 +141,7 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
             return false;
         }
         _logger.LogInformation(
-            $"Successfully created pending approval lease application for user {aspNetUserTenant.UserName} to the {systemDict.Name} system");
+            $"Successfully created pending approval lease application for user with {userId} to the {systemDict.Name} system");
         return true;
     }
     
