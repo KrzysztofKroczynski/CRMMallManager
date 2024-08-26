@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Shared.Core.Entities;
+using Shared.UseCases.GetUserState;
 
 namespace MallManager.Components.Pages.Tenant.RequestsPage;
 
@@ -9,10 +10,11 @@ public partial class RequestsPage : ComponentBase
     public bool ShowMassEvents { get; set; }
     public bool ShowMarketingCampaign { get; set; }
     
-    private IEnumerable<LeaseApplication> _leaseApplications = Enumerable.Empty<LeaseApplication>();
-    private IEnumerable<MassEvent> _massEvents = Enumerable.Empty<MassEvent>();
-    private IEnumerable<MarketingCampaign> _marketingCampaigns = Enumerable.Empty<MarketingCampaign>();
+    private ICollection<LeaseApplication> _leaseApplications = new List<LeaseApplication>();
+    private ICollection<MassEvent> _massEvents = new List<MassEvent>();
+    private ICollection<MarketingCampaign> _marketingCampaigns = new List<MarketingCampaign>();
     
+    private UserState<LeaseApplication> StateEditLeaseApplication { get; set; }
     
     protected override async Task OnInitializedAsync()
     {
@@ -49,14 +51,15 @@ public partial class RequestsPage : ComponentBase
         StateHasChanged();
     }
     
-    private void EditRequest()
+    private async Task EditLeaseApplication(int leaseApplicationId)
     {
-        // Business logic to edit request
+        //StateEditLeaseApplication = await Mediator.Send(new GetEditedLeaseApplicationStateQuery(leaseApplicationId + ""));
     }
 
     public async Task DeleteLeaseApplication(LeaseApplication leaseApplication)
     {
         await ManageRequestsService.DeleteLeaseApplication(leaseApplication);
+        StateHasChanged();
     }
     
     private async Task DeleteMarketingCampaign(MarketingCampaign marketingCampaign)

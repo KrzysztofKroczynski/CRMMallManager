@@ -1,4 +1,5 @@
 ﻿using Ardalis.Specification;
+using Microsoft.VisualBasic;
 using Shared.Core.Entities;
 using Shared.Core.Specifications;
 
@@ -12,9 +13,9 @@ public class ManageRequestsService : IManageRequestsService
     private readonly IRepositoryBase<MarketingCampaign> _marketingCampaignRepository;
     private readonly IRepositoryBase<MassEvent> _massEventRepository;
     
-    public IEnumerable<LeaseApplication> LeaseApplications { get; private set; } = Enumerable.Empty<LeaseApplication>();
-    public IEnumerable<MarketingCampaign> MarketingCampaigns { get; private set; } = Enumerable.Empty<MarketingCampaign>();
-    public IEnumerable<MassEvent> MassEvents { get; private set; } = Enumerable.Empty<MassEvent>();
+    public ICollection<LeaseApplication> LeaseApplications { get; private set; } = new List<LeaseApplication>();
+    public ICollection<MarketingCampaign> MarketingCampaigns { get; private set; } = new List<MarketingCampaign>();
+    public ICollection<MassEvent> MassEvents { get; private set; } = new List<MassEvent>();
     
     public ManageRequestsService(ILogger<ManageRequestsService> logger, IRepositoryBase<LeaseApplication> leaseApplicationRepository, IRepositoryBase<MarketingCampaign> marketingCampaignRepository,
         IRepositoryBase<MassEvent> massEventRepository)
@@ -45,7 +46,12 @@ public class ManageRequestsService : IManageRequestsService
 
     public async Task DeleteLeaseApplication(LeaseApplication leaseApplication)
     {
+        leaseApplication.RetailUnitPurposes.Clear();
+        leaseApplication.SurfaceClassDicts.Clear();
+        LeaseApplications.Remove(leaseApplication);
+        
         await _leaseApplicationRepository.DeleteAsync(leaseApplication);
+        await _leaseApplicationRepository.SaveChangesAsync();
         _logger.LogInformation("The lease application has been deleted successfully");
     }
     

@@ -1,4 +1,5 @@
 ﻿using Ardalis.Specification;
+using Microsoft.EntityFrameworkCore;
 using Shared.Core.Entities;
 using Shared.Core.Specifications;
 
@@ -45,10 +46,10 @@ public sealed class SystemAccessService : ISystemAccessService
             await _systemAccessRepository.AddAsync(systemAccess);
             await _systemAccessRepository.SaveChangesAsync();
         }
-        catch (Exception e)
+        catch (DbUpdateException e)
         {
             _logger.LogError(e.StackTrace);
-            return null;
+            throw;
         }
         _logger.LogInformation($"Successfully created pending approval system access for user {aspNetUser.UserName} to the {systemDict.Name} system");
 

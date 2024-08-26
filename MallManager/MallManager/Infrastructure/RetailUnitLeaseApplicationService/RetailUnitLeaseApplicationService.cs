@@ -1,5 +1,6 @@
 ﻿using Ardalis.Specification;
 using MallManager.Service;
+using Microsoft.EntityFrameworkCore;
 using Shared.Core.Entities;
 
 namespace MallManager.Infrastructure.RetailUnitLeaseApplicationService;
@@ -126,7 +127,15 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
         else
         {
             aspNetUserTenant.AccessFailedCount += 1;
-            systemAccess = await _systemAccessService.CreateSystemAccess(aspNetUserTenant, manager, systemDict);
+
+            try
+            {
+                systemAccess = await _systemAccessService.CreateSystemAccess(aspNetUserTenant, manager, systemDict);
+            }
+            catch (DbUpdateException e)
+            {
+                return false;
+            }
         }
 
         var newId = await GenerateNewId();
@@ -147,9 +156,10 @@ public sealed class RetailUnitLeaseApplicationService : IRetailUnitLeaseApplicat
         {
             await _leaseApplicationRepository.AddAsync(leaseApplication);
         }
-        catch (Exception e)
+        catch (DbUpdateException e)
         {
             _logger.LogError(e.StackTrace);
+            return false;
         }
         _logger.LogInformation(
             $"Successfully created pending approval lease application for user {aspNetUserTenant.UserName} to the {systemDict.Name} system");
