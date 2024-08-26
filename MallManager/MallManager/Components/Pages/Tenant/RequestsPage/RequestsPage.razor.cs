@@ -65,10 +65,12 @@ public partial class RequestsPage : ComponentBase
     private async Task DeleteMarketingCampaign(MarketingCampaign marketingCampaign)
     {
         await ManageRequestsService.DeleteMarketingCampaign(marketingCampaign);
+        StateHasChanged();
     }
     
     private async Task DeleteMassEvent(MassEvent massEvent)
     {
         await ManageRequestsService.DeleteMassEvent(massEvent);
+        StateHasChanged();
     }
 }

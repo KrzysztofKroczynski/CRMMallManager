@@ -57,12 +57,17 @@ public class ManageRequestsService : IManageRequestsService
     
     public async Task DeleteMarketingCampaign(MarketingCampaign marketingCampaign)
     {
+        marketingCampaign.MarketingMaterials.Clear();
+        MarketingCampaigns.Remove(marketingCampaign);
+        
         await _marketingCampaignRepository.DeleteAsync(marketingCampaign);
         _logger.LogInformation("The marketing campaign has been deleted successfully");
     }
     
     public async Task DeleteMassEvent(MassEvent massEvent)
     {
+        MassEvents.Remove(massEvent);
+        
         await _massEventRepository.DeleteAsync(massEvent);
         _logger.LogInformation("The mass event has been deleted successfully");
     }
