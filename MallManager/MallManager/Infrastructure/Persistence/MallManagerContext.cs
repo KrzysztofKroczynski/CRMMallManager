@@ -68,13 +68,16 @@ public partial class MallManagerContext : DbContext
 
     public virtual DbSet<SystemDict> SystemDicts { get; set; }
 
+    public virtual DbSet<Validation> Validations { get; set; }
+
+    public virtual DbSet<ValidationNote> ValidationNotes { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.UseSqlServer(_connectionStringOptions?.Value?.DefaultConnection ?? string.Empty);
     }
-
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AdditionalUserInfo>(entity =>
@@ -182,14 +185,15 @@ public partial class MallManagerContext : DbContext
                 .HasMaxLength(450)
                 .HasColumnName("AspNetUsers_Id");
             entity.Property(e => e.CompanySizeId).HasColumnName("Company_size_id");
-            entity.Property(e => e.Name).HasMaxLength(1);
+            entity.Property(e => e.DateAdded)
+                .HasColumnType("datetime")
+                .HasColumnName("Date_added");
             entity.Property(e => e.Nip).HasColumnName("NIP");
-            entity.Property(e => e.Regon)
-                .HasMaxLength(1)
-                .HasColumnName("REGON");
+            entity.Property(e => e.Regon).HasColumnName("REGON");
             entity.Property(e => e.StartingCapital)
                 .HasColumnType("money")
                 .HasColumnName("Starting_capital");
+            entity.Property(e => e.ValidationId).HasColumnName("Validation_ID");
 
             entity.HasOne(d => d.AspNetUsers).WithMany(p => p.Companies)
                 .HasForeignKey(d => d.AspNetUsersId)
@@ -199,6 +203,11 @@ public partial class MallManagerContext : DbContext
                 .HasForeignKey(d => d.CompanySizeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Company_Company_size");
+
+            entity.HasOne(d => d.Validation).WithMany(p => p.Companies)
+                .HasForeignKey(d => d.ValidationId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Company_Validation");
         });
 
         modelBuilder.Entity<CompanySize>(entity =>
@@ -208,10 +217,7 @@ public partial class MallManagerContext : DbContext
             entity.ToTable("Company_size");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.EmploymentLevel)
-                .HasMaxLength(1)
-                .HasColumnName("Employment_level");
-            entity.Property(e => e.Name).HasMaxLength(1);
+            entity.Property(e => e.EmploymentLevel).HasColumnName("Employment_level");
         });
 
         modelBuilder.Entity<Document>(entity =>
@@ -224,9 +230,7 @@ public partial class MallManagerContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("ID");
             entity.Property(e => e.DateAdded).HasColumnName("Date_added");
-            entity.Property(e => e.DocumentName)
-                .HasMaxLength(1)
-                .HasColumnName("Document_name");
+            entity.Property(e => e.DocumentName).HasColumnName("Document_name");
             entity.Property(e => e.DocumentPdf).HasColumnName("Document_pdf");
             entity.Property(e => e.LeaseId).HasColumnName("Lease_Id");
             entity.Property(e => e.LeaseLeaseId).HasColumnName("Lease_Lease_id");
@@ -251,15 +255,10 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("ID");
-            entity.Property(e => e.BankNameDepositReturn)
-                .HasMaxLength(1)
-                .HasColumnName("Bank_name_deposit_return");
+            entity.Property(e => e.BankNameDepositReturn).HasColumnName("Bank_name_deposit_return");
             entity.Property(e => e.BankingAccountNumberDepositReturn)
-                .HasMaxLength(1)
                 .HasColumnName("Banking_account_number_deposit_return");
-            entity.Property(e => e.BankingAccountNumberRent)
-                .HasMaxLength(1)
-                .HasColumnName("Banking_account_number_rent");
+            entity.Property(e => e.BankingAccountNumberRent).HasColumnName("Banking_account_number_rent");
             entity.Property(e => e.DatetimeOfUpdate)
                 .HasColumnType("datetime")
                 .HasColumnName("Datetime_of_update");
@@ -297,7 +296,6 @@ public partial class MallManagerContext : DbContext
                 .HasColumnName("ID");
             entity.Property(e => e.DateEnd).HasColumnName("Date_end");
             entity.Property(e => e.DateStart).HasColumnName("Date_start");
-            entity.Property(e => e.Description).HasMaxLength(1);
             entity.Property(e => e.SignupStatusDictId).HasColumnName("Signup_status_dict_Id");
             entity.Property(e => e.SystemAccessId).HasColumnName("System_access_ID");
 
@@ -356,7 +354,6 @@ public partial class MallManagerContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("ID");
             entity.Property(e => e.CompanyId).HasColumnName("Company_ID");
-            entity.Property(e => e.Description).HasMaxLength(1);
             entity.Property(e => e.EndDate).HasColumnName("End_Date");
             entity.Property(e => e.IsRerun).HasColumnName("Is_Rerun");
             entity.Property(e => e.MarketingCampaignReachDictId).HasColumnName("Marketing_Campaign_Reach_Dict_ID");
@@ -412,7 +409,6 @@ public partial class MallManagerContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("ID");
             entity.Property(e => e.MarketingCampaignId).HasColumnName("Marketing_Campaign_ID");
-            entity.Property(e => e.Name).HasMaxLength(1);
             entity.Property(e => e.PriceFactor)
                 .HasColumnType("money")
                 .HasColumnName("Price_factor");
@@ -441,7 +437,6 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.DatetimeStart)
                 .HasColumnType("datetime")
                 .HasColumnName("Datetime_start");
-            entity.Property(e => e.Description).HasMaxLength(1);
             entity.Property(e => e.IsApproved).HasColumnName("Is_approved");
             entity.Property(e => e.Location)
                 .HasMaxLength(20)
@@ -466,7 +461,6 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.AspNetUsersId)
                 .HasMaxLength(450)
                 .HasColumnName("AspNetUsers_Id");
-            entity.Property(e => e.Content).HasMaxLength(1);
             entity.Property(e => e.DateTimeAdded)
                 .HasColumnType("datetime")
                 .HasColumnName("DateTime_added");
@@ -495,18 +489,21 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.AspNetUsersId)
                 .HasMaxLength(450)
                 .HasColumnName("AspNetUsers_Id");
-            entity.Property(e => e.Lastname).HasMaxLength(1);
-            entity.Property(e => e.Name).HasMaxLength(1);
-            entity.Property(e => e.Pesel)
-                .HasMaxLength(1)
-                .HasColumnName("PESEL");
-            entity.Property(e => e.SecondName)
-                .HasMaxLength(1)
-                .HasColumnName("Second_name");
+            entity.Property(e => e.DateAdded)
+                .HasColumnType("datetime")
+                .HasColumnName("Date_added");
+            entity.Property(e => e.Pesel).HasColumnName("PESEL");
+            entity.Property(e => e.SecondName).HasColumnName("Second_name");
+            entity.Property(e => e.ValidationId).HasColumnName("Validation_ID");
 
             entity.HasOne(d => d.AspNetUsers).WithMany(p => p.People)
                 .HasForeignKey(d => d.AspNetUsersId)
                 .HasConstraintName("Person_AspNetUsers");
+
+            entity.HasOne(d => d.Validation).WithMany(p => p.People)
+                .HasForeignKey(d => d.ValidationId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Person_Validation");
         });
 
         modelBuilder.Entity<RetailUnit>(entity =>
@@ -521,7 +518,7 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.FloorNumber).HasColumnName("Floor_number");
             entity.Property(e => e.LocalNumber).HasColumnName("Local_number");
             entity.Property(e => e.LocalSurfaceArea)
-                .HasColumnType("decimal(20, 2)")
+                .HasColumnType("decimal(10, 2)")
                 .HasColumnName("Local_surface_area");
             entity.Property(e => e.RetailUnitPurposeId).HasColumnName("Retail_unit_purpose_ID");
 
@@ -540,7 +537,6 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("ID");
-            entity.Property(e => e.Description).HasMaxLength(1);
             entity.Property(e => e.Name)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -555,7 +551,6 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("ID");
-            entity.Property(e => e.Name).HasMaxLength(1);
         });
 
         modelBuilder.Entity<SurfaceClassDict>(entity =>
@@ -573,9 +568,7 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.MinimalSurface)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("Minimal_surface");
-            entity.Property(e => e.Name)
-                .HasMaxLength(20)
-                .IsUnicode(false);
+            entity.Property(e => e.Name).HasMaxLength(20);
 
             entity.HasMany(d => d.LeaseApplications).WithMany(p => p.SurfaceClassDicts)
                 .UsingEntity<Dictionary<string, object>>(
@@ -649,7 +642,54 @@ public partial class MallManagerContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("ID");
-            entity.Property(e => e.Name).HasMaxLength(1);
+        });
+
+        modelBuilder.Entity<Validation>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Validation_pk");
+
+            entity.ToTable("Validation");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
+            entity.Property(e => e.IsValid).HasColumnName("is_Valid");
+            entity.Property(e => e.LastChangeDate)
+                .HasColumnType("datetime")
+                .HasColumnName("Last_Change_Date");
+            entity.Property(e => e.LastChangedById)
+                .HasMaxLength(450)
+                .HasColumnName("Last_Changed_By_Id");
+
+            entity.HasOne(d => d.LastChangedBy).WithMany(p => p.Validations)
+                .HasForeignKey(d => d.LastChangedById)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Validation_AspNetUsers");
+        });
+
+        modelBuilder.Entity<ValidationNote>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("ValidationNote_pk");
+
+            entity.ToTable("ValidationNote");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
+            entity.Property(e => e.AuthorId)
+                .HasMaxLength(450)
+                .HasColumnName("Author_Id");
+            entity.Property(e => e.ValidationId).HasColumnName("Validation_ID");
+
+            entity.HasOne(d => d.Author).WithMany(p => p.ValidationNotes)
+                .HasForeignKey(d => d.AuthorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("ValidationNote_AspNetUsers");
+
+            entity.HasOne(d => d.Validation).WithMany(p => p.ValidationNotes)
+                .HasForeignKey(d => d.ValidationId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("ValidationNote_Validation");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -24,12 +24,14 @@
                                       @bind-Value="_model.Pesel" For="@(() => _model.Pesel)"/>
                         <MudTextField Label="Telefon"
                                       @bind-Value="_model.PhoneNumber" For="@(() => _model.PhoneNumber)"/>
+                        <MudDatePicker Label="Data Urodzenia"
+                                       Editable="true" @bind-Date="_model.Date" For="@(() => _model.Date)" Placeholder="Wybierz albo wpisz datę" />
 
                     </MudCardContent>
                 </MudCard>
                 <MudCard Class="custom-card">
                     <MudCardContent>
-                        <MudSelect For="() => _model.Country" T="string" Label="Kraj" HelperText="Wybierz kraj"
+                        <MudSelect For="() => _model.Country" T="string" Label="Kraj"
                                    @bind-Value="_model.Country" Placeholder="Wybierz kraj">
                             @foreach (var country in Countries.CountryList)
                             {

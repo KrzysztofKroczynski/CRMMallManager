@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 using Serilog;
 using Shared.Core.Entities;
 using Shared.Web.FormModels;
+using MallManagerContext = MallManager.Infrastructure.Persistence.MallManagerContext;
 
 namespace MallManager.Infrastructure;
 
