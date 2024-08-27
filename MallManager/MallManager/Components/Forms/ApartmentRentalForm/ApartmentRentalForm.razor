@@ -1,26 +1,93 @@
-﻿<MudStack>
+@using MallManager.Infrastructure.RetailUnitLeaseApplicationService
+@using Microsoft.AspNetCore.Authorization
+@inject RetailUnitLeaseApplicationService RetailUnitLeaseApplicationService
+@inject NavigationManager NavigationManager
+
+<EditForm Model="@_rentalForm" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator/>
     <MudStack Row="true">
-        <MudSelect T="string" @bind-Value="sizeOfLocal" Label="Metraż" Variant="Variant.Filled" Required="true">
-            <!-- TODO: Create foreach loop to dynamic generate <MudSelectItem> elements-->
+        <MudStack Class="purpose-form">
+            <MudStack Row="true">
+                <MudSelect T="int" For="() => _rentalForm.SurfaceClassDictId" @bind-Value="_rentalForm.SurfaceClassDictId" Label="Metraż*" Variant="Variant.Filled">
+                    @foreach (var surfaceClass in RetailUnitLeaseApplicationService.SurfaceClassDicts)
+                    {
+                        <MudSelectItem Value="@surfaceClass.Id">@RetailUnitLeaseApplicationService.SurfaceClassDictsAsString(surfaceClass)</MudSelectItem>
+                    }
+                </MudSelect>
 
-            <MudSelectItem Value='"Sample 1"'/>
-            <MudSelectItem Value='"Sample 2"'/>
-        </MudSelect>
+                <MudSelect T="int" For="() => _rentalForm.RetailUnitPurposeId" @bind-Value="_rentalForm.RetailUnitPurposeId" Label="Typ działalności*" Variant="Variant.Filled" OnChange="@ApplyFilter">
+                    @foreach (var retailUnitPurpose in RetailUnitLeaseApplicationService.RetailUnitPurposes)
+                    {
+                        <MudSelectItem Value="@retailUnitPurpose.Id">@retailUnitPurpose.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudStack>
 
-        <MudSelect T="string" @bind-Value="businessType" Label="Typ działalności" Variant="Variant.Filled" Required="true">
-            <!-- TODO: Create foreach loop to dynamic generate <MudSelectItem> elements-->
+            <MudText Typo="Typo.caption" Class="mt-20">Okres Wynajmu*</MudText>
 
-            <MudSelectItem Value='"Sample 1"'/>
-            <MudSelectItem Value='"Sample 2"'/>
-        </MudSelect>
+            <MudStack Row="true">
+                <MudDatePicker @bind-Date="_rentalForm.StartDate" For="() => _rentalForm.StartDate" Label="Od*" Variant="Variant.Filled" />
+                <MudDatePicker @bind-Date="_rentalForm.EndDate" For="() => _rentalForm.EndDate" Label="Do*" Variant="Variant.Filled" />
+            </MudStack>
+
+            <MudStack>
+                <MudTextField @bind-Value="_rentalForm.Description" Label="Opis*" Variant="Variant.Filled"
+                              MaxLength="1000" Lines="7" MaxLines="7" HelperText="Max. 1000 znaków."/>
+            </MudStack>
+        </MudStack>
+
+        <MudStack>
+            <MudRadioGroup T="int" For="() => _rentalForm.RentalUnitId" @bind-SelectedOption="_rentalForm.RentalUnitId">
+                <MudTable Items="_filteredRetailUnits">
+                    <HeaderContent>
+                        <MudTh>Kod lokalu</MudTh>
+                        <MudTh>Piętro</MudTh>
+                        <MudTh>Numer lokalu</MudTh>
+                        <MudTh>Powierzchnia [metrów kwadratowych]</MudTh>
+                        <MudTh>Wybierz</MudTh>
+                    </HeaderContent>
+                    <RowTemplate Context="item">
+                        <MudTd>@item.Id</MudTd>
+                        <MudTd>@item.FloorNumber</MudTd>
+                        <MudTd>@item.LocalNumber</MudTd>
+                        <MudTd>@item.LocalSurfaceArea</MudTd>
+                        <MudTd>
+                            <MudRadio Value="@item.Id"></MudRadio>
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </MudRadioGroup>
+        </MudStack>
     </MudStack>
 
-    <MudText Typo="Typo.caption" Class="mt-20">Okres Wynajmu*</MudText>
-
-    <MudStack Row="true">
-        @* TODO: Add date validation that startDate cannot be from the past, and cannot be later than endDate *@
-
-        <MudDatePicker @bind-Date="startDate" Label="Od" Variant="Variant.Filled" Required="true"/>
-        <MudDatePicker @bind-Date="endDate" Label="Do" Variant="Variant.Filled" Required="true"/>
+    <MudStack>
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                   Class="ml-auto">
+            Zatwierdź
+        </MudButton>
     </MudStack>
-</MudStack>
+</EditForm>
+
+@if (ShowSuccess)
+{
+    <MudDialog Visible="true" CloseOnEsc="true" NoHeader="true" DisableOverlay="false">
+        <DialogContent>
+            <MudStack Row="true">
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color: green;" Size="Size.Large" />
+                <MudText Typo="Typo.h5" Class="mt-1">Złożono wniosek o dostęp do systemu wynajmu</MudText>
+            </MudStack>
+        </DialogContent>
+    </MudDialog>
+}
+
+@if (ShowFailure)
+{
+    <MudDialog Visible="true" CloseOnEsc="true" NoHeader="true" DisableOverlay="false">
+        <DialogContent>
+            <MudStack Row="true">
+                <MudIcon Icon="@Icons.Material.Filled.Close" Style="color: red; font-size: 48px;" />
+                <MudText Typo="Typo.h5" Class="mt-2">Napotkano problem</MudText>
+            </MudStack>
+        </DialogContent>
+    </MudDialog>
+}

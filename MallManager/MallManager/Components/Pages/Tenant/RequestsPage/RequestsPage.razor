@@ -1,31 +1,112 @@
 ﻿@rendermode InteractiveServer
 @page "/Requests"
 @using MallManager.Components.LoggedTenantMenu
+@using MallManager.Infrastructure.ManageRequestsService
+@using Microsoft.AspNetCore.Authorization
+@using MediatR
+@inject ManageRequestsService ManageRequestsService
+@inject IMediator Mediator
+@inject NavigationManager NavigationManager
+@attribute [Authorize(Roles = "Client")]
+
 <MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
     <LoggedTenantMenu>
         <MudStack>
-            <MudTable Items="@exampleList">
-                <HeaderContent>
-                    <MudTh>Numer zgłoszenia</MudTh>
-                    <MudTh>Status</MudTh>
-                    <MudTh>Data złożenia</MudTh>
-                    <MudTh>Data aktualizacji</MudTh>
-                    <MudTh>Akcje</MudTh>
-                </HeaderContent>
-                <RowTemplate Context="item">
-                    <MudTd>@item.RequestNumber</MudTd>
-                    <MudTd>@item.Status</MudTd>
-                    <MudTd>@item.SubmissionDate</MudTd>
-                    <MudTd>@item.StatusChangedDate</MudTd>
-                    <MudTd>
-                        <MudIconButton OnClick="@(() => EditRequest(item))" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
-                        <MudIconButton OnClick="@(() => DeleteRequest(item))" Color="Color.Error" Size="Size.Small" Icon="@Icons.Material.Filled.Delete"/>
-                    </MudTd>
-                </RowTemplate>
-            </MudTable>
+            <MudStack Row="true"  Class="d-flex justify-center align-items-center">
+                <MudButton Color="Color.Primary" OnClick="@(() => ShowSpecificTypeOfRequests(true, false, false))">Wynajem lokalu</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@(() => ShowSpecificTypeOfRequests(false, true, false))">Kampania reklamowa</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@(() => ShowSpecificTypeOfRequests(false, false, true))">Organizacja imprezy</MudButton>
+            </MudStack>
+            
+            <MudStack>
+                @if (ShowLeaseApplications)
+                {
+                    <MudTable Items="@_leaseApplications">
+                        <HeaderContent>
+                            <MudTh>Numer zgłoszenia</MudTh>
+                            <MudTh>Data od</MudTh>
+                            <MudTh>Data do</MudTh>
+                            <MudTh>Klasa powierzchni</MudTh>
+                            <MudTh>Typ działalności</MudTh>
+                            <MudTh>Status</MudTh>
+                            <MudTh>Akcje</MudTh>
+                        </HeaderContent>
+                        <RowTemplate Context="item">
+                            <MudTd>@item.Id</MudTd>
+                            <MudTd>@item.DateStart</MudTd>
+                            <MudTd>@item.DateEnd</MudTd>
+                            <MudTd>@item.SurfaceClassDicts.First().Name</MudTd>
+                            <MudTd>@item.RetailUnitPurposes.First().Name</MudTd>
+                            <MudTd>@item.SignupStatusDict.Name</MudTd>
+                            <MudTd>
+                                <MudIconButton OnClick="@(() => EditLeaseApplication(@item.Id))" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
+                                <MudIconButton OnClick="@(() => DeleteLeaseApplication(item))" Color="Color.Error" Size="Size.Small" Icon="@Icons.Material.Filled.Delete"/>
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                }
 
+                @if (ShowMarketingCampaign)
+                {
+                    <MudTable Items="@_marketingCampaigns">
+                        <HeaderContent>
+                            <MudTh>Numer zgłoszenia</MudTh>
+                            <MudTh>Data od</MudTh>
+                            <MudTh>Data do</MudTh>
+                            <MudTh>Minimalny odbiór na godzinę</MudTh>
+                            <MudTh>Maksymalny odbiór na godzinę</MudTh>
+                            <MudTh>Jest ponowieniem kampanii reklamowej</MudTh>
+                            <MudTh>W dni robocze</MudTh>
+                            <MudTh>W weekend</MudTh>
+                            <MudTh>Akcje</MudTh>
+                        </HeaderContent>
+                        <RowTemplate Context="item">
+                            <MudTd>@item.Id</MudTd>
+                            <MudTd>@item.StartDate</MudTd>
+                            <MudTd>@item.EndDate</MudTd>
+                            <MudTd>@item.MarketingCampaignReachDict.MinimalHourlyReach</MudTd>
+                            <MudTd>@item.MarketingCampaignReachDict.MaximalHourlyReach</MudTd>
+                            <MudTd>@item.IsRerun</MudTd>
+                            <MudTd>@item.OnWeekdays</MudTd>
+                            <MudTd>@item.OnWeekends</MudTd>
+                            <MudTd>
+                                <MudIconButton Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
+                                <MudIconButton OnClick="@(() => DeleteMarketingCampaign(item))" Color="Color.Error" Size="Size.Small" Icon="@Icons.Material.Filled.Delete"/>
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                }
+
+                @if (ShowMassEvents)
+                {
+                    <MudTable Items="@_massEvents">
+                        <HeaderContent>
+                            <MudTh>Numer zgłoszenia</MudTh>
+                            <MudTh>Lokalizacja</MudTh>
+                            <MudTh>Czas startu</MudTh>
+                            <MudTh>Czas zakończenia</MudTh>
+                            <MudTh>Czy zatwierdzono</MudTh>
+                            <MudTh>Data dodania</MudTh>
+                            <MudTh>Akcje</MudTh>
+                        </HeaderContent>
+                        <RowTemplate Context="item">
+                            <MudTd>@item.Id</MudTd>
+                            <MudTd>@item.Location</MudTd>
+                            <MudTd>@item.DatetimeStart</MudTd>
+                            <MudTd>@item.DatetimeEnd</MudTd>
+                            <MudTd>@item.IsApproved</MudTd>
+                            <MudTd>@item.DateAdded</MudTd>
+                            <MudTd>
+                                <MudIconButton Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.Edit"/>
+                                <MudIconButton OnClick="@(() => DeleteMassEvent(item))" Color="Color.Error" Size="Size.Small" Icon="@Icons.Material.Filled.Delete"/>
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                }
+            </MudStack>
+             
             <MudNavLink Href="Request">
-                <MudButton Color="Color.Primary">Nowy wpis</MudButton>
+                <MudButton Color="Color.Primary">Nowy zapis</MudButton>
             </MudNavLink>
         </MudStack>
     </LoggedTenantMenu>

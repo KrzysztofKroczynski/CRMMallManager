@@ -2,7 +2,10 @@ using MallManager.Components;
 using MallManager.Components.Account;
 using MallManager.Infrastructure;
 using MallManager.Infrastructure.Configuration;
+using MallManager.Infrastructure.ManageRequestsService;
 using MallManager.Infrastructure.Persistence;
+using MallManager.Infrastructure.RetailUnitLeaseApplicationService;
+using MallManager.Service;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using MudBlazor.Services;
@@ -46,7 +49,17 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<RetailUnitLeaseApplicationService>();
+builder.Services.AddScoped<ManageRequestsService>();
+builder.Services.AddScoped<ISystemAccessService, SystemAccessService>();
+
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Login";
+    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+});
 
 var app = builder.Build();
 
