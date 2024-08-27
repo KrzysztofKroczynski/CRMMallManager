@@ -1,17 +1,35 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using MallManager.UseCases.UserRegistration;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Shared.Web.FormModels;
+using RegistrationForm = Shared.Web.FormModels.RegistrationForm;
 
 namespace MallManager.Components.Pages.Common.Register;
 
 public partial class Register : ComponentBase
 {
-    private readonly RegistrationForm model = new();
-    private bool success;
+    private readonly RegistrationForm _model = new();
+    private string _errorMessage = string.Empty;
+    private bool _success;
 
-    private void OnValidSubmit(EditContext context)
+    [Inject] private RegistrationHandler RegisterUserHandler { get; set; } = null!;
+
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+
+    private async Task OnValidSubmit(EditContext context)
     {
-        success = true;
+        try
+        {
+            await RegisterUserHandler.RegisterUserAsync(_model);
+            _success = true;
+            _errorMessage = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            _success = false;
+            _errorMessage = ex.Message;
+        }
+
         StateHasChanged();
+        if (_success) NavigationManager.NavigateTo("/EmailSent");
     }
 }

@@ -6,6 +6,7 @@ using MallManager.Infrastructure.UserState;
 using MallManager.Infrastructure.UserState.ClaimsTransformation;
 using MallManager.Infrastructure.UserState.LeaseApplicationEditStateService;
 using MallManager.Infrastructure.UserState.PersonalInfoStateService;
+using MallManager.UseCases.UserRegistration;
 using Microsoft.AspNetCore.Authentication;
 using Serilog;
 using Shared.Core.Entities;
@@ -21,6 +22,7 @@ public static class ServiceExtensions
     {
         services.AddScoped(typeof(IRepositoryBase<>), typeof(Repository<>));
         services.AddScoped(typeof(IReadRepositoryBase<>), typeof(Repository<>));
+        services.AddScoped<RegistrationHandler>();
 
         services.AddDbContext<MallManagerContext>();
 

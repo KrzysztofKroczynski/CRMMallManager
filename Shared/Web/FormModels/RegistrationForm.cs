@@ -8,8 +8,11 @@ public class RegistrationForm : MudForm
     [Required] [EmailAddress] public string Email { get; set; } = string.Empty;
 
     [Required]
-    [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+    [MinLength(8, ErrorMessage = "Password has to be at least 8 characters long.")]
+    [MaxLength(30, ErrorMessage = "Password has to be shorter than 30 characters.")]
     public string Password { get; set; } = string.Empty;
 
-    [Required] [Compare(nameof(Password))] public string Password2 { get; set; } = string.Empty;
+    [Required(ErrorMessage = "Repeating password is required.")]
+    [Compare(nameof(Password), ErrorMessage = "Passwords do not match.")]
+    public string Password2 { get; set; } = string.Empty;
 }

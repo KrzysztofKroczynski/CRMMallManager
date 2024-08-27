@@ -15,6 +15,7 @@
 
     <ItemGroup>
         <Folder Include="Core\Agregates\"/>
+        <Folder Include="Core\Services\"/>
     </ItemGroup>
 
     <ItemGroup>

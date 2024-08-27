@@ -1,50 +1,41 @@
 ﻿@page "/Register"
 @rendermode InteractiveServer
 
-<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+
+<MspRegister/>
+<EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator/>
-    <MudGrid Style="padding-left: 350px">
-        <MudItem xs="12" sm="7">
+    <MudGrid Class="custom-mudgrid">
+        <MudItem>
             <MudCard>
                 <MudCardContent>
-                    <MudTextField Label="Email" Class="mt-3"
-                                  @bind-Value="model.Email" For="@(() => model.Email)"/>
-                    <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-                                  @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
-                    <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
-                                  @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/>
+                    <MudTextField Label="Email"
+                                  @bind-Value="_model.Email" For="@(() => _model.Email)"/>
+                    <MudTextField Label="Create Password" HelperText="Choose a strong password"
+                                  @bind-Value="_model.Password" For="@(() => _model.Password)"
+                                  InputType="InputType.Password"/>
+                    <MudTextField Label="Repeat Password" HelperText="Repeat the password"
+                                  @bind-Value="_model.Password2" For="@(() => _model.Password2)"
+                                  InputType="InputType.Password"/>
                 </MudCardContent>
-                <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Check</MudButton>
-                    @if (success)
-                    {
-                        <MudNavLink Href="/EmailSent">
-                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
-                        </MudNavLink>
-                    }
-                    else
-                    {
-                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Disabled="true" Class="ml-auto">Register</MudButton>
-                    }
-                </MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="ml-auto">
+                    Register
+                </MudButton>
             </MudCard>
+
         </MudItem>
-        <img src="mall.png" style="width: 250px";height="auto">
-        <MudItem xs="12" sm="5">
-            <MudPaper Class="pa-4 mud-height-full">
-                <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
-                @if (success)
-                {
-                    <MudText Color="Color.Success">Success</MudText>
-                }
-                else
-                {
-                    <MudText Color="@Color.Error">
-                        <ValidationSummary/>
-                    </MudText>
-                }
-            </MudPaper>
+        <MudItem>
+            <img src="mall.png" class="img_style">
         </MudItem>
     </MudGrid>
 
 </EditForm>
+
+@if (_success)
+{
+    <div class="alert alert-success">Registration successful!</div>
+}
+else if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <div class="alert alert-danger">@_errorMessage</div>
+}
