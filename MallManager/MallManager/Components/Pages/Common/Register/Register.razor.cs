@@ -1,5 +1,4 @@
-﻿using MallManager.Components.Account;
-using MallManager.UseCases.UserRegistration;
+﻿using MallManager.UseCases.UserRegistration;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using RegistrationForm = Shared.Web.FormModels.RegistrationForm;
@@ -14,7 +13,7 @@ public partial class Register : ComponentBase
 
     [Inject] private RegistrationHandler RegisterUserHandler { get; set; } = null!;
 
-    [Inject] private IdentityRedirectManager RedirectManager { get; set; } = null!;
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 
     private async Task OnValidSubmit(EditContext context)
     {
@@ -31,6 +30,6 @@ public partial class Register : ComponentBase
         }
 
         StateHasChanged();
-        if (_success) RedirectManager.RedirectTo("/EmailSent");
+        if (_success) NavigationManager.NavigateTo("/EmailSent");
     }
 }

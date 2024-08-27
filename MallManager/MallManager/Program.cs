@@ -48,6 +48,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
         options.SignIn.RequireConfirmedAccount =
             false; // rozwiązanie tymczasowe, do zmienienia na true gdy będzie działała weryfikacja mail-a
     })
+    .AddRoles<ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
@@ -74,7 +75,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
-app.UseMiddleware<LoginHandler>();
+app.UseMiddleware<LoginMiddleware>();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
@@ -83,5 +84,17 @@ app.MapRazorComponents<App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+    var roles = new[] { "Admin", "Client", "Manager" };
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new ApplicationRole { Name = role });
+        }
+    }
+}
 
 app.Run();

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 namespace MallManager.Infrastructure.Persistence;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-    : IdentityDbContext<ApplicationUser>(options)
+    : IdentityDbContext<ApplicationUser, ApplicationRole, string>(options)
 {
     private readonly IOptions<DbConnectionString>? _connStringOptions;
 

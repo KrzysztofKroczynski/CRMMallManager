@@ -1,9 +1,10 @@
 ﻿@page "/PersonalInfo"
 @using MediatR
+@using Microsoft.AspNetCore.Authorization
 @using Shared.Core
 @rendermode InteractiveServer
 @inject IMediator Mediator
-@* @attribute [Authorize] *@
+@attribute [Authorize(Roles = "Client")]
 
 <MspPersonalInfo/>
 <MudContainer Class="from-container">

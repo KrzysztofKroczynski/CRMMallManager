@@ -12,7 +12,6 @@ public partial class Login : ComponentBase
 {
     private readonly LoginForm _model = new();
     private string _message = string.Empty;
-    private SignInResult _result;
     private Severity _severity;
     private bool _submitted;
 
@@ -21,44 +20,29 @@ public partial class Login : ComponentBase
     [Inject] private UserManager<ApplicationUser> UserManager { get; set; } = null!;
     [Inject] private SignInManager<ApplicationUser> SignInManager { get; set; } = null!;
 
-
-    protected override async Task OnInitializedAsync()
-    {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity?.IsAuthenticated == true)
-        {
-            // Przekierowanie, jeśli użytkownik jest już zalogowany
-            NavigationManager.NavigateTo("/");
-        }
-    }
-
-    // TODO: rozdzielić to na serwis i nazwać middleware (LoginHandler) jakoś sensowniej.
     private async Task OnValidSubmit()
     {
-        ApplicationUser? user = await UserManager.FindByEmailAsync(_model.Email);
-        if (user == null)
+        var usr = await UserManager.FindByEmailAsync(_model.Email);
+        if (usr == null)
         {
-            _message = "Email nie poprawny";
+            _message = "User not found";
             _severity = Severity.Warning;
             _submitted = true;
             return;
         }
 
-        if (await SignInManager.CanSignInAsync(user))
+
+        if (await SignInManager.CanSignInAsync(usr))
         {
-            SignInResult result = await SignInManager.CheckPasswordSignInAsync(user, _model.Password, false);
+            var result = await SignInManager.CheckPasswordSignInAsync(usr, _model.Password, true);
             if (result == SignInResult.Success)
             {
-                Console.WriteLine("User: " + user.Email + " successful login.");
-                Guid key = Guid.NewGuid();
-                LoginHandler.Logins[key] = new LoginInfo { Email = _model.Password, Password = _model.Password };
+                var key = Guid.NewGuid();
+                LoginMiddleware.Logins[key] = new LoginInfo { Email = _model.Email, Password = _model.Password };
                 NavigationManager.NavigateTo($"/login?key={key}", true);
             }
             else
             {
-                Console.WriteLine("User: " + user.Email + " failed login.");
                 _message = "Login failed. Check your password.";
                 _severity = Severity.Warning;
                 _submitted = true;
