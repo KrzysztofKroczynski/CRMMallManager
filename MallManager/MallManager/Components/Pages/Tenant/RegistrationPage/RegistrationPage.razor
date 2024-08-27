@@ -7,7 +7,7 @@
 @using MallManager.Components.LoggedTenantMenu
 @using Microsoft.AspNetCore.Authorization
 @inject NavigationManager NavigationManager
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Client")]
 
 <MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
     <LoggedTenantMenu>
