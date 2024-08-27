@@ -1,35 +1,54 @@
+using System.Collections.Concurrent;
 using MallManager.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
-using Shared.Web.FormModels;
 
 namespace MallManager.UseCases.Login;
 
-public sealed class LoginHandler(
-    SignInManager<ApplicationUser> signInManager,
-    ILogger<LoginHandler> logger)
+public class LoginInfo
 {
-    public async Task<SignInResult> LoginUser(LoginForm form)
+    public string Email { get; set; }
+    public string Password { get; set; }
+}
+
+public class LoginHandler
+{
+    private readonly RequestDelegate _next;
+
+    public LoginHandler(RequestDelegate next)
     {
-        // This doesn't count login failures towards account lockout
-        // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+        _next = next;
+    }
 
-        SignInResult result =
-            await signInManager.PasswordSignInAsync(form.Email, form.Password, form.RememberMe,
-                lockoutOnFailure: false);
-        Console.Beep();
-        if (result.Succeeded)
+    public static IDictionary<Guid, LoginInfo> Logins { get; } = new ConcurrentDictionary<Guid, LoginInfo>();
+
+    public async Task InvokeAsync(HttpContext context, SignInManager<ApplicationUser> signInMgr)
+    {
+        if (context.Request.Path == "/login" && context.Request.Query.ContainsKey("key"))
         {
-            logger.LogInformation("User logged in.");
-        }
-        else if (result.IsLockedOut)
-        {
-            logger.LogWarning("User account locked out.");
-        }
-        else
-        {
-            logger.LogWarning("Error: Invalid login attempt.");
+            var key = Guid.Parse(context.Request.Query["key"]);
+            if (Logins.TryGetValue(key, out var info))
+            {
+                var result = await signInMgr.PasswordSignInAsync(info.Email, info.Password, false, true);
+                info.Password = null;
+
+                if (result.Succeeded)
+                {
+                    Logins.Remove(key);
+                    context.Response.Redirect("/");
+                    return;
+                }
+
+                if (result.RequiresTwoFactor)
+                {
+                    context.Response.Redirect($"/loginwith2fa/{key}");
+                    return;
+                }
+
+                // Redirect to a custom error page
+                return;
+            }
         }
 
-        return result;
+        await _next(context);
     }
 }

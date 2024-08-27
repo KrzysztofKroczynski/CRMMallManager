@@ -3,6 +3,7 @@ using MallManager.Components.Account;
 using MallManager.Infrastructure;
 using MallManager.Infrastructure.Configuration;
 using MallManager.Infrastructure.Persistence;
+using MallManager.UseCases.Login;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using MudBlazor.Services;
@@ -73,6 +74,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+app.UseMiddleware<LoginHandler>();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()

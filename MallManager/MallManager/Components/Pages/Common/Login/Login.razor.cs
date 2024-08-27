@@ -1,4 +1,5 @@
-﻿using MallManager.UseCases.Login;
+﻿using MallManager.Infrastructure.Persistence;
+using MallManager.UseCases.Login;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,14 +12,14 @@ public partial class Login : ComponentBase
 {
     private readonly LoginForm _model = new();
     private string _message = string.Empty;
-    private SignInResult? _result;
+    private SignInResult _result;
     private Severity _severity;
     private bool _submitted;
 
-    [Inject] private LoginHandler LoginHandler { get; set; } = null!;
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
     [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = null!;
-    [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
+    [Inject] private UserManager<ApplicationUser> UserManager { get; set; } = null!;
+    [Inject] private SignInManager<ApplicationUser> SignInManager { get; set; } = null!;
 
 
     protected override async Task OnInitializedAsync()
@@ -33,35 +34,41 @@ public partial class Login : ComponentBase
         }
     }
 
+    // TODO: rozdzielić to na serwis i nazwać middleware (LoginHandler) jakoś sensowniej.
     private async Task OnValidSubmit()
     {
-        try
+        ApplicationUser? user = await UserManager.FindByEmailAsync(_model.Email);
+        if (user == null)
         {
-            _result = await LoginHandler.LoginUser(_model);
-            _message = string.Empty;
-            _submitted = true;
-
-            if (_result.Succeeded)
-            {
-                NavigationManager.NavigateTo(ReturnUrl ?? "/", true);
-                return;
-            }
-
-            if (_result.IsLockedOut)
-            {
-                _severity = Severity.Warning;
-                NavigationManager.NavigateTo("Account/Lockout", true);
-                return;
-            }
-
+            _message = "Email nie poprawny";
             _severity = Severity.Warning;
-            _message = "Invalid login attempt.";
-        }
-        catch (Exception ex)
-        {
             _submitted = true;
-            _severity = Severity.Error;
-            _message = "An error occurred during login: " + ex;
+            return;
+        }
+
+        if (await SignInManager.CanSignInAsync(user))
+        {
+            SignInResult result = await SignInManager.CheckPasswordSignInAsync(user, _model.Password, false);
+            if (result == SignInResult.Success)
+            {
+                Console.WriteLine("User: " + user.Email + " successful login.");
+                Guid key = Guid.NewGuid();
+                LoginHandler.Logins[key] = new LoginInfo { Email = _model.Password, Password = _model.Password };
+                NavigationManager.NavigateTo($"/login?key={key}", true);
+            }
+            else
+            {
+                Console.WriteLine("User: " + user.Email + " failed login.");
+                _message = "Login failed. Check your password.";
+                _severity = Severity.Warning;
+                _submitted = true;
+            }
+        }
+        else
+        {
+            _message = "Your account is blocked";
+            _severity = Severity.Warning;
+            _submitted = true;
         }
     }
 }
