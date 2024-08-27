@@ -15,7 +15,8 @@
     <MudTextField Label="Email"
                   @bind-Value="_model.Email" For="@(() => _model.Email)"/>
     <MudTextField Label="Password" Type="Password"
-                  @bind-Value="_model.Password" For="@(() => _model.Password)"/>
+                  @bind-Value="_model.Password" For="@(() => _model.Password)"
+                  InputType="InputType.Password"/>
     <MudCheckBox Label="Remember me" @bind-Value="_model.RememberMe"></MudCheckBox>
 
     <MudButton Href="https://github.com/MudBlazor/MudBlazor"
