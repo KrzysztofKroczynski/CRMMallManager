@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using MallManager.Components.Forms.ApartmentRentalForm;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 using MudExtensions;
+using Shared.Web.FormModels;
 
 namespace MallManager.Components.Pages.Tenant.RegistrationPage;
 
@@ -15,11 +18,23 @@ internal enum PurposeOfTheContractType
 
 public partial class RegistrationPage : ComponentBase
 {
-    // private Model model = new Model(); TODO: Create a data model or DTO to represent data from a form so that you can manipulate it
-    private PurposeOfTheContractType _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
-    private MudForm _form = new();
-    private bool _loading;
     private MudStepperExtended _stepper = new();
+    private PurposeOfTheContractType _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
+    private bool _loading;
+    
+    [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (!user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/Login");
+            return;
+        }
+    }
 
     private async Task<bool> CheckChange(StepChangeDirection direction, int targetIndex)
     {
@@ -29,68 +44,46 @@ public partial class RegistrationPage : ComponentBase
             _stepper.SetStepStatus(previousIndex, StepStatus.Continued);
             return false;
         }
-
-        if (_stepper.GetActiveIndex() == 1)
-        {
-            await _form.Validate();
-            StateHasChanged();
-
-            if (_form.IsValid)
-            {
-                Submit();
-                return false;
-            }
-
-            return true;
-        }
-
+        
         return false;
-    }
+    } 
 
-    private async Task Submit()
-    {
-        // TODO: Write business logic to save model or do with it whatever you want
-        Console.WriteLine("Submitting...");
-        await Task.Delay(1000);
-        Console.WriteLine("Done...");
-    }
-
-    private async void RenderApartmentRentalForm()
+    private async Task RenderApartmentRentalForm()
     {
         _currentPurposeOfTheContractType = PurposeOfTheContractType.APARTMENT_RENTAL;
         await MoveToNextStep();
     }
 
-    private async void RenderAdvertisingSpaceRentalForm()
+    private async Task RenderAdvertisingSpaceRentalForm()
     {
         _currentPurposeOfTheContractType = PurposeOfTheContractType.ADVERTISING_SPACE_RENTAL;
         await MoveToNextStep();
     }
-
-    private async void RenderEventOrganizationForm()
+    
+    private async Task RenderEventOrganizationForm()
     {
         _currentPurposeOfTheContractType = PurposeOfTheContractType.EVENT_ORGANIZATION;
         await MoveToNextStep();
-    }
-
-    private async void RenderOtherPurposeForm()
+    } 
+    
+    private async Task RenderOtherPurposeForm()
     {
         _currentPurposeOfTheContractType = PurposeOfTheContractType.OTHER;
         await MoveToNextStep();
     }
-
+    
     private async Task MoveToNextStep()
     {
         var currentStepIndex = _stepper.GetActiveIndex();
-
+        
         _loading = true;
         StateHasChanged();
-
-        _stepper.CompleteStep(currentStepIndex);
-        _stepper.SetActiveStepByIndex(currentStepIndex + 1);
-
+        
+        await _stepper.CompleteStep(currentStepIndex);
+        await _stepper.SetActiveStepByIndex(currentStepIndex + 1);
+        
         await Task.Delay(1000);
-
+        
         _loading = false;
         StateHasChanged();
     }

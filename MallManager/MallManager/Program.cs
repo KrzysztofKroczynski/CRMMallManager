@@ -2,7 +2,10 @@ using MallManager.Components;
 using MallManager.Components.Account;
 using MallManager.Infrastructure;
 using MallManager.Infrastructure.Configuration;
+using MallManager.Infrastructure.ManageRequestsService;
 using MallManager.Infrastructure.Persistence;
+using MallManager.Infrastructure.RetailUnitLeaseApplicationService;
+using MallManager.Service;
 using MallManager.UseCases.Login;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -24,7 +27,6 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
-
 
 builder.AddLogger();
 
@@ -53,8 +55,17 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<RetailUnitLeaseApplicationService>();
+builder.Services.AddScoped<ManageRequestsService>();
+builder.Services.AddScoped<ISystemAccessService, SystemAccessService>();
+
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Login";
+    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+});
 
 var app = builder.Build();
 
