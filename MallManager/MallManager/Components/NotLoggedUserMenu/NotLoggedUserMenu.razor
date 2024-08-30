@@ -1,0 +1,50 @@
+@using MallManager.Components.LoggedManagerMenu
+@using MallManager.Components.LoggedTenantMenu
+@inherits LayoutComponentBase
+@rendermode InteractiveServer
+@* TODO: Ogarnąć ten home dodałem tutaj na szybko zmianę menu ale to wszystko jest do ogarnięcia *@
+<AuthorizeView>
+    <NotAuthorized>
+        <MudLayout >
+            <MudAppBar Style="background-color:#E1E2E2; color:black">
+
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Style="color:chocolate;" Edge="Edge.Start"
+                               OnClick="@(e => DrawerToggle())"/>
+                <img src="mm-logo.png" alt="Logo" Class="mm-icon"/>
+            </MudAppBar>
+            <MudDrawer @bind-Open="@_drawerOpen" Class="drawer-content">
+                <MudItem xc="12">
+                    <MudStack Spacing="2">
+                        <MudNavLink Href="/Login">
+                            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Class="drawer-button">
+                                Zaloguj
+                            </MudButton>
+                        </MudNavLink>
+
+                        <MudNavLink Href="/Register">
+                            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowDownward" Class="drawer-button">
+                                Zarejestruj
+                            </MudButton>
+                        </MudNavLink>
+                    </MudStack>
+                </MudItem>
+
+            </MudDrawer>
+            <MudMainContent>
+                @Body
+            </MudMainContent>
+        </MudLayout>
+    </NotAuthorized>
+</AuthorizeView>
+<AuthorizeView Roles="Client">
+
+    <Authorized>
+        <LoggedTenantMenu/>
+    </Authorized>
+</AuthorizeView>
+<AuthorizeView Roles="Manager">
+
+    <Authorized>
+        <LoggedManagerMenu/>
+    </Authorized>
+</AuthorizeView>

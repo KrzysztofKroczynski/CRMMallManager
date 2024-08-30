@@ -1,37 +1,34 @@
 ﻿@rendermode InteractiveServer
 @page "/ReportRevenue"
-@using MallManager.Components.LoggedTenantMenu
 
 <MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
-    <LoggedTenantMenu>
-        <MudStack Style="width: 80%; display: flex; margin-left: auto; margin-right: auto">
-            <MudStack Row="true" Class="d-flex justify-center" Style="background-color: #fcc99b">
-                <div id="label">Number Lokalu</div>
-                <Child/>
-                <div id="light-blue-label">EXAMPLE</div>
-                <Child/>
+    <MudStack Style="width: 80%; display: flex; margin-left: auto; margin-right: auto">
+        <MudStack Row="true" Class="d-flex justify-center" Style="background-color: #fcc99b">
+            <div id="label">Number Lokalu</div>
+            <Child/>
+            <div id="light-blue-label">EXAMPLE</div>
+            <Child/>
 
-                <div id="label">Data Rozpoczęcia RoP</div>
-                <Child/>
-                <div id="light-blue-label">EXAMPLE</div>
-                <Child/>
+            <div id="label">Data Rozpoczęcia RoP</div>
+            <Child/>
+            <div id="light-blue-label">EXAMPLE</div>
+            <Child/>
 
-                <div id="label">Data Zakończenia RoP</div>
-                <Child/>
-                <div id="light-blue-label">EXAMPLE</div>
-                <Child/>
-            </MudStack>
-
-            <MudStack Class="d-flex justify-center" Style="background-color: #fcc99b">
-                <MudForm @ref="_form">
-                    <MudTextField Style="width: 40%; margin-left: auto; margin-right: auto" @bind-Value="Income" Label="Przychody [w PLN]" Variant="Variant.Filled" Required="true"/>
-
-                    <MudTextField Style="width: 80%; margin-left: auto; margin-right: auto" @bind-Value="Comment" Label="Uwagi" Variant="Variant.Filled"
-                                  MaxLength="1000" Lines="7" MaxLines="7" HelperText="Max. 1000 znaków."/>
-
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitRevenueReport">Zatwierdź</MudButton>
-                </MudForm>
-            </MudStack>
+            <div id="label">Data Zakończenia RoP</div>
+            <Child/>
+            <div id="light-blue-label">EXAMPLE</div>
+            <Child/>
         </MudStack>
-    </LoggedTenantMenu>
+
+        <MudStack Class="d-flex justify-center" Style="background-color: #fcc99b">
+            <MudForm @ref="_form">
+                <MudTextField Style="width: 40%; margin-left: auto; margin-right: auto" @bind-Value="Income" Label="Przychody [w PLN]" Variant="Variant.Filled" Required="true"/>
+
+                <MudTextField Style="width: 80%; margin-left: auto; margin-right: auto" @bind-Value="Comment" Label="Uwagi" Variant="Variant.Filled"
+                              MaxLength="1000" Lines="7" MaxLines="7" HelperText="Max. 1000 znaków."/>
+
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitRevenueReport">Zatwierdź</MudButton>
+            </MudForm>
+        </MudStack>
+    </MudStack>
 </MudLayout>

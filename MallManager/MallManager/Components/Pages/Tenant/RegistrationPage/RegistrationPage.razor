@@ -4,69 +4,66 @@
 @using MallManager.Components.Forms.ApartmentRentalForm
 @using MallManager.Components.Forms.EventOrganizationForm
 @using MallManager.Components.Forms.OtherPurposeForm
-@using MallManager.Components.LoggedTenantMenu
 @using Microsoft.AspNetCore.Authorization
 @inject NavigationManager NavigationManager
 @attribute [Authorize(Roles = "Client")]
 
 <MudLayout xs="12" sm="8" Class="d-flex justify-center align-items-center">
-    <LoggedTenantMenu>
-        <MudStepperExtended @ref="_stepper" Class="custom-stepper" ContentStyle="min-height: 400px" Linear="true" Color="Color.Info" Variant="Variant.Filled"
-                            Animation="true" ShowPreviousButton="true" ShowNextButton="false"
-                            ShowSkipButton="false" ShowStepResultIndicator="true" HeaderBadgeView="HeaderBadgeView.All"
-                            HeaderTextView="HeaderTextView.All" PreventStepChangeAsync="new Func<StepChangeDirection, int, Task<bool>>(CheckChange)"
-                            MobileView="false" IconActionButtons="false" Loading="_loading" HeaderSize="Size.Medium"
-                            StepperActionsJustify="StepperActionsJustify.SpaceBetween">
+    <MudStepperExtended @ref="_stepper" Class="custom-stepper" ContentStyle="min-height: 400px" Linear="true" Color="Color.Info" Variant="Variant.Filled"
+                        Animation="true" ShowPreviousButton="true" ShowNextButton="false"
+                        ShowSkipButton="false" ShowStepResultIndicator="true" HeaderBadgeView="HeaderBadgeView.All"
+                        HeaderTextView="HeaderTextView.All" PreventStepChangeAsync="new Func<StepChangeDirection, int, Task<bool>>(CheckChange)"
+                        MobileView="false" IconActionButtons="false" Loading="_loading" HeaderSize="Size.Medium"
+                        StepperActionsJustify="StepperActionsJustify.SpaceBetween">
 
-            <ChildContent>
-                <MudStepExtended Title="Cel zapisu" Icon="@Icons.Material.Filled.GpsFixed">
-                    <ChildContent>
-                        <MudText Typo="Typo.h4" Class="d-flex justify-center">Cel zapisu</MudText>
-                        <MudStack Row="true" Class="d-flex justify-center">
-                            <MudButton OnClick="RenderApartmentRentalForm">Wynajem lokalu</MudButton>
-                            <MudButton OnClick="RenderAdvertisingSpaceRentalForm">Wynajem reklamy</MudButton>
-                            <MudButton OnClick="RenderEventOrganizationForm">Organizacja imprezy</MudButton>
-                            <MudButton OnClick="RenderOtherPurposeForm">Inne</MudButton>
-                        </MudStack>
-                    </ChildContent>
-                </MudStepExtended>
-                <MudStepExtended Title="Dane celu" Icon="@Icons.Material.Filled.Description">
-                    <ChildContent>
-                        <MudText Typo="Typo.h4" Class="d-flex justify-center">Dane celu</MudText>
+        <ChildContent>
+            <MudStepExtended Title="Cel zapisu" Icon="@Icons.Material.Filled.GpsFixed">
+                <ChildContent>
+                    <MudText Typo="Typo.h4" Class="d-flex justify-center">Cel zapisu</MudText>
+                    <MudStack Row="true" Class="d-flex justify-center">
+                        <MudButton OnClick="RenderApartmentRentalForm">Wynajem lokalu</MudButton>
+                        <MudButton OnClick="RenderAdvertisingSpaceRentalForm">Wynajem reklamy</MudButton>
+                        <MudButton OnClick="RenderEventOrganizationForm">Organizacja imprezy</MudButton>
+                        <MudButton OnClick="RenderOtherPurposeForm">Inne</MudButton>
+                    </MudStack>
+                </ChildContent>
+            </MudStepExtended>
+            <MudStepExtended Title="Dane celu" Icon="@Icons.Material.Filled.Description">
+                <ChildContent>
+                    <MudText Typo="Typo.h4" Class="d-flex justify-center">Dane celu</MudText>
 
-                        @switch (_currentPurposeOfTheContractType)
-                        {
-                            case PurposeOfTheContractType.APARTMENT_RENTAL:
-                                <ApartmentRentalForm />
+                    @switch (_currentPurposeOfTheContractType)
+                    {
+                        case PurposeOfTheContractType.APARTMENT_RENTAL:
+                            <ApartmentRentalForm/>
 
-                                <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
-                                <MudText Typo="Typo.body1">**Podane daty rozpoczęcia i zakończenia mają charakter poglądowy i nie stanowią oferty.</MudText>
-                                <MudText Typo="Typo.body1">**W przypadku lokali niedostępnych w wybranym terminie podano najbliższy możliwy termin wynajmu</MudText>
+                            <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
+                            <MudText Typo="Typo.body1">**Podane daty rozpoczęcia i zakończenia mają charakter poglądowy i nie stanowią oferty.</MudText>
+                            <MudText Typo="Typo.body1">**W przypadku lokali niedostępnych w wybranym terminie podano najbliższy możliwy termin wynajmu</MudText>
 
-                                break;
-                            case PurposeOfTheContractType.ADVERTISING_SPACE_RENTAL:
-                                <AdvertisingSpaceRentalForm/>
+                            break;
+                        case PurposeOfTheContractType.ADVERTISING_SPACE_RENTAL:
+                            <AdvertisingSpaceRentalForm/>
 
-                                <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
-                                <MudText Typo="Typo.body1">**Podane daty rozpoczęcia i zakończenia mają charakter poglądowy i nie stanowią oferty.</MudText>
-                                <MudText Typo="Typo.body1">**W przypadku lokali niedostępnych w wybranym terminie podano najbliższy możliwy termin wynajmu</MudText>
-                                <MudText Typo="Typo.body1">***Obowiązuje rabat</MudText>
-                                <MudText Typo="Typo.body1">****Cena zależna od miesiąca</MudText>
-                                break;
-                            case PurposeOfTheContractType.EVENT_ORGANIZATION:
-                                <EventOrganizationForm/>
-                                
-                                <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
-                                break;
-                            case PurposeOfTheContractType.OTHER:
-                                <OtherPurposeForm/>
+                            <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
+                            <MudText Typo="Typo.body1">**Podane daty rozpoczęcia i zakończenia mają charakter poglądowy i nie stanowią oferty.</MudText>
+                            <MudText Typo="Typo.body1">**W przypadku lokali niedostępnych w wybranym terminie podano najbliższy możliwy termin wynajmu</MudText>
+                            <MudText Typo="Typo.body1">***Obowiązuje rabat</MudText>
+                            <MudText Typo="Typo.body1">****Cena zależna od miesiąca</MudText>
+                            break;
+                        case PurposeOfTheContractType.EVENT_ORGANIZATION:
+                            <EventOrganizationForm/>
 
-                                <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
-                                break;
-                        }
-                    </ChildContent>
-                </MudStepExtended>
-            </ChildContent>
-        </MudStepperExtended>
-    </LoggedTenantMenu>
+                            <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
+                            break;
+                        case PurposeOfTheContractType.OTHER:
+                            <OtherPurposeForm/>
+
+                            <MudText Class="mt-20" Typo="Typo.body1">*Pole wymagane</MudText>
+                            break;
+                    }
+                </ChildContent>
+            </MudStepExtended>
+        </ChildContent>
+    </MudStepperExtended>
 </MudLayout>
