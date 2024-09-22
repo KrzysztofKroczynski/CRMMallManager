@@ -1,8 +1,5 @@
 ﻿**/Debug/
 **/.idea.MallManager
 **/obj
-Tests/obj/
-Shared/obj/
-MallManager/MallManager/obj
-MallManager/MallManager.Client/obj
 .idea/
+**/bin/

@@ -1,5 +1,5 @@
 ﻿using Ardalis.Specification;
-using MallManager.Service;
+using MallManager.Infrastructure.SystemAccessService;
 using Microsoft.EntityFrameworkCore;
 using Shared.Core.Entities;
 

@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public sealed class SurfaceClassDict
+public partial class SurfaceClassDict
 {
     public int Id { get; set; }
 
@@ -10,5 +10,5 @@ public sealed class SurfaceClassDict
 
     public decimal MaximumSurface { get; set; }
 
-    public ICollection<LeaseApplication> LeaseApplications { get; set; } = new List<LeaseApplication>();
+    public virtual ICollection<LeaseApplication> LeaseApplications { get; set; } = new List<LeaseApplication>();
 }

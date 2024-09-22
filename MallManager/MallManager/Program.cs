@@ -5,7 +5,7 @@ using MallManager.Infrastructure.Configuration;
 using MallManager.Infrastructure.ManageRequestsService;
 using MallManager.Infrastructure.Persistence;
 using MallManager.Infrastructure.RetailUnitLeaseApplicationService;
-using MallManager.Service;
+using MallManager.Infrastructure.SystemAccessService;
 using MallManager.UseCases.Login;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;

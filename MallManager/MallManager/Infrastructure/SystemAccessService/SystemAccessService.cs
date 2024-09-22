@@ -2,9 +2,8 @@
 using Ardalis.Specification;
 using Microsoft.EntityFrameworkCore;
 using Shared.Core.Entities;
-using Shared.Core.Specifications;
 
-namespace MallManager.Service;
+namespace MallManager.Infrastructure.SystemAccessService;
 
 public sealed class SystemAccessService : ISystemAccessService
 {

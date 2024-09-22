@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public sealed class AspNetUser
+public sealed partial class AspNetUser
 {
     public string Id { get; set; } = null!;
 
@@ -44,15 +44,15 @@ public sealed class AspNetUser
 
     public Manager? Manager { get; set; }
 
-    public  ICollection<Message> Messages { get; set; } = new List<Message>();
+    public ICollection<Message> Messages { get; set; } = new List<Message>();
 
-    public  ICollection<Person> People { get; set; } = new List<Person>();
+    public ICollection<Person> People { get; set; } = new List<Person>();
 
-    public  ICollection<SystemAccess> SystemAccesses { get; set; } = new List<SystemAccess>();
+    public ICollection<SystemAccess> SystemAccesses { get; set; } = new List<SystemAccess>();
 
-    public  ICollection<ValidationNote> ValidationNotes { get; set; } = new List<ValidationNote>();
+    public ICollection<ValidationNote> ValidationNotes { get; set; } = new List<ValidationNote>();
 
-    public  ICollection<Validation> Validations { get; set; } = new List<Validation>();
+    public ICollection<Validation> Validations { get; set; } = new List<Validation>();
 
-    public  ICollection<AspNetRole> Roles { get; set; } = new List<AspNetRole>();
+    public ICollection<AspNetRole> Roles { get; set; } = new List<AspNetRole>();
 }

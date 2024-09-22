@@ -2,6 +2,7 @@
 using Ardalis.Specification;
 using MallManager.Infrastructure.Configuration.Options;
 using MallManager.Infrastructure.Persistence;
+using MallManager.Infrastructure.Persistence.Repositories;
 using MallManager.Infrastructure.UserState;
 using MallManager.Infrastructure.UserState.ClaimsTransformation;
 using MallManager.Infrastructure.UserState.LeaseApplicationEditStateService;

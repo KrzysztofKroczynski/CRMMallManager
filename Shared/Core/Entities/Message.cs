@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public sealed class Message
+public partial class Message
 {
     public int Id { get; set; }
 
@@ -12,7 +12,9 @@ public sealed class Message
 
     public string AspNetUsersId { get; set; } = null!;
 
-    public AspNetUser AspNetUsers { get; set; } = null!;
+    public virtual AspNetUser AspNetUsers { get; set; } = null!;
 
-    public SystemAccess SystemAccess { get; set; } = null!;
+    public virtual SystemAccess SystemAccess { get; set; } = null!;
+
+    public virtual ICollection<ForbiddenPhrase> ForbiddenPhrases { get; set; } = new List<ForbiddenPhrase>();
 }

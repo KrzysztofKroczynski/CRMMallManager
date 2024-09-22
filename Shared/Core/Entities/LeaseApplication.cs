@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public sealed class LeaseApplication
+public sealed partial class LeaseApplication
 {
     public int Id { get; set; }
 

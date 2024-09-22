@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public sealed class MarketingCampaign
+public partial class MarketingCampaign
 {
     public int Id { get; set; }
 
@@ -26,13 +26,13 @@ public sealed class MarketingCampaign
 
     public int SystemAccessId { get; set; }
 
-    public Company? Company { get; set; }
+    public virtual Company? Company { get; set; }
 
-    public MarketingCampaignReachDict MarketingCampaignReachDict { get; set; } = null!;
+    public virtual MarketingCampaignReachDict MarketingCampaignReachDict { get; set; } = null!;
 
-    public ICollection<MarketingMaterial> MarketingMaterials { get; set; } = new List<MarketingMaterial>();
+    public virtual ICollection<MarketingMaterial> MarketingMaterials { get; set; } = new List<MarketingMaterial>();
 
-    public Person? Person { get; set; }
+    public virtual Person? Person { get; set; }
 
-    public SystemAccess SystemAccess { get; set; } = null!;
+    public virtual SystemAccess SystemAccess { get; set; } = null!;
 }

@@ -38,6 +38,8 @@ public partial class MallManagerContext : DbContext
 
     public virtual DbSet<Document> Documents { get; set; }
 
+    public virtual DbSet<ForbiddenPhrase> ForbiddenPhrases { get; set; }
+
     public virtual DbSet<Lease> Leases { get; set; }
 
     public virtual DbSet<LeaseApplication> LeaseApplications { get; set; }
@@ -71,7 +73,6 @@ public partial class MallManagerContext : DbContext
     public virtual DbSet<Validation> Validations { get; set; }
 
     public virtual DbSet<ValidationNote> ValidationNotes { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
@@ -246,6 +247,36 @@ public partial class MallManagerContext : DbContext
                 .HasConstraintName("Document_Document");
         });
 
+        modelBuilder.Entity<ForbiddenPhrase>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Forbidden_phrase_pk");
+
+            entity.ToTable("Forbidden_phrase");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
+
+            entity.HasMany(d => d.Messages).WithMany(p => p.ForbiddenPhrases)
+                .UsingEntity<Dictionary<string, object>>(
+                    "ForbiddenPhraseInMessage",
+                    r => r.HasOne<Message>().WithMany()
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("Forbidden_phrase_in_message_Message"),
+                    l => l.HasOne<ForbiddenPhrase>().WithMany()
+                        .HasForeignKey("ForbiddenPhraseId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("Forbidden_phrase_in_message_Forbidden_phrase"),
+                    j =>
+                    {
+                        j.HasKey("ForbiddenPhraseId", "MessageId").HasName("Forbidden_phrase_in_message_pk");
+                        j.ToTable("Forbidden_phrase_in_message");
+                        j.IndexerProperty<int>("ForbiddenPhraseId").HasColumnName("Forbidden_phrase_ID");
+                        j.IndexerProperty<int>("MessageId").HasColumnName("Message_ID");
+                    });
+        });
+
         modelBuilder.Entity<Lease>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Lease_pk");
@@ -256,8 +287,7 @@ public partial class MallManagerContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("ID");
             entity.Property(e => e.BankNameDepositReturn).HasColumnName("Bank_name_deposit_return");
-            entity.Property(e => e.BankingAccountNumberDepositReturn)
-                .HasColumnName("Banking_account_number_deposit_return");
+            entity.Property(e => e.BankingAccountNumberDepositReturn).HasColumnName("Banking_account_number_deposit_return");
             entity.Property(e => e.BankingAccountNumberRent).HasColumnName("Banking_account_number_rent");
             entity.Property(e => e.DatetimeOfUpdate)
                 .HasColumnType("datetime")
@@ -322,8 +352,7 @@ public partial class MallManagerContext : DbContext
                         .HasConstraintName("Lease_application_tail_unit_purpose_Lease_application"),
                     j =>
                     {
-                        j.HasKey("LeaseApplicationId", "RetailUnitPurposeId")
-                            .HasName("Lease_application_tail_unit_purpose_pk");
+                        j.HasKey("LeaseApplicationId", "RetailUnitPurposeId").HasName("Lease_application_tail_unit_purpose_pk");
                         j.ToTable("Lease_application_tail_unit_purpose");
                         j.IndexerProperty<int>("LeaseApplicationId").HasColumnName("Lease_application_ID");
                         j.IndexerProperty<int>("RetailUnitPurposeId").HasColumnName("Retail_unit_purpose_ID");
@@ -583,8 +612,7 @@ public partial class MallManagerContext : DbContext
                         .HasConstraintName("Surface_class_dict_Surface_class_dict_Surface_class_dict"),
                     j =>
                     {
-                        j.HasKey("SurfaceClassDictId", "LeaseApplicationId")
-                            .HasName("Surface_class_dict_Surface_class_dict_pk");
+                        j.HasKey("SurfaceClassDictId", "LeaseApplicationId").HasName("Surface_class_dict_Surface_class_dict_pk");
                         j.ToTable("Surface_class_dict_Surface_class_dict");
                         j.IndexerProperty<int>("SurfaceClassDictId").HasColumnName("Surface_class_dict_ID");
                         j.IndexerProperty<int>("LeaseApplicationId").HasColumnName("Lease_application_ID");
@@ -619,7 +647,6 @@ public partial class MallManagerContext : DbContext
 
             entity.HasOne(d => d.AssignedManager).WithMany(p => p.SystemAccesses)
                 .HasForeignKey(d => d.AssignedManagerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("System_access_Manager");
 
             entity.HasOne(d => d.SignupStatusDict).WithMany(p => p.SystemAccesses)
@@ -691,8 +718,8 @@ public partial class MallManagerContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("ValidationNote_Validation");
         });
-
-        OnModelCreatingPartial(modelBuilder);
+        
+         base.OnModelCreating(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public sealed class RetailUnit
+public partial class RetailUnit
 {
     public int Id { get; set; }
 
@@ -12,7 +12,7 @@ public sealed class RetailUnit
 
     public int RetailUnitPurposeId { get; set; }
 
-    public ICollection<Lease> Leases { get; set; } = new List<Lease>();
+    public virtual ICollection<Lease> Leases { get; set; } = new List<Lease>();
 
-    public RetailUnitPurpose RetailUnitPurpose { get; set; } = null!;
+    public virtual RetailUnitPurpose RetailUnitPurpose { get; set; } = null!;
 }

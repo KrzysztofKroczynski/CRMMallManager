@@ -1,6 +1,6 @@
 ﻿using Shared.Core.Entities;
 
-namespace MallManager.Service;
+namespace MallManager.Infrastructure.SystemAccessService;
 
 public interface ISystemAccessService
 {

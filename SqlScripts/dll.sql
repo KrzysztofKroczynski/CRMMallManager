@@ -1,13 +1,4 @@
-create database MallManager collate Polish_CI_AS
-go
-
-grant connect on database :: MallManager to dbo
-go
-
-grant view any column encryption key definition, view any column master key definition on database :: MallManager to [public]
-go
-
-create table dbo.Appsetting
+create table Appsetting
 (
     Id    int      not null
         constraint Appsetting_pk
@@ -17,7 +8,7 @@ create table dbo.Appsetting
 )
 go
 
-create table dbo.AspNetRoles
+create table AspNetRoles
 (
     Id               nvarchar(450) not null
         constraint PK_AspNetRoles
@@ -28,14 +19,14 @@ create table dbo.AspNetRoles
 )
 go
 
-create table dbo.AspNetRoleClaims
+create table AspNetRoleClaims
 (
     Id         int identity
         constraint PK_AspNetRoleClaims
             primary key,
     RoleId     nvarchar(450) not null
         constraint FK_AspNetRoleClaims_AspNetRoles_RoleId
-            references dbo.AspNetRoles
+            references AspNetRoles
             on delete cascade,
     ClaimType  nvarchar(max),
     ClaimValue nvarchar(max)
@@ -43,15 +34,15 @@ create table dbo.AspNetRoleClaims
 go
 
 create index IX_AspNetRoleClaims_RoleId
-    on dbo.AspNetRoleClaims (RoleId)
+    on AspNetRoleClaims (RoleId)
 go
 
 create unique index RoleNameIndex
-    on dbo.AspNetRoles (NormalizedName)
+    on AspNetRoles (NormalizedName)
     where [NormalizedName] IS NOT NULL
 go
 
-create table dbo.AspNetUsers
+create table AspNetUsers
 (
     Id                   nvarchar(450) not null
         constraint PK_AspNetUsers
@@ -73,25 +64,25 @@ create table dbo.AspNetUsers
 )
 go
 
-create table dbo.AdditionalUserInfo
+create table AdditionalUserInfo
 (
     AspNetUsers_Id nvarchar(450) not null
         constraint AdditionalUserInfo_pk
             primary key
         constraint AdditionalUserInfo_AspNetUsers
-            references dbo.AspNetUsers,
-    UserPhoto      image         not null
+            references AspNetUsers,
+    UserPhoto      image
 )
 go
 
-create table dbo.AspNetUserClaims
+create table AspNetUserClaims
 (
     Id         int identity
         constraint PK_AspNetUserClaims
             primary key,
     UserId     nvarchar(450) not null
         constraint FK_AspNetUserClaims_AspNetUsers_UserId
-            references dbo.AspNetUsers
+            references AspNetUsers
             on delete cascade,
     ClaimType  nvarchar(max),
     ClaimValue nvarchar(max)
@@ -99,17 +90,17 @@ create table dbo.AspNetUserClaims
 go
 
 create index IX_AspNetUserClaims_UserId
-    on dbo.AspNetUserClaims (UserId)
+    on AspNetUserClaims (UserId)
 go
 
-create table dbo.AspNetUserLogins
+create table AspNetUserLogins
 (
     LoginProvider       nvarchar(450) not null,
     ProviderKey         nvarchar(450) not null,
     ProviderDisplayName nvarchar(max),
     UserId              nvarchar(450) not null
         constraint FK_AspNetUserLogins_AspNetUsers_UserId
-            references dbo.AspNetUsers
+            references AspNetUsers
             on delete cascade,
     constraint PK_AspNetUserLogins
         primary key (LoginProvider, ProviderKey)
@@ -117,18 +108,18 @@ create table dbo.AspNetUserLogins
 go
 
 create index IX_AspNetUserLogins_UserId
-    on dbo.AspNetUserLogins (UserId)
+    on AspNetUserLogins (UserId)
 go
 
-create table dbo.AspNetUserRoles
+create table AspNetUserRoles
 (
     UserId nvarchar(450) not null
         constraint FK_AspNetUserRoles_AspNetUsers_UserId
-            references dbo.AspNetUsers
+            references AspNetUsers
             on delete cascade,
     RoleId nvarchar(450) not null
         constraint FK_AspNetUserRoles_AspNetRoles_RoleId
-            references dbo.AspNetRoles
+            references AspNetRoles
             on delete cascade,
     constraint PK_AspNetUserRoles
         primary key (UserId, RoleId)
@@ -136,14 +127,14 @@ create table dbo.AspNetUserRoles
 go
 
 create index IX_AspNetUserRoles_RoleId
-    on dbo.AspNetUserRoles (RoleId)
+    on AspNetUserRoles (RoleId)
 go
 
-create table dbo.AspNetUserTokens
+create table AspNetUserTokens
 (
     UserId        nvarchar(450) not null
         constraint FK_AspNetUserTokens_AspNetUsers_UserId
-            references dbo.AspNetUsers
+            references AspNetUsers
             on delete cascade,
     LoginProvider nvarchar(450) not null,
     Name          nvarchar(450) not null,
@@ -154,15 +145,15 @@ create table dbo.AspNetUserTokens
 go
 
 create index EmailIndex
-    on dbo.AspNetUsers (NormalizedEmail)
+    on AspNetUsers (NormalizedEmail)
 go
 
 create unique index UserNameIndex
-    on dbo.AspNetUsers (NormalizedUserName)
+    on AspNetUsers (NormalizedUserName)
     where [NormalizedUserName] IS NOT NULL
 go
 
-create table dbo.Company_size
+create table Company_size
 (
     Id               int           not null
         constraint Company_size_pk
@@ -172,35 +163,26 @@ create table dbo.Company_size
 )
 go
 
-create table dbo.Company
+create table Forbidden_phrase
 (
-    ID               int           not null
-        constraint Company_pk
+    ID     int           not null
+        constraint Forbidden_phrase_pk
             primary key,
-    AspNetUsers_Id   nvarchar(450)
-        constraint Company_AspNetUsers
-            references dbo.AspNetUsers,
-    Name             nvarchar(max) not null,
-    NIP              nvarchar(max) not null,
-    REGON            nvarchar(max) not null,
-    Starting_capital money         not null,
-    Company_size_id  int           not null
-        constraint Company_Company_size
-            references dbo.Company_size
+    Phrase nvarchar(max) not null
 )
 go
 
-create table dbo.Manager
+create table Manager
 (
     ID nvarchar(450) not null
         constraint Manager_pk
             primary key
         constraint Manager_AspNetUsers
-            references dbo.AspNetUsers
+            references AspNetUsers
 )
 go
 
-create table dbo.Marketing_Campaign_Reach_Dict
+create table Marketing_Campaign_Reach_Dict
 (
     ID                   int   not null
         constraint Marketing_Campaign_Reach_Dict_pk
@@ -211,23 +193,7 @@ create table dbo.Marketing_Campaign_Reach_Dict
 )
 go
 
-create table dbo.Person
-(
-    ID             int           not null
-        constraint Person_pk
-            primary key,
-    AspNetUsers_Id nvarchar(450)
-        constraint Person_AspNetUsers
-            references dbo.AspNetUsers,
-    Name           nvarchar(max) not null,
-    Lastname       nvarchar(max) not null,
-    DateOfBirth    date          not null,
-    PESEL          nvarchar(max) not null,
-    Second_name    nvarchar(max)
-)
-go
-
-create table dbo.Retail_unit_purpose
+create table Retail_unit_purpose
 (
     ID          int           not null
         constraint Retail_unit_purpose_pk
@@ -237,7 +203,7 @@ create table dbo.Retail_unit_purpose
 )
 go
 
-create table dbo.Retail_unit
+create table Retail_unit
 (
     ID                     int            not null
         constraint Retail_unit_pk
@@ -247,11 +213,11 @@ create table dbo.Retail_unit
     Local_surface_area     decimal(10, 2) not null,
     Retail_unit_purpose_ID int            not null
         constraint Retail_unit_Retail_unit_purpose
-            references dbo.Retail_unit_purpose
+            references Retail_unit_purpose
 )
 go
 
-create table dbo.Signup_status_dict
+create table Signup_status_dict
 (
     ID   int           not null
         constraint Signup_status_dict_pk
@@ -260,7 +226,7 @@ create table dbo.Signup_status_dict
 )
 go
 
-create table dbo.Surface_class_dict
+create table Surface_class_dict
 (
     ID              int            not null
         constraint Surface_class_dict_pk
@@ -271,7 +237,7 @@ create table dbo.Surface_class_dict
 )
 go
 
-create table dbo.System_dict
+create table System_dict
 (
     ID   int           not null
         constraint System_dict_pk
@@ -280,28 +246,28 @@ create table dbo.System_dict
 )
 go
 
-create table dbo.System_access
+create table System_access
 (
     ID                    int           not null
         constraint System_access_pk
             primary key,
     AspNetUsers_Id        nvarchar(450) not null
         constraint Local_access_AspNetUsers
-            references dbo.AspNetUsers,
+            references AspNetUsers,
     Signup_status_dict_Id int           not null
         constraint Local_access_Signup_status_dict
-            references dbo.Signup_status_dict,
+            references Signup_status_dict,
     Valid_until           datetime,
     System_dict_Id        int           not null
         constraint System_access_System_dict
-            references dbo.System_dict,
-    Assigned_Manager_ID   nvarchar(450) not null
+            references System_dict,
+    Assigned_Manager_ID   nvarchar(450)
         constraint System_access_Manager
-            references dbo.Manager
+            references Manager
 )
 go
 
-create table dbo.Lease
+create table Lease
 (
     ID                                    int           not null
         constraint Lease_pk
@@ -317,14 +283,14 @@ create table dbo.Lease
     Monthly_rent_amount                   money,
     Retail_unit_Id                        int           not null
         constraint Lease_Retail_unit
-            references dbo.Retail_unit,
+            references Retail_unit,
     System_access_ID                      int           not null
         constraint Lease_System_access
-            references dbo.System_access
+            references System_access
 )
 go
 
-create table dbo.Document
+create table Document
 (
     ID               int            not null
         constraint Document_pk
@@ -335,14 +301,14 @@ create table dbo.Document
     Date_added       int            not null,
     Lease_Id         int            not null
         constraint Document_Lease
-            references dbo.Lease,
+            references Lease,
     Main_document_id int
         constraint Document_Document
-            references dbo.Document
+            references Document
 )
 go
 
-create table dbo.Lease_application
+create table Lease_application
 (
     ID                    int           not null
         constraint Lease_application_pk
@@ -352,68 +318,27 @@ create table dbo.Lease_application
     Description           nvarchar(max) not null,
     Signup_status_dict_Id int           not null
         constraint Lease_application_Signup_status_dict
-            references dbo.Signup_status_dict,
+            references Signup_status_dict,
     System_access_ID      int           not null
         constraint Lease_application_System_access
-            references dbo.System_access
+            references System_access
 )
 go
 
-create table dbo.Lease_application_tail_unit_purpose
+create table Lease_application_tail_unit_purpose
 (
     Lease_application_ID   int not null
         constraint Lease_application_tail_unit_purpose_Lease_application
-            references dbo.Lease_application,
+            references Lease_application,
     Retail_unit_purpose_ID int not null
         constraint Lease_application_tail_unit_purpose_Retail_unit_purpose
-            references dbo.Retail_unit_purpose,
+            references Retail_unit_purpose,
     constraint Lease_application_tail_unit_purpose_pk
         primary key (Lease_application_ID, Retail_unit_purpose_ID)
 )
 go
 
-create table dbo.Marketing_Campaign
-(
-    ID                               int           not null
-        constraint Marketing_Campaign_pk
-            primary key,
-    Start_Date                       date          not null,
-    End_Date                         date          not null,
-    Marketing_Campaign_Reach_Dict_ID int           not null
-        constraint Marketing_Campaign_Marketing_Campaign_Reach_Dict
-            references dbo.Marketing_Campaign_Reach_Dict,
-    Description                      nvarchar(max) not null,
-    Regards_In_Mall                  bit default 1 not null,
-    Is_Rerun                         bit           not null,
-    On_Weekdays                      bit           not null,
-    On_Weekends                      bit           not null,
-    Person_ID                        int
-        constraint Marketing_Campaign_Person
-            references dbo.Person,
-    Company_ID                       int
-        constraint Marketing_Campaign_Company
-            references dbo.Company,
-    System_access_ID                 int           not null
-        constraint Marketing_Campaign_System_access
-            references dbo.System_access
-)
-go
-
-create table dbo.Marketing_Material
-(
-    ID                    int            not null
-        constraint Marketing_Material_pk
-            primary key,
-    Marketing_Campaign_ID int            not null
-        constraint Marketing_Material_Marketing_Campaign
-            references dbo.Marketing_Campaign,
-    Name                  nvarchar(max)  not null,
-    Content               varbinary(max) not null,
-    Price_factor          money
-)
-go
-
-create table dbo.Mass_event
+create table Mass_event
 (
     ID               int           not null
         constraint Mass_event_pk
@@ -426,11 +351,11 @@ create table dbo.Mass_event
     Date_added       datetime      not null,
     System_access_ID int           not null
         constraint Mass_event_System_access
-            references dbo.System_access
+            references System_access
 )
 go
 
-create table dbo.Message
+create table Message
 (
     ID               int           not null
         constraint Message_pk
@@ -439,27 +364,151 @@ create table dbo.Message
     DateTime_added   datetime      not null,
     System_access_ID int           not null
         constraint Message_System_access
-            references dbo.System_access,
+            references System_access,
     AspNetUsers_Id   nvarchar(450) not null
         constraint Message_AspNetUsers
-            references dbo.AspNetUsers
+            references AspNetUsers
 )
 go
 
-create table dbo.Surface_class_dict_Surface_class_dict
+create table Forbidden_phrase_in_message
+(
+    Forbidden_phrase_ID int not null
+        constraint Forbidden_phrase_in_message_Forbidden_phrase
+            references Forbidden_phrase,
+    Message_ID          int not null
+        constraint Forbidden_phrase_in_message_Message
+            references Message,
+    constraint Forbidden_phrase_in_message_pk
+        primary key (Forbidden_phrase_ID, Message_ID)
+)
+go
+
+create table Surface_class_dict_Surface_class_dict
 (
     Surface_class_dict_ID int not null
         constraint Surface_class_dict_Surface_class_dict_Surface_class_dict
-            references dbo.Surface_class_dict,
+            references Surface_class_dict,
     Lease_application_ID  int not null
         constraint Surface_class_dict_Surface_class_dict_Lease_application
-            references dbo.Lease_application,
+            references Lease_application,
     constraint Surface_class_dict_Surface_class_dict_pk
         primary key (Surface_class_dict_ID, Lease_application_ID)
 )
 go
 
-create table dbo.__EFMigrationsHistory
+create table Validation
+(
+    ID                 int           not null
+        constraint Validation_pk
+            primary key,
+    is_Valid           bit           not null,
+    Last_Changed_By_Id nvarchar(450) not null
+        constraint Validation_AspNetUsers
+            references AspNetUsers,
+    Last_Change_Date   datetime      not null
+)
+go
+
+create table Company
+(
+    ID               int           not null
+        constraint Company_pk
+            primary key,
+    AspNetUsers_Id   nvarchar(450)
+        constraint Company_AspNetUsers
+            references AspNetUsers,
+    Name             nvarchar(max) not null,
+    NIP              nvarchar(max) not null,
+    REGON            nvarchar(max) not null,
+    Starting_capital money         not null,
+    Company_size_id  int           not null
+        constraint Company_Company_size
+            references Company_size,
+    Date_added       datetime      not null,
+    Validation_ID    int           not null
+        constraint Company_Validation
+            references Validation
+)
+go
+
+create table Person
+(
+    ID             int           not null
+        constraint Person_pk
+            primary key,
+    AspNetUsers_Id nvarchar(450)
+        constraint Person_AspNetUsers
+            references AspNetUsers,
+    Name           nvarchar(max) not null,
+    Lastname       nvarchar(max) not null,
+    DateOfBirth    date          not null,
+    PESEL          nvarchar(max) not null,
+    Second_name    nvarchar(max),
+    Date_added     datetime      not null,
+    Validation_ID  int           not null
+        constraint Person_Validation
+            references Validation
+)
+go
+
+create table Marketing_Campaign
+(
+    ID                               int           not null
+        constraint Marketing_Campaign_pk
+            primary key,
+    Start_Date                       date          not null,
+    End_Date                         date          not null,
+    Marketing_Campaign_Reach_Dict_ID int           not null
+        constraint Marketing_Campaign_Marketing_Campaign_Reach_Dict
+            references Marketing_Campaign_Reach_Dict,
+    Description                      nvarchar(max) not null,
+    Regards_In_Mall                  bit default 1 not null,
+    Is_Rerun                         bit           not null,
+    On_Weekdays                      bit           not null,
+    On_Weekends                      bit           not null,
+    Person_ID                        int
+        constraint Marketing_Campaign_Person
+            references Person,
+    Company_ID                       int
+        constraint Marketing_Campaign_Company
+            references Company,
+    System_access_ID                 int           not null
+        constraint Marketing_Campaign_System_access
+            references System_access
+)
+go
+
+create table Marketing_Material
+(
+    ID                    int            not null
+        constraint Marketing_Material_pk
+            primary key,
+    Marketing_Campaign_ID int            not null
+        constraint Marketing_Material_Marketing_Campaign
+            references Marketing_Campaign,
+    Name                  nvarchar(max)  not null,
+    Content               varbinary(max) not null,
+    Price_factor          money
+)
+go
+
+create table ValidationNote
+(
+    ID            int           not null
+        constraint ValidationNote_pk
+            primary key,
+    Author_Id     nvarchar(450) not null
+        constraint ValidationNote_AspNetUsers
+            references AspNetUsers,
+    Validation_ID int           not null
+        constraint ValidationNote_Validation
+            references Validation,
+    Note          nvarchar(max) not null
+)
+go
+
+create table __EFMigrationsHistory
 (
     MigrationId    nvarchar(150) not null
         constraint PK___EFMigrationsHistory
@@ -519,10 +568,10 @@ go
 exec sp_addextendedproperty 'microsoft_database_tools_support', 1, 'SCHEMA', 'dbo', 'FUNCTION', 'fn_diagramobjects'
 go
 
-deny execute on dbo.fn_diagramobjects to guest
+deny execute on fn_diagramobjects to guest
 go
 
-grant execute on dbo.fn_diagramobjects to [public]
+grant execute on fn_diagramobjects to [public]
 go
 
 
@@ -594,10 +643,10 @@ go
 exec sp_addextendedproperty 'microsoft_database_tools_support', 1, 'SCHEMA', 'dbo', 'PROCEDURE', 'sp_alterdiagram'
 go
 
-deny execute on dbo.sp_alterdiagram to guest
+deny execute on sp_alterdiagram to guest
 go
 
-grant execute on dbo.sp_alterdiagram to [public]
+grant execute on sp_alterdiagram to [public]
 go
 
 
@@ -662,10 +711,10 @@ go
 exec sp_addextendedproperty 'microsoft_database_tools_support', 1, 'SCHEMA', 'dbo', 'PROCEDURE', 'sp_creatediagram'
 go
 
-deny execute on dbo.sp_creatediagram to guest
+deny execute on sp_creatediagram to guest
 go
 
-grant execute on dbo.sp_creatediagram to [public]
+grant execute on sp_creatediagram to [public]
 go
 
 
@@ -713,10 +762,10 @@ go
 exec sp_addextendedproperty 'microsoft_database_tools_support', 1, 'SCHEMA', 'dbo', 'PROCEDURE', 'sp_dropdiagram'
 go
 
-deny execute on dbo.sp_dropdiagram to guest
+deny execute on sp_dropdiagram to guest
 go
 
-grant execute on dbo.sp_dropdiagram to [public]
+grant execute on sp_dropdiagram to [public]
 go
 
 
@@ -764,10 +813,10 @@ exec sp_addextendedproperty 'microsoft_database_tools_support', 1, 'SCHEMA', 'db
      'sp_helpdiagramdefinition'
 go
 
-deny execute on dbo.sp_helpdiagramdefinition to guest
+deny execute on sp_helpdiagramdefinition to guest
 go
 
-grant execute on dbo.sp_helpdiagramdefinition to [public]
+grant execute on sp_helpdiagramdefinition to [public]
 go
 
 
@@ -805,10 +854,10 @@ go
 exec sp_addextendedproperty 'microsoft_database_tools_support', 1, 'SCHEMA', 'dbo', 'PROCEDURE', 'sp_helpdiagrams'
 go
 
-deny execute on dbo.sp_helpdiagrams to guest
+deny execute on sp_helpdiagrams to guest
 go
 
-grant execute on dbo.sp_helpdiagrams to [public]
+grant execute on sp_helpdiagrams to [public]
 go
 
 
@@ -877,10 +926,10 @@ go
 exec sp_addextendedproperty 'microsoft_database_tools_support', 1, 'SCHEMA', 'dbo', 'PROCEDURE', 'sp_renamediagram'
 go
 
-deny execute on dbo.sp_renamediagram to guest
+deny execute on sp_renamediagram to guest
 go
 
-grant execute on dbo.sp_renamediagram to [public]
+grant execute on sp_renamediagram to [public]
 go
 
 

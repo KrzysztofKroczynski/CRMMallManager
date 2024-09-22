@@ -1,10 +1,10 @@
 ﻿namespace Shared.Core.Entities;
 
-public sealed class AdditionalUserInfo
+public partial class AdditionalUserInfo
 {
     public string AspNetUsersId { get; set; } = null!;
 
-    public byte[] UserPhoto { get; set; } = null!;
+    public byte[]? UserPhoto { get; set; }
 
-    public AspNetUser AspNetUsers { get; set; } = null!;
+    public virtual AspNetUser AspNetUsers { get; set; } = null!;
 }

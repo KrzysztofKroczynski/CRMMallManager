@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public sealed class MassEvent
+public partial class MassEvent
 {
     public int Id { get; set; }
 
@@ -18,5 +18,5 @@ public sealed class MassEvent
 
     public int SystemAccessId { get; set; }
 
-    public SystemAccess SystemAccess { get; set; } = null!;
+    public virtual SystemAccess SystemAccess { get; set; } = null!;
 }

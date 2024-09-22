@@ -10,5 +10,5 @@ public sealed class AspNetRoleClaim
 
     public string? ClaimValue { get; set; }
 
-    public AspNetRole Role { get; set; } = null!;
+    public  AspNetRole Role { get; set; } = null!;
 }

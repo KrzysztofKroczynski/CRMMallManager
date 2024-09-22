@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public sealed class Person
+public partial class Person
 {
     public int Id { get; set; }
 
@@ -20,9 +20,9 @@ public sealed class Person
 
     public int ValidationId { get; set; }
 
-    public AspNetUser? AspNetUsers { get; set; }
+    public virtual AspNetUser? AspNetUsers { get; set; }
 
-    public ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
+    public virtual ICollection<MarketingCampaign> MarketingCampaigns { get; set; } = new List<MarketingCampaign>();
 
-    public Validation Validation { get; set; } = null!;
+    public virtual Validation Validation { get; set; } = null!;
 }

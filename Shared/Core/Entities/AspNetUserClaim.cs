@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public sealed class AspNetUserClaim
+public sealed partial class AspNetUserClaim
 {
     public int Id { get; set; }
 

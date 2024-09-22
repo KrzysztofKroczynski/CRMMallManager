@@ -1,6 +1,6 @@
 ﻿using Ardalis.Specification.EntityFrameworkCore;
 
-namespace MallManager.Infrastructure.Persistence;
+namespace MallManager.Infrastructure.Persistence.Repositories;
 
 public sealed class Repository<T> : RepositoryBase<T> where T : class
 {

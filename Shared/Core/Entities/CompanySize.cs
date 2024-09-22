@@ -1,6 +1,6 @@
 ﻿namespace Shared.Core.Entities;
 
-public sealed class CompanySize
+public sealed partial class CompanySize
 {
     public int Id { get; set; }
 
